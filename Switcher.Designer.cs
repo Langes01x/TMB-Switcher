@@ -29,11 +29,11 @@
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
-            System.Windows.Forms.DataVisualization.Charting.ChartArea chartArea21 = new System.Windows.Forms.DataVisualization.Charting.ChartArea();
-            System.Windows.Forms.DataVisualization.Charting.Legend legend21 = new System.Windows.Forms.DataVisualization.Charting.Legend();
-            System.Windows.Forms.DataVisualization.Charting.ChartArea chartArea22 = new System.Windows.Forms.DataVisualization.Charting.ChartArea();
-            System.Windows.Forms.DataVisualization.Charting.Legend legend22 = new System.Windows.Forms.DataVisualization.Charting.Legend();
-            System.Windows.Forms.DataVisualization.Charting.Series series11 = new System.Windows.Forms.DataVisualization.Charting.Series();
+            System.Windows.Forms.DataVisualization.Charting.ChartArea chartArea1 = new System.Windows.Forms.DataVisualization.Charting.ChartArea();
+            System.Windows.Forms.DataVisualization.Charting.Legend legend1 = new System.Windows.Forms.DataVisualization.Charting.Legend();
+            System.Windows.Forms.DataVisualization.Charting.ChartArea chartArea2 = new System.Windows.Forms.DataVisualization.Charting.ChartArea();
+            System.Windows.Forms.DataVisualization.Charting.Legend legend2 = new System.Windows.Forms.DataVisualization.Charting.Legend();
+            System.Windows.Forms.DataVisualization.Charting.Series series1 = new System.Windows.Forms.DataVisualization.Charting.Series();
             this.tabControl = new System.Windows.Forms.TabControl();
             this.statsPage = new System.Windows.Forms.TabPage();
             this.staleLabel = new System.Windows.Forms.Label();
@@ -118,10 +118,15 @@
             this.minerHistoryPage = new System.Windows.Forms.TabPage();
             this.minerChart = new System.Windows.Forms.DataVisualization.Charting.Chart();
             this.minerHistoryPanel = new System.Windows.Forms.Panel();
+            this.graphHashCheck = new System.Windows.Forms.CheckBox();
+            this.graphTempCheck = new System.Windows.Forms.CheckBox();
             this.graphTotalCheck = new System.Windows.Forms.CheckBox();
             this.minerHistoryLabel = new System.Windows.Forms.Label();
             this.minerHistoryBar = new System.Windows.Forms.TrackBar();
             this.settingsPage = new System.Windows.Forms.TabPage();
+            this.startupDeadDelayUnits = new System.Windows.Forms.Label();
+            this.startupDeadDelayNum = new System.Windows.Forms.NumericUpDown();
+            this.startupDeadDelayLabel = new System.Windows.Forms.Label();
             this.profitLogFileButton = new System.Windows.Forms.Button();
             this.batchFileButton = new System.Windows.Forms.Button();
             this.profitCutoffText = new System.Windows.Forms.TextBox();
@@ -178,11 +183,6 @@
             this.closeButton = new System.Windows.Forms.ToolStripButton();
             this.refreshButton = new System.Windows.Forms.ToolStripButton();
             this.toolTip = new System.Windows.Forms.ToolTip(this.components);
-            this.graphTempCheck = new System.Windows.Forms.CheckBox();
-            this.graphHashCheck = new System.Windows.Forms.CheckBox();
-            this.startupDeadDelayUnits = new System.Windows.Forms.Label();
-            this.startupDeadDelayNum = new System.Windows.Forms.NumericUpDown();
-            this.startupDeadDelayLabel = new System.Windows.Forms.Label();
             this.tabControl.SuspendLayout();
             this.statsPage.SuspendLayout();
             this.poolsPage.SuspendLayout();
@@ -202,11 +202,11 @@
             this.minerHistoryPanel.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.minerHistoryBar)).BeginInit();
             this.settingsPage.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.startupDeadDelayNum)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.historicalDelayNum)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.poolRefreshNum)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.minerRefreshNum)).BeginInit();
             this.toolStrip.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.startupDeadDelayNum)).BeginInit();
             this.SuspendLayout();
             // 
             // tabControl
@@ -1012,16 +1012,16 @@
             // 
             // profitChart
             // 
-            chartArea21.AxisX.MaximumAutoSize = 85F;
-            chartArea21.AxisX.Title = "Time";
-            chartArea21.AxisY.Title = "BTC/Day/Mh (Normalized)";
-            chartArea21.Name = "profitArea";
-            this.profitChart.ChartAreas.Add(chartArea21);
+            chartArea1.AxisX.MaximumAutoSize = 85F;
+            chartArea1.AxisX.Title = "Time";
+            chartArea1.AxisY.Title = "BTC/Day/Mh (Normalized)";
+            chartArea1.Name = "profitArea";
+            this.profitChart.ChartAreas.Add(chartArea1);
             this.profitChart.Dock = System.Windows.Forms.DockStyle.Fill;
-            legend21.Alignment = System.Drawing.StringAlignment.Center;
-            legend21.Docking = System.Windows.Forms.DataVisualization.Charting.Docking.Bottom;
-            legend21.Name = "profitLegend";
-            this.profitChart.Legends.Add(legend21);
+            legend1.Alignment = System.Drawing.StringAlignment.Center;
+            legend1.Docking = System.Windows.Forms.DataVisualization.Charting.Docking.Bottom;
+            legend1.Name = "profitLegend";
+            this.profitChart.Legends.Add(legend1);
             this.profitChart.Location = new System.Drawing.Point(0, 0);
             this.profitChart.Name = "profitChart";
             this.profitChart.Size = new System.Drawing.Size(556, 377);
@@ -1132,28 +1132,28 @@
             // 
             // minerChart
             // 
-            chartArea22.AxisX.Title = "Time";
-            chartArea22.AxisY.Title = "Hashrate (Kh/s)";
-            chartArea22.AxisY2.Title = "Temperature (°C)";
-            chartArea22.Name = "minerArea";
-            this.minerChart.ChartAreas.Add(chartArea22);
+            chartArea2.AxisX.Title = "Time";
+            chartArea2.AxisY.Title = "Hashrate (Kh/s)";
+            chartArea2.AxisY2.Title = "Temperature (°C)";
+            chartArea2.Name = "minerArea";
+            this.minerChart.ChartAreas.Add(chartArea2);
             this.minerChart.Dock = System.Windows.Forms.DockStyle.Fill;
-            legend22.Alignment = System.Drawing.StringAlignment.Center;
-            legend22.Docking = System.Windows.Forms.DataVisualization.Charting.Docking.Bottom;
-            legend22.Name = "minerLegend";
-            this.minerChart.Legends.Add(legend22);
+            legend2.Alignment = System.Drawing.StringAlignment.Center;
+            legend2.Docking = System.Windows.Forms.DataVisualization.Charting.Docking.Bottom;
+            legend2.Name = "minerLegend";
+            this.minerChart.Legends.Add(legend2);
             this.minerChart.Location = new System.Drawing.Point(0, 0);
             this.minerChart.Name = "minerChart";
-            series11.BorderWidth = 2;
-            series11.ChartArea = "minerArea";
-            series11.ChartType = System.Windows.Forms.DataVisualization.Charting.SeriesChartType.FastLine;
-            series11.Enabled = false;
-            series11.Legend = "minerLegend";
-            series11.LegendText = "Total Hashrate";
-            series11.Name = "totalHash";
-            series11.XValueMember = "time";
-            series11.YValueMembers = "totalHash";
-            this.minerChart.Series.Add(series11);
+            series1.BorderWidth = 2;
+            series1.ChartArea = "minerArea";
+            series1.ChartType = System.Windows.Forms.DataVisualization.Charting.SeriesChartType.FastLine;
+            series1.Enabled = false;
+            series1.Legend = "minerLegend";
+            series1.LegendText = "Total Hashrate";
+            series1.Name = "totalHash";
+            series1.XValueMember = "time";
+            series1.YValueMembers = "totalHash";
+            this.minerChart.Series.Add(series1);
             this.minerChart.Size = new System.Drawing.Size(556, 377);
             this.minerChart.TabIndex = 2;
             this.minerChart.MouseMove += new System.Windows.Forms.MouseEventHandler(this.minerChart_MouseMove);
@@ -1170,6 +1170,30 @@
             this.minerHistoryPanel.Name = "minerHistoryPanel";
             this.minerHistoryPanel.Size = new System.Drawing.Size(556, 26);
             this.minerHistoryPanel.TabIndex = 4;
+            // 
+            // graphHashCheck
+            // 
+            this.graphHashCheck.AutoSize = true;
+            this.graphHashCheck.Checked = true;
+            this.graphHashCheck.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.graphHashCheck.Location = new System.Drawing.Point(92, 5);
+            this.graphHashCheck.Name = "graphHashCheck";
+            this.graphHashCheck.Size = new System.Drawing.Size(51, 17);
+            this.graphHashCheck.TabIndex = 10;
+            this.graphHashCheck.Text = "Hash";
+            this.graphHashCheck.UseVisualStyleBackColor = true;
+            // 
+            // graphTempCheck
+            // 
+            this.graphTempCheck.AutoSize = true;
+            this.graphTempCheck.Checked = true;
+            this.graphTempCheck.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.graphTempCheck.Location = new System.Drawing.Point(149, 5);
+            this.graphTempCheck.Name = "graphTempCheck";
+            this.graphTempCheck.Size = new System.Drawing.Size(53, 17);
+            this.graphTempCheck.TabIndex = 9;
+            this.graphTempCheck.Text = "Temp";
+            this.graphTempCheck.UseVisualStyleBackColor = true;
             // 
             // graphTotalCheck
             // 
@@ -1272,6 +1296,48 @@
             this.settingsPage.TabIndex = 4;
             this.settingsPage.Text = "Settings";
             this.settingsPage.UseVisualStyleBackColor = true;
+            // 
+            // startupDeadDelayUnits
+            // 
+            this.startupDeadDelayUnits.AutoSize = true;
+            this.startupDeadDelayUnits.Location = new System.Drawing.Point(502, 93);
+            this.startupDeadDelayUnits.Name = "startupDeadDelayUnits";
+            this.startupDeadDelayUnits.Size = new System.Drawing.Size(47, 13);
+            this.startupDeadDelayUnits.TabIndex = 54;
+            this.startupDeadDelayUnits.Text = "seconds";
+            // 
+            // startupDeadDelayNum
+            // 
+            this.startupDeadDelayNum.Location = new System.Drawing.Point(448, 90);
+            this.startupDeadDelayNum.Maximum = new decimal(new int[] {
+            120,
+            0,
+            0,
+            0});
+            this.startupDeadDelayNum.Minimum = new decimal(new int[] {
+            10,
+            0,
+            0,
+            0});
+            this.startupDeadDelayNum.Name = "startupDeadDelayNum";
+            this.startupDeadDelayNum.Size = new System.Drawing.Size(51, 20);
+            this.startupDeadDelayNum.TabIndex = 53;
+            this.toolTip.SetToolTip(this.startupDeadDelayNum, "Time between when the miner is started up and when the switcher determines the mi" +
+        "ner failed to start (it will try to restart it again)");
+            this.startupDeadDelayNum.Value = new decimal(new int[] {
+            30,
+            0,
+            0,
+            0});
+            // 
+            // startupDeadDelayLabel
+            // 
+            this.startupDeadDelayLabel.AutoSize = true;
+            this.startupDeadDelayLabel.Location = new System.Drawing.Point(335, 92);
+            this.startupDeadDelayLabel.Name = "startupDeadDelayLabel";
+            this.startupDeadDelayLabel.Size = new System.Drawing.Size(103, 13);
+            this.startupDeadDelayLabel.TabIndex = 52;
+            this.startupDeadDelayLabel.Text = "Startup Dead Delay:";
             // 
             // profitLogFileButton
             // 
@@ -1835,71 +1901,9 @@
             this.refreshButton.Text = "Refresh";
             this.refreshButton.Click += new System.EventHandler(this.refreshButton_Click);
             // 
-            // graphTempCheck
+            // toolTip
             // 
-            this.graphTempCheck.AutoSize = true;
-            this.graphTempCheck.Checked = true;
-            this.graphTempCheck.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.graphTempCheck.Location = new System.Drawing.Point(149, 5);
-            this.graphTempCheck.Name = "graphTempCheck";
-            this.graphTempCheck.Size = new System.Drawing.Size(53, 17);
-            this.graphTempCheck.TabIndex = 9;
-            this.graphTempCheck.Text = "Temp";
-            this.graphTempCheck.UseVisualStyleBackColor = true;
-            // 
-            // graphHashCheck
-            // 
-            this.graphHashCheck.AutoSize = true;
-            this.graphHashCheck.Checked = true;
-            this.graphHashCheck.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.graphHashCheck.Location = new System.Drawing.Point(92, 5);
-            this.graphHashCheck.Name = "graphHashCheck";
-            this.graphHashCheck.Size = new System.Drawing.Size(51, 17);
-            this.graphHashCheck.TabIndex = 10;
-            this.graphHashCheck.Text = "Hash";
-            this.graphHashCheck.UseVisualStyleBackColor = true;
-            // 
-            // startupDeadDelayUnits
-            // 
-            this.startupDeadDelayUnits.AutoSize = true;
-            this.startupDeadDelayUnits.Location = new System.Drawing.Point(502, 93);
-            this.startupDeadDelayUnits.Name = "startupDeadDelayUnits";
-            this.startupDeadDelayUnits.Size = new System.Drawing.Size(47, 13);
-            this.startupDeadDelayUnits.TabIndex = 54;
-            this.startupDeadDelayUnits.Text = "seconds";
-            // 
-            // startupDeadDelayNum
-            // 
-            this.startupDeadDelayNum.Location = new System.Drawing.Point(448, 90);
-            this.startupDeadDelayNum.Maximum = new decimal(new int[] {
-            120,
-            0,
-            0,
-            0});
-            this.startupDeadDelayNum.Minimum = new decimal(new int[] {
-            10,
-            0,
-            0,
-            0});
-            this.startupDeadDelayNum.Name = "startupDeadDelayNum";
-            this.startupDeadDelayNum.Size = new System.Drawing.Size(51, 20);
-            this.startupDeadDelayNum.TabIndex = 53;
-            this.toolTip.SetToolTip(this.startupDeadDelayNum, "Time between when the miner is started up and when the switcher determines the mi" +
-        "ner failed to start (it will try to restart it again)");
-            this.startupDeadDelayNum.Value = new decimal(new int[] {
-            30,
-            0,
-            0,
-            0});
-            // 
-            // startupDeadDelayLabel
-            // 
-            this.startupDeadDelayLabel.AutoSize = true;
-            this.startupDeadDelayLabel.Location = new System.Drawing.Point(335, 92);
-            this.startupDeadDelayLabel.Name = "startupDeadDelayLabel";
-            this.startupDeadDelayLabel.Size = new System.Drawing.Size(103, 13);
-            this.startupDeadDelayLabel.TabIndex = 52;
-            this.startupDeadDelayLabel.Text = "Startup Dead Delay:";
+            this.toolTip.ShowAlways = true;
             // 
             // Switcher
             // 
@@ -1939,12 +1943,12 @@
             ((System.ComponentModel.ISupportInitialize)(this.minerHistoryBar)).EndInit();
             this.settingsPage.ResumeLayout(false);
             this.settingsPage.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.startupDeadDelayNum)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.historicalDelayNum)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.poolRefreshNum)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.minerRefreshNum)).EndInit();
             this.toolStrip.ResumeLayout(false);
             this.toolStrip.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.startupDeadDelayNum)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 

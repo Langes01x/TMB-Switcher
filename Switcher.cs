@@ -11,6 +11,7 @@ using System.Reflection;
 using System.IO;
 using System.Windows.Forms.DataVisualization.Charting;
 using System.Diagnostics;
+using System.Globalization;
 #endregion
 
 namespace TMB_Switcher
@@ -88,6 +89,8 @@ namespace TMB_Switcher
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
             Application.Run(new Switcher());
+            Thread.CurrentThread.CurrentCulture = CultureInfo.InvariantCulture;
+            Thread.CurrentThread.CurrentUICulture = CultureInfo.InvariantCulture;
         }
 
         public Switcher()
@@ -218,6 +221,8 @@ namespace TMB_Switcher
 
         private void backgroundThread()
         {
+            Thread.CurrentThread.CurrentCulture = CultureInfo.InvariantCulture;
+            Thread.CurrentThread.CurrentUICulture = CultureInfo.InvariantCulture;
             while (true)
             {
                 try
