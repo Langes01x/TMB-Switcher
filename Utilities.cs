@@ -148,7 +148,9 @@ namespace TMB_Switcher
             row["time"] = DateTime.Now;
             foreach (string key in data.Keys)
             {
-                row[key] = data[key];
+                // Prevent issues when we are missing columns (i.e. new algorithms added)
+                if (table.Columns.Contains(key))
+                    row[key] = data[key];
             }
             table.Rows.Add(row);
         }
@@ -191,6 +193,8 @@ namespace TMB_Switcher
                     return "X11";
                 case "x13":
                     return "X13";
+                case "x15":
+                    return "X15";
                 case "keccak":
                     return "Keccak";
                 default:
@@ -215,6 +219,8 @@ namespace TMB_Switcher
                     return "x11";
                 case "X13":
                     return "x13";
+                case "X15":
+                    return "x15";
                 case "Keccak":
                     return "keccak";
                 default:

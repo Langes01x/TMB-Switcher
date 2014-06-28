@@ -73,7 +73,7 @@ namespace TMB_Switcher
                 else
                 {
                     // Check status
-                    string[] parts = apiOutput.Split(new string[] {"STATUS\": "}, StringSplitOptions.None);
+                    string[] parts = apiOutput.Split(new string[] {"STATUS\":"}, StringSplitOptions.None);
                     if (parts.Length > 2)
                     {
                         return parts[2].Split(',')[0].Trim('"');

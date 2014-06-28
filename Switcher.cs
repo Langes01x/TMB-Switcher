@@ -123,6 +123,7 @@ namespace TMB_Switcher
                 poolProfitInfo.Columns.Add("nscrypt", typeof(double));
                 poolProfitInfo.Columns.Add("x11", typeof(double));
                 poolProfitInfo.Columns.Add("x13", typeof(double));
+                poolProfitInfo.Columns.Add("x15", typeof(double));
 
                 // Set up miner table
                 minerInfo = new DataTable();
@@ -652,6 +653,9 @@ namespace TMB_Switcher
                     case "x13":
                         series.Enabled = graphX13Check.Checked;
                         break;
+                    case "x15":
+                        series.Enabled = graphX15Check.Checked;
+                        break;
                 }
                 series.BorderWidth = 2;
                 series.MarkerStyle = MarkerStyle.Circle;
@@ -860,6 +864,9 @@ namespace TMB_Switcher
             else if (poolAlgorithm.StartsWith("marucoin", StringComparison.InvariantCultureIgnoreCase) ||
                 poolAlgorithm.StartsWith("x13", StringComparison.InvariantCultureIgnoreCase))
                 return "x13";
+            else if (poolAlgorithm.StartsWith("bitblock", StringComparison.InvariantCultureIgnoreCase) ||
+                poolAlgorithm.StartsWith("x15", StringComparison.InvariantCultureIgnoreCase))
+                return "x15";
             // Future support for Keccak if ever needed
             else if (poolAlgorithm.StartsWith("maxcoin", StringComparison.InvariantCultureIgnoreCase))
                 return "keccak";
@@ -1163,11 +1170,13 @@ namespace TMB_Switcher
             StoreDouble(nScryptMultText.Text, "nscryptMult", problems);
             StoreDouble(x11MultText.Text, "x11Mult", problems);
             StoreDouble(x13MultText.Text, "x13Mult", problems);
+            StoreDouble(x15MultText.Text, "x15Mult", problems);
 
             StoreDouble(scryptOffText.Text, "scryptOff", problems);
             StoreDouble(nScryptOffText.Text, "nscryptOff", problems);
             StoreDouble(x11OffText.Text, "x11Off", problems);
             StoreDouble(x13OffText.Text, "x13Off", problems);
+            StoreDouble(x15OffText.Text, "x15Off", problems);
 
             if (problems.Count > 0)
             {
@@ -1227,11 +1236,13 @@ namespace TMB_Switcher
             nScryptMultText.Text = RestoreDouble("nscryptMult", nScryptMultText.Text);
             x11MultText.Text = RestoreDouble("x11Mult", x11MultText.Text);
             x13MultText.Text = RestoreDouble("x13Mult", x13MultText.Text);
+            x15MultText.Text = RestoreDouble("x15Mult", x15MultText.Text);
 
             scryptOffText.Text = RestoreDouble("scryptOff", scryptOffText.Text);
             nScryptOffText.Text = RestoreDouble("nscryptOff", nScryptOffText.Text);
             x11OffText.Text = RestoreDouble("x11Off", x11OffText.Text);
             x13OffText.Text = RestoreDouble("x13Off", x13OffText.Text);
+            x15OffText.Text = RestoreDouble("x15Off", x15OffText.Text);
         }
 
         private string RestoreDouble(string keyName, string text)
@@ -1479,6 +1490,11 @@ namespace TMB_Switcher
             profitChart.Series["filteredX13"].Enabled = graphX13Check.Checked;
         }
 
+        private void graphX15Check_CheckedChanged(object sender, EventArgs e)
+        {
+            profitChart.Series["filteredX15"].Enabled = graphX15Check.Checked;
+        }
+
         private void profitChart_MouseMove(object sender, MouseEventArgs e)
         {
             try
@@ -1512,6 +1528,9 @@ namespace TMB_Switcher
                                     break;
                                 case "x13":
                                     enabled = graphX13Check.Checked;
+                                    break;
+                                case "x15":
+                                    enabled = graphX15Check.Checked;
                                     break;
                             }
                             if (enabled)
@@ -1771,6 +1790,7 @@ namespace TMB_Switcher
             if (result != null && result[0] == 'S')
             {
                 refreshMiner = true;
+                poolView.Rows[poolView.SelectedRows[0].Index + direction].Selected = true;
             }
         }
 
