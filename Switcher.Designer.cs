@@ -29,11 +29,11 @@
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
-            System.Windows.Forms.DataVisualization.Charting.ChartArea chartArea7 = new System.Windows.Forms.DataVisualization.Charting.ChartArea();
-            System.Windows.Forms.DataVisualization.Charting.Legend legend7 = new System.Windows.Forms.DataVisualization.Charting.Legend();
-            System.Windows.Forms.DataVisualization.Charting.ChartArea chartArea8 = new System.Windows.Forms.DataVisualization.Charting.ChartArea();
-            System.Windows.Forms.DataVisualization.Charting.Legend legend8 = new System.Windows.Forms.DataVisualization.Charting.Legend();
-            System.Windows.Forms.DataVisualization.Charting.Series series4 = new System.Windows.Forms.DataVisualization.Charting.Series();
+            System.Windows.Forms.DataVisualization.Charting.ChartArea chartArea5 = new System.Windows.Forms.DataVisualization.Charting.ChartArea();
+            System.Windows.Forms.DataVisualization.Charting.Legend legend5 = new System.Windows.Forms.DataVisualization.Charting.Legend();
+            System.Windows.Forms.DataVisualization.Charting.ChartArea chartArea6 = new System.Windows.Forms.DataVisualization.Charting.ChartArea();
+            System.Windows.Forms.DataVisualization.Charting.Legend legend6 = new System.Windows.Forms.DataVisualization.Charting.Legend();
+            System.Windows.Forms.DataVisualization.Charting.Series series3 = new System.Windows.Forms.DataVisualization.Charting.Series();
             this.tabControl = new System.Windows.Forms.TabControl();
             this.statsPage = new System.Windows.Forms.TabPage();
             this.staleLabel = new System.Windows.Forms.Label();
@@ -109,6 +109,7 @@
             this.profitHistoryPage = new System.Windows.Forms.TabPage();
             this.profitChart = new System.Windows.Forms.DataVisualization.Charting.Chart();
             this.profitHistoryPanel = new System.Windows.Forms.Panel();
+            this.graphX15Check = new System.Windows.Forms.CheckBox();
             this.profitHistoryLabel = new System.Windows.Forms.Label();
             this.profitHistoryBar = new System.Windows.Forms.TrackBar();
             this.graphNScryptCheck = new System.Windows.Forms.CheckBox();
@@ -124,6 +125,32 @@
             this.minerHistoryLabel = new System.Windows.Forms.Label();
             this.minerHistoryBar = new System.Windows.Forms.TrackBar();
             this.settingsPage = new System.Windows.Forms.TabPage();
+            this.minerNameText = new System.Windows.Forms.TextBox();
+            this.minerNameLabel = new System.Windows.Forms.Label();
+            this.x15BatchButton = new System.Windows.Forms.Button();
+            this.x13BatchButton = new System.Windows.Forms.Button();
+            this.x11BatchButton = new System.Windows.Forms.Button();
+            this.nScryptBatchButton = new System.Windows.Forms.Button();
+            this.scryptBatchButton = new System.Windows.Forms.Button();
+            this.x15BatchText = new System.Windows.Forms.TextBox();
+            this.x13BatchText = new System.Windows.Forms.TextBox();
+            this.x11BatchText = new System.Windows.Forms.TextBox();
+            this.nScryptBatchText = new System.Windows.Forms.TextBox();
+            this.scryptBatchText = new System.Windows.Forms.TextBox();
+            this.x15BatchLabel = new System.Windows.Forms.Label();
+            this.x13BatchLabel = new System.Windows.Forms.Label();
+            this.x11BatchLabel = new System.Windows.Forms.Label();
+            this.nScryptBatchLabel = new System.Windows.Forms.Label();
+            this.scryptBatchLabel = new System.Windows.Forms.Label();
+            this.enableX15Check = new System.Windows.Forms.CheckBox();
+            this.enableX13Check = new System.Windows.Forms.CheckBox();
+            this.enableX11Check = new System.Windows.Forms.CheckBox();
+            this.enableNScryptCheck = new System.Windows.Forms.CheckBox();
+            this.enableScryptCheck = new System.Windows.Forms.CheckBox();
+            this.x15OffText = new System.Windows.Forms.TextBox();
+            this.x15MultText = new System.Windows.Forms.TextBox();
+            this.x15OffLabel = new System.Windows.Forms.Label();
+            this.x15MultLabel = new System.Windows.Forms.Label();
             this.startupDeadDelayUnits = new System.Windows.Forms.Label();
             this.startupDeadDelayNum = new System.Windows.Forms.NumericUpDown();
             this.startupDeadDelayLabel = new System.Windows.Forms.Label();
@@ -183,11 +210,6 @@
             this.closeButton = new System.Windows.Forms.ToolStripButton();
             this.refreshButton = new System.Windows.Forms.ToolStripButton();
             this.toolTip = new System.Windows.Forms.ToolTip(this.components);
-            this.x15OffText = new System.Windows.Forms.TextBox();
-            this.x15MultText = new System.Windows.Forms.TextBox();
-            this.x15OffLabel = new System.Windows.Forms.Label();
-            this.x15MultLabel = new System.Windows.Forms.Label();
-            this.graphX15Check = new System.Windows.Forms.CheckBox();
             this.tabControl.SuspendLayout();
             this.statsPage.SuspendLayout();
             this.poolsPage.SuspendLayout();
@@ -227,7 +249,7 @@
             this.tabControl.Location = new System.Drawing.Point(0, 25);
             this.tabControl.Name = "tabControl";
             this.tabControl.SelectedIndex = 0;
-            this.tabControl.Size = new System.Drawing.Size(564, 451);
+            this.tabControl.Size = new System.Drawing.Size(899, 417);
             this.tabControl.TabIndex = 0;
             // 
             // statsPage
@@ -279,7 +301,7 @@
             this.statsPage.Location = new System.Drawing.Point(4, 22);
             this.statsPage.Name = "statsPage";
             this.statsPage.Padding = new System.Windows.Forms.Padding(3);
-            this.statsPage.Size = new System.Drawing.Size(556, 425);
+            this.statsPage.Size = new System.Drawing.Size(891, 391);
             this.statsPage.TabIndex = 0;
             this.statsPage.Text = "Stats";
             this.statsPage.UseVisualStyleBackColor = true;
@@ -296,7 +318,7 @@
             // staleText
             // 
             this.staleText.Enabled = false;
-            this.staleText.Location = new System.Drawing.Point(113, 201);
+            this.staleText.Location = new System.Drawing.Point(123, 201);
             this.staleText.Name = "staleText";
             this.staleText.Size = new System.Drawing.Size(151, 20);
             this.staleText.TabIndex = 44;
@@ -305,7 +327,7 @@
             // foundBlocksText
             // 
             this.foundBlocksText.Enabled = false;
-            this.foundBlocksText.Location = new System.Drawing.Point(397, 232);
+            this.foundBlocksText.Location = new System.Drawing.Point(417, 232);
             this.foundBlocksText.Name = "foundBlocksText";
             this.foundBlocksText.Size = new System.Drawing.Size(151, 20);
             this.foundBlocksText.TabIndex = 43;
@@ -314,7 +336,7 @@
             // foundBlocksLabel
             // 
             this.foundBlocksLabel.AutoSize = true;
-            this.foundBlocksLabel.Location = new System.Drawing.Point(284, 235);
+            this.foundBlocksLabel.Location = new System.Drawing.Point(294, 235);
             this.foundBlocksLabel.Name = "foundBlocksLabel";
             this.foundBlocksLabel.Size = new System.Drawing.Size(75, 13);
             this.foundBlocksLabel.TabIndex = 42;
@@ -323,7 +345,7 @@
             // userHashText
             // 
             this.userHashText.Enabled = false;
-            this.userHashText.Location = new System.Drawing.Point(113, 351);
+            this.userHashText.Location = new System.Drawing.Point(123, 351);
             this.userHashText.Name = "userHashText";
             this.userHashText.Size = new System.Drawing.Size(151, 20);
             this.userHashText.TabIndex = 41;
@@ -361,7 +383,7 @@
             // poolHashText
             // 
             this.poolHashText.Enabled = false;
-            this.poolHashText.Location = new System.Drawing.Point(113, 320);
+            this.poolHashText.Location = new System.Drawing.Point(123, 320);
             this.poolHashText.Name = "poolHashText";
             this.poolHashText.Size = new System.Drawing.Size(151, 20);
             this.poolHashText.TabIndex = 37;
@@ -379,7 +401,7 @@
             // lowProfitText
             // 
             this.lowProfitText.Enabled = false;
-            this.lowProfitText.Location = new System.Drawing.Point(397, 351);
+            this.lowProfitText.Location = new System.Drawing.Point(417, 351);
             this.lowProfitText.Name = "lowProfitText";
             this.lowProfitText.Size = new System.Drawing.Size(151, 20);
             this.lowProfitText.TabIndex = 35;
@@ -388,7 +410,7 @@
             // highProfitText
             // 
             this.highProfitText.Enabled = false;
-            this.highProfitText.Location = new System.Drawing.Point(397, 320);
+            this.highProfitText.Location = new System.Drawing.Point(417, 320);
             this.highProfitText.Name = "highProfitText";
             this.highProfitText.Size = new System.Drawing.Size(151, 20);
             this.highProfitText.TabIndex = 34;
@@ -397,7 +419,7 @@
             // averageProfitText
             // 
             this.averageProfitText.Enabled = false;
-            this.averageProfitText.Location = new System.Drawing.Point(397, 289);
+            this.averageProfitText.Location = new System.Drawing.Point(417, 289);
             this.averageProfitText.Name = "averageProfitText";
             this.averageProfitText.Size = new System.Drawing.Size(151, 20);
             this.averageProfitText.TabIndex = 33;
@@ -406,7 +428,7 @@
             // averageProfitLabel
             // 
             this.averageProfitLabel.AutoSize = true;
-            this.averageProfitLabel.Location = new System.Drawing.Point(284, 292);
+            this.averageProfitLabel.Location = new System.Drawing.Point(294, 292);
             this.averageProfitLabel.Name = "averageProfitLabel";
             this.averageProfitLabel.Size = new System.Drawing.Size(103, 13);
             this.averageProfitLabel.TabIndex = 32;
@@ -415,7 +437,7 @@
             // lowProfitLabel
             // 
             this.lowProfitLabel.AutoSize = true;
-            this.lowProfitLabel.Location = new System.Drawing.Point(284, 354);
+            this.lowProfitLabel.Location = new System.Drawing.Point(294, 354);
             this.lowProfitLabel.Name = "lowProfitLabel";
             this.lowProfitLabel.Size = new System.Drawing.Size(97, 13);
             this.lowProfitLabel.TabIndex = 31;
@@ -424,7 +446,7 @@
             // highProfitLabel
             // 
             this.highProfitLabel.AutoSize = true;
-            this.highProfitLabel.Location = new System.Drawing.Point(284, 323);
+            this.highProfitLabel.Location = new System.Drawing.Point(294, 323);
             this.highProfitLabel.Name = "highProfitLabel";
             this.highProfitLabel.Size = new System.Drawing.Size(99, 13);
             this.highProfitLabel.TabIndex = 30;
@@ -433,7 +455,7 @@
             // currentProfitText
             // 
             this.currentProfitText.Enabled = false;
-            this.currentProfitText.Location = new System.Drawing.Point(113, 289);
+            this.currentProfitText.Location = new System.Drawing.Point(123, 289);
             this.currentProfitText.Name = "currentProfitText";
             this.currentProfitText.Size = new System.Drawing.Size(151, 20);
             this.currentProfitText.TabIndex = 29;
@@ -467,7 +489,7 @@
             this.currentPoolAtText.Enabled = false;
             this.currentPoolAtText.Location = new System.Drawing.Point(203, 12);
             this.currentPoolAtText.Name = "currentPoolAtText";
-            this.currentPoolAtText.Size = new System.Drawing.Size(345, 20);
+            this.currentPoolAtText.Size = new System.Drawing.Size(680, 20);
             this.currentPoolAtText.TabIndex = 26;
             // 
             // currentProfitLabel
@@ -482,7 +504,7 @@
             // bestShareText
             // 
             this.bestShareText.Enabled = false;
-            this.bestShareText.Location = new System.Drawing.Point(397, 200);
+            this.bestShareText.Location = new System.Drawing.Point(417, 200);
             this.bestShareText.Name = "bestShareText";
             this.bestShareText.Size = new System.Drawing.Size(151, 20);
             this.bestShareText.TabIndex = 24;
@@ -491,7 +513,7 @@
             // bestShareLabel
             // 
             this.bestShareLabel.AutoSize = true;
-            this.bestShareLabel.Location = new System.Drawing.Point(284, 204);
+            this.bestShareLabel.Location = new System.Drawing.Point(294, 204);
             this.bestShareLabel.Name = "bestShareLabel";
             this.bestShareLabel.Size = new System.Drawing.Size(62, 13);
             this.bestShareLabel.TabIndex = 23;
@@ -500,7 +522,7 @@
             // remoteFailureText
             // 
             this.remoteFailureText.Enabled = false;
-            this.remoteFailureText.Location = new System.Drawing.Point(397, 170);
+            this.remoteFailureText.Location = new System.Drawing.Point(417, 170);
             this.remoteFailureText.Name = "remoteFailureText";
             this.remoteFailureText.Size = new System.Drawing.Size(151, 20);
             this.remoteFailureText.TabIndex = 22;
@@ -509,7 +531,7 @@
             // getworkFailureText
             // 
             this.getworkFailureText.Enabled = false;
-            this.getworkFailureText.Location = new System.Drawing.Point(397, 139);
+            this.getworkFailureText.Location = new System.Drawing.Point(417, 139);
             this.getworkFailureText.Name = "getworkFailureText";
             this.getworkFailureText.Size = new System.Drawing.Size(151, 20);
             this.getworkFailureText.TabIndex = 21;
@@ -518,7 +540,7 @@
             // getworkText
             // 
             this.getworkText.Enabled = false;
-            this.getworkText.Location = new System.Drawing.Point(397, 108);
+            this.getworkText.Location = new System.Drawing.Point(417, 108);
             this.getworkText.Name = "getworkText";
             this.getworkText.Size = new System.Drawing.Size(151, 20);
             this.getworkText.TabIndex = 20;
@@ -527,7 +549,7 @@
             // remoteFailureLabel
             // 
             this.remoteFailureLabel.AutoSize = true;
-            this.remoteFailureLabel.Location = new System.Drawing.Point(284, 173);
+            this.remoteFailureLabel.Location = new System.Drawing.Point(294, 173);
             this.remoteFailureLabel.Name = "remoteFailureLabel";
             this.remoteFailureLabel.Size = new System.Drawing.Size(86, 13);
             this.remoteFailureLabel.TabIndex = 19;
@@ -536,7 +558,7 @@
             // getworkFailureLabel
             // 
             this.getworkFailureLabel.AutoSize = true;
-            this.getworkFailureLabel.Location = new System.Drawing.Point(284, 142);
+            this.getworkFailureLabel.Location = new System.Drawing.Point(294, 142);
             this.getworkFailureLabel.Name = "getworkFailureLabel";
             this.getworkFailureLabel.Size = new System.Drawing.Size(89, 13);
             this.getworkFailureLabel.TabIndex = 18;
@@ -545,7 +567,7 @@
             // getworksLabel
             // 
             this.getworksLabel.AutoSize = true;
-            this.getworksLabel.Location = new System.Drawing.Point(284, 111);
+            this.getworksLabel.Location = new System.Drawing.Point(294, 111);
             this.getworksLabel.Name = "getworksLabel";
             this.getworksLabel.Size = new System.Drawing.Size(55, 13);
             this.getworksLabel.TabIndex = 17;
@@ -554,7 +576,7 @@
             // hardwareErrorText
             // 
             this.hardwareErrorText.Enabled = false;
-            this.hardwareErrorText.Location = new System.Drawing.Point(113, 232);
+            this.hardwareErrorText.Location = new System.Drawing.Point(123, 232);
             this.hardwareErrorText.Name = "hardwareErrorText";
             this.hardwareErrorText.Size = new System.Drawing.Size(151, 20);
             this.hardwareErrorText.TabIndex = 16;
@@ -563,7 +585,7 @@
             // workUtilityText
             // 
             this.workUtilityText.Enabled = false;
-            this.workUtilityText.Location = new System.Drawing.Point(397, 77);
+            this.workUtilityText.Location = new System.Drawing.Point(417, 77);
             this.workUtilityText.Name = "workUtilityText";
             this.workUtilityText.Size = new System.Drawing.Size(151, 20);
             this.workUtilityText.TabIndex = 15;
@@ -581,7 +603,7 @@
             // workUtilityLabel
             // 
             this.workUtilityLabel.AutoSize = true;
-            this.workUtilityLabel.Location = new System.Drawing.Point(284, 80);
+            this.workUtilityLabel.Location = new System.Drawing.Point(294, 80);
             this.workUtilityLabel.Name = "workUtilityLabel";
             this.workUtilityLabel.Size = new System.Drawing.Size(64, 13);
             this.workUtilityLabel.TabIndex = 13;
@@ -590,7 +612,7 @@
             // rejectedText
             // 
             this.rejectedText.Enabled = false;
-            this.rejectedText.Location = new System.Drawing.Point(113, 170);
+            this.rejectedText.Location = new System.Drawing.Point(123, 170);
             this.rejectedText.Name = "rejectedText";
             this.rejectedText.Size = new System.Drawing.Size(151, 20);
             this.rejectedText.TabIndex = 11;
@@ -599,7 +621,7 @@
             // acceptedText
             // 
             this.acceptedText.Enabled = false;
-            this.acceptedText.Location = new System.Drawing.Point(113, 139);
+            this.acceptedText.Location = new System.Drawing.Point(123, 139);
             this.acceptedText.Name = "acceptedText";
             this.acceptedText.Size = new System.Drawing.Size(151, 20);
             this.acceptedText.TabIndex = 10;
@@ -626,7 +648,7 @@
             // averageHashrateText
             // 
             this.averageHashrateText.Enabled = false;
-            this.averageHashrateText.Location = new System.Drawing.Point(113, 108);
+            this.averageHashrateText.Location = new System.Drawing.Point(123, 108);
             this.averageHashrateText.Name = "averageHashrateText";
             this.averageHashrateText.Size = new System.Drawing.Size(151, 20);
             this.averageHashrateText.TabIndex = 6;
@@ -635,7 +657,7 @@
             // currentHashrateText
             // 
             this.currentHashrateText.Enabled = false;
-            this.currentHashrateText.Location = new System.Drawing.Point(113, 77);
+            this.currentHashrateText.Location = new System.Drawing.Point(123, 77);
             this.currentHashrateText.Name = "currentHashrateText";
             this.currentHashrateText.Size = new System.Drawing.Size(151, 20);
             this.currentHashrateText.TabIndex = 5;
@@ -713,7 +735,7 @@
             this.poolsPage.Location = new System.Drawing.Point(4, 22);
             this.poolsPage.Name = "poolsPage";
             this.poolsPage.Padding = new System.Windows.Forms.Padding(3);
-            this.poolsPage.Size = new System.Drawing.Size(556, 425);
+            this.poolsPage.Size = new System.Drawing.Size(891, 391);
             this.poolsPage.TabIndex = 1;
             this.poolsPage.Text = "Pools";
             this.poolsPage.UseVisualStyleBackColor = true;
@@ -745,7 +767,7 @@
             this.poolView.RowHeadersWidth = 25;
             this.poolView.RowHeadersWidthSizeMode = System.Windows.Forms.DataGridViewRowHeadersWidthSizeMode.DisableResizing;
             this.poolView.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-            this.poolView.Size = new System.Drawing.Size(550, 190);
+            this.poolView.Size = new System.Drawing.Size(885, 190);
             this.poolView.TabIndex = 9;
             this.poolView.SelectionChanged += new System.EventHandler(this.poolView_SelectionChanged);
             // 
@@ -810,7 +832,7 @@
             this.poolInfoText.Name = "poolInfoText";
             this.poolInfoText.ReadOnly = true;
             this.poolInfoText.ScrollBars = System.Windows.Forms.ScrollBars.Both;
-            this.poolInfoText.Size = new System.Drawing.Size(550, 159);
+            this.poolInfoText.Size = new System.Drawing.Size(885, 125);
             this.poolInfoText.TabIndex = 3;
             this.poolInfoText.WordWrap = false;
             // 
@@ -821,7 +843,7 @@
             this.currentPoolText.Enabled = false;
             this.currentPoolText.Location = new System.Drawing.Point(83, 12);
             this.currentPoolText.Name = "currentPoolText";
-            this.currentPoolText.Size = new System.Drawing.Size(465, 20);
+            this.currentPoolText.Size = new System.Drawing.Size(800, 20);
             this.currentPoolText.TabIndex = 2;
             // 
             // currentPoolLabel
@@ -840,7 +862,7 @@
             this.devicesPage.Location = new System.Drawing.Point(4, 22);
             this.devicesPage.Name = "devicesPage";
             this.devicesPage.Padding = new System.Windows.Forms.Padding(3);
-            this.devicesPage.Size = new System.Drawing.Size(556, 425);
+            this.devicesPage.Size = new System.Drawing.Size(891, 391);
             this.devicesPage.TabIndex = 5;
             this.devicesPage.Text = "Devices";
             this.devicesPage.UseVisualStyleBackColor = true;
@@ -854,7 +876,7 @@
             this.deviceInfoText.Name = "deviceInfoText";
             this.deviceInfoText.ReadOnly = true;
             this.deviceInfoText.ScrollBars = System.Windows.Forms.ScrollBars.Both;
-            this.deviceInfoText.Size = new System.Drawing.Size(550, 194);
+            this.deviceInfoText.Size = new System.Drawing.Size(885, 160);
             this.deviceInfoText.TabIndex = 10;
             this.deviceInfoText.WordWrap = false;
             // 
@@ -874,7 +896,7 @@
             this.deviceView.RowHeadersWidth = 25;
             this.deviceView.RowHeadersWidthSizeMode = System.Windows.Forms.DataGridViewRowHeadersWidthSizeMode.DisableResizing;
             this.deviceView.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-            this.deviceView.Size = new System.Drawing.Size(550, 225);
+            this.deviceView.Size = new System.Drawing.Size(885, 225);
             this.deviceView.TabIndex = 11;
             this.deviceView.SelectionChanged += new System.EventHandler(this.deviceView_SelectionChanged);
             // 
@@ -884,7 +906,7 @@
             this.balancesPage.Controls.Add(this.autoExchangeBox);
             this.balancesPage.Location = new System.Drawing.Point(4, 22);
             this.balancesPage.Name = "balancesPage";
-            this.balancesPage.Size = new System.Drawing.Size(556, 425);
+            this.balancesPage.Size = new System.Drawing.Size(891, 391);
             this.balancesPage.TabIndex = 2;
             this.balancesPage.Text = "Balances";
             this.balancesPage.UseVisualStyleBackColor = true;
@@ -896,7 +918,7 @@
             this.coinsBox.Location = new System.Drawing.Point(0, 59);
             this.coinsBox.Margin = new System.Windows.Forms.Padding(3, 13, 3, 3);
             this.coinsBox.Name = "coinsBox";
-            this.coinsBox.Size = new System.Drawing.Size(556, 366);
+            this.coinsBox.Size = new System.Drawing.Size(891, 332);
             this.coinsBox.TabIndex = 1;
             this.coinsBox.TabStop = false;
             this.coinsBox.Text = "Coins";
@@ -915,7 +937,7 @@
             this.coinView.ReadOnly = true;
             this.coinView.RowHeadersWidthSizeMode = System.Windows.Forms.DataGridViewRowHeadersWidthSizeMode.AutoSizeToAllHeaders;
             this.coinView.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-            this.coinView.Size = new System.Drawing.Size(550, 347);
+            this.coinView.Size = new System.Drawing.Size(885, 313);
             this.coinView.TabIndex = 0;
             // 
             // autoExchangeBox
@@ -932,7 +954,7 @@
             this.autoExchangeBox.Location = new System.Drawing.Point(0, 0);
             this.autoExchangeBox.Margin = new System.Windows.Forms.Padding(3, 13, 3, 13);
             this.autoExchangeBox.Name = "autoExchangeBox";
-            this.autoExchangeBox.Size = new System.Drawing.Size(556, 59);
+            this.autoExchangeBox.Size = new System.Drawing.Size(891, 59);
             this.autoExchangeBox.TabIndex = 0;
             this.autoExchangeBox.TabStop = false;
             this.autoExchangeBox.Text = "Auto-Exchange";
@@ -1011,26 +1033,26 @@
             this.profitHistoryPage.Controls.Add(this.profitHistoryPanel);
             this.profitHistoryPage.Location = new System.Drawing.Point(4, 22);
             this.profitHistoryPage.Name = "profitHistoryPage";
-            this.profitHistoryPage.Size = new System.Drawing.Size(556, 425);
+            this.profitHistoryPage.Size = new System.Drawing.Size(891, 391);
             this.profitHistoryPage.TabIndex = 3;
             this.profitHistoryPage.Text = "Profit History";
             this.profitHistoryPage.UseVisualStyleBackColor = true;
             // 
             // profitChart
             // 
-            chartArea7.AxisX.MaximumAutoSize = 85F;
-            chartArea7.AxisX.Title = "Time";
-            chartArea7.AxisY.Title = "BTC/Day/Mh (Normalized)";
-            chartArea7.Name = "profitArea";
-            this.profitChart.ChartAreas.Add(chartArea7);
+            chartArea5.AxisX.MaximumAutoSize = 85F;
+            chartArea5.AxisX.Title = "Time";
+            chartArea5.AxisY.Title = "BTC/Day/Mh (Normalized)";
+            chartArea5.Name = "profitArea";
+            this.profitChart.ChartAreas.Add(chartArea5);
             this.profitChart.Dock = System.Windows.Forms.DockStyle.Fill;
-            legend7.Alignment = System.Drawing.StringAlignment.Center;
-            legend7.Docking = System.Windows.Forms.DataVisualization.Charting.Docking.Bottom;
-            legend7.Name = "profitLegend";
-            this.profitChart.Legends.Add(legend7);
+            legend5.Alignment = System.Drawing.StringAlignment.Center;
+            legend5.Docking = System.Windows.Forms.DataVisualization.Charting.Docking.Bottom;
+            legend5.Name = "profitLegend";
+            this.profitChart.Legends.Add(legend5);
             this.profitChart.Location = new System.Drawing.Point(0, 0);
             this.profitChart.Name = "profitChart";
-            this.profitChart.Size = new System.Drawing.Size(556, 399);
+            this.profitChart.Size = new System.Drawing.Size(891, 365);
             this.profitChart.TabIndex = 0;
             this.profitChart.MouseMove += new System.Windows.Forms.MouseEventHandler(this.profitChart_MouseMove);
             // 
@@ -1044,10 +1066,23 @@
             this.profitHistoryPanel.Controls.Add(this.graphX13Check);
             this.profitHistoryPanel.Controls.Add(this.graphX11Check);
             this.profitHistoryPanel.Dock = System.Windows.Forms.DockStyle.Bottom;
-            this.profitHistoryPanel.Location = new System.Drawing.Point(0, 399);
+            this.profitHistoryPanel.Location = new System.Drawing.Point(0, 365);
             this.profitHistoryPanel.Name = "profitHistoryPanel";
-            this.profitHistoryPanel.Size = new System.Drawing.Size(556, 26);
+            this.profitHistoryPanel.Size = new System.Drawing.Size(891, 26);
             this.profitHistoryPanel.TabIndex = 3;
+            // 
+            // graphX15Check
+            // 
+            this.graphX15Check.AutoSize = true;
+            this.graphX15Check.Checked = true;
+            this.graphX15Check.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.graphX15Check.Location = new System.Drawing.Point(242, 5);
+            this.graphX15Check.Name = "graphX15Check";
+            this.graphX15Check.Size = new System.Drawing.Size(45, 17);
+            this.graphX15Check.TabIndex = 8;
+            this.graphX15Check.Text = "X15";
+            this.graphX15Check.UseVisualStyleBackColor = true;
+            this.graphX15Check.CheckedChanged += new System.EventHandler(this.graphX15Check_CheckedChanged);
             // 
             // profitHistoryLabel
             // 
@@ -1068,7 +1103,7 @@
             this.profitHistoryBar.Maximum = 24;
             this.profitHistoryBar.Minimum = 1;
             this.profitHistoryBar.Name = "profitHistoryBar";
-            this.profitHistoryBar.Size = new System.Drawing.Size(216, 20);
+            this.profitHistoryBar.Size = new System.Drawing.Size(551, 20);
             this.profitHistoryBar.TabIndex = 6;
             this.profitHistoryBar.TickStyle = System.Windows.Forms.TickStyle.None;
             this.profitHistoryBar.Value = 1;
@@ -1132,36 +1167,36 @@
             this.minerHistoryPage.Controls.Add(this.minerHistoryPanel);
             this.minerHistoryPage.Location = new System.Drawing.Point(4, 22);
             this.minerHistoryPage.Name = "minerHistoryPage";
-            this.minerHistoryPage.Size = new System.Drawing.Size(556, 425);
+            this.minerHistoryPage.Size = new System.Drawing.Size(891, 391);
             this.minerHistoryPage.TabIndex = 6;
             this.minerHistoryPage.Text = "Miner History";
             this.minerHistoryPage.UseVisualStyleBackColor = true;
             // 
             // minerChart
             // 
-            chartArea8.AxisX.Title = "Time";
-            chartArea8.AxisY.Title = "Hashrate (Kh/s)";
-            chartArea8.AxisY2.Title = "Temperature (°C)";
-            chartArea8.Name = "minerArea";
-            this.minerChart.ChartAreas.Add(chartArea8);
+            chartArea6.AxisX.Title = "Time";
+            chartArea6.AxisY.Title = "Hashrate (Kh/s)";
+            chartArea6.AxisY2.Title = "Temperature (°C)";
+            chartArea6.Name = "minerArea";
+            this.minerChart.ChartAreas.Add(chartArea6);
             this.minerChart.Dock = System.Windows.Forms.DockStyle.Fill;
-            legend8.Alignment = System.Drawing.StringAlignment.Center;
-            legend8.Docking = System.Windows.Forms.DataVisualization.Charting.Docking.Bottom;
-            legend8.Name = "minerLegend";
-            this.minerChart.Legends.Add(legend8);
+            legend6.Alignment = System.Drawing.StringAlignment.Center;
+            legend6.Docking = System.Windows.Forms.DataVisualization.Charting.Docking.Bottom;
+            legend6.Name = "minerLegend";
+            this.minerChart.Legends.Add(legend6);
             this.minerChart.Location = new System.Drawing.Point(0, 0);
             this.minerChart.Name = "minerChart";
-            series4.BorderWidth = 2;
-            series4.ChartArea = "minerArea";
-            series4.ChartType = System.Windows.Forms.DataVisualization.Charting.SeriesChartType.FastLine;
-            series4.Enabled = false;
-            series4.Legend = "minerLegend";
-            series4.LegendText = "Total Hashrate";
-            series4.Name = "totalHash";
-            series4.XValueMember = "time";
-            series4.YValueMembers = "totalHash";
-            this.minerChart.Series.Add(series4);
-            this.minerChart.Size = new System.Drawing.Size(556, 399);
+            series3.BorderWidth = 2;
+            series3.ChartArea = "minerArea";
+            series3.ChartType = System.Windows.Forms.DataVisualization.Charting.SeriesChartType.FastLine;
+            series3.Enabled = false;
+            series3.Legend = "minerLegend";
+            series3.LegendText = "Total Hashrate";
+            series3.Name = "totalHash";
+            series3.XValueMember = "time";
+            series3.YValueMembers = "totalHash";
+            this.minerChart.Series.Add(series3);
+            this.minerChart.Size = new System.Drawing.Size(891, 365);
             this.minerChart.TabIndex = 2;
             this.minerChart.MouseMove += new System.Windows.Forms.MouseEventHandler(this.minerChart_MouseMove);
             // 
@@ -1173,9 +1208,9 @@
             this.minerHistoryPanel.Controls.Add(this.minerHistoryLabel);
             this.minerHistoryPanel.Controls.Add(this.minerHistoryBar);
             this.minerHistoryPanel.Dock = System.Windows.Forms.DockStyle.Bottom;
-            this.minerHistoryPanel.Location = new System.Drawing.Point(0, 399);
+            this.minerHistoryPanel.Location = new System.Drawing.Point(0, 365);
             this.minerHistoryPanel.Name = "minerHistoryPanel";
-            this.minerHistoryPanel.Size = new System.Drawing.Size(556, 26);
+            this.minerHistoryPanel.Size = new System.Drawing.Size(891, 26);
             this.minerHistoryPanel.TabIndex = 4;
             // 
             // graphHashCheck
@@ -1234,7 +1269,7 @@
             this.minerHistoryBar.Maximum = 24;
             this.minerHistoryBar.Minimum = 1;
             this.minerHistoryBar.Name = "minerHistoryBar";
-            this.minerHistoryBar.Size = new System.Drawing.Size(300, 20);
+            this.minerHistoryBar.Size = new System.Drawing.Size(635, 20);
             this.minerHistoryBar.TabIndex = 6;
             this.minerHistoryBar.TickStyle = System.Windows.Forms.TickStyle.None;
             this.minerHistoryBar.Value = 1;
@@ -1242,6 +1277,28 @@
             // 
             // settingsPage
             // 
+            this.settingsPage.Controls.Add(this.minerNameText);
+            this.settingsPage.Controls.Add(this.minerNameLabel);
+            this.settingsPage.Controls.Add(this.x15BatchButton);
+            this.settingsPage.Controls.Add(this.x13BatchButton);
+            this.settingsPage.Controls.Add(this.x11BatchButton);
+            this.settingsPage.Controls.Add(this.nScryptBatchButton);
+            this.settingsPage.Controls.Add(this.scryptBatchButton);
+            this.settingsPage.Controls.Add(this.x15BatchText);
+            this.settingsPage.Controls.Add(this.x13BatchText);
+            this.settingsPage.Controls.Add(this.x11BatchText);
+            this.settingsPage.Controls.Add(this.nScryptBatchText);
+            this.settingsPage.Controls.Add(this.scryptBatchText);
+            this.settingsPage.Controls.Add(this.x15BatchLabel);
+            this.settingsPage.Controls.Add(this.x13BatchLabel);
+            this.settingsPage.Controls.Add(this.x11BatchLabel);
+            this.settingsPage.Controls.Add(this.nScryptBatchLabel);
+            this.settingsPage.Controls.Add(this.scryptBatchLabel);
+            this.settingsPage.Controls.Add(this.enableX15Check);
+            this.settingsPage.Controls.Add(this.enableX13Check);
+            this.settingsPage.Controls.Add(this.enableX11Check);
+            this.settingsPage.Controls.Add(this.enableNScryptCheck);
+            this.settingsPage.Controls.Add(this.enableScryptCheck);
             this.settingsPage.Controls.Add(this.x15OffText);
             this.settingsPage.Controls.Add(this.x15MultText);
             this.settingsPage.Controls.Add(this.x15OffLabel);
@@ -1303,15 +1360,265 @@
             this.settingsPage.Controls.Add(this.minerRefreshLabel);
             this.settingsPage.Location = new System.Drawing.Point(4, 22);
             this.settingsPage.Name = "settingsPage";
-            this.settingsPage.Size = new System.Drawing.Size(556, 425);
+            this.settingsPage.Size = new System.Drawing.Size(891, 391);
             this.settingsPage.TabIndex = 4;
             this.settingsPage.Text = "Settings";
             this.settingsPage.UseVisualStyleBackColor = true;
             // 
+            // minerNameText
+            // 
+            this.minerNameText.Location = new System.Drawing.Point(531, 38);
+            this.minerNameText.Name = "minerNameText";
+            this.minerNameText.Size = new System.Drawing.Size(109, 20);
+            this.minerNameText.TabIndex = 80;
+            this.minerNameText.Text = "sgminer";
+            this.toolTip.SetToolTip(this.minerNameText, "The name of the miner that will be killed when switching to an algorithm that has" +
+        " its own batch file");
+            // 
+            // minerNameLabel
+            // 
+            this.minerNameLabel.AutoSize = true;
+            this.minerNameLabel.Location = new System.Drawing.Point(457, 41);
+            this.minerNameLabel.Name = "minerNameLabel";
+            this.minerNameLabel.Size = new System.Drawing.Size(67, 13);
+            this.minerNameLabel.TabIndex = 79;
+            this.minerNameLabel.Text = "Miner Name:";
+            // 
+            // x15BatchButton
+            // 
+            this.x15BatchButton.Location = new System.Drawing.Point(837, 290);
+            this.x15BatchButton.Name = "x15BatchButton";
+            this.x15BatchButton.Size = new System.Drawing.Size(43, 23);
+            this.x15BatchButton.TabIndex = 78;
+            this.x15BatchButton.Text = "...";
+            this.x15BatchButton.UseVisualStyleBackColor = true;
+            this.x15BatchButton.Click += new System.EventHandler(this.x15BatchButton_Click);
+            // 
+            // x13BatchButton
+            // 
+            this.x13BatchButton.Location = new System.Drawing.Point(837, 266);
+            this.x13BatchButton.Name = "x13BatchButton";
+            this.x13BatchButton.Size = new System.Drawing.Size(43, 23);
+            this.x13BatchButton.TabIndex = 77;
+            this.x13BatchButton.Text = "...";
+            this.x13BatchButton.UseVisualStyleBackColor = true;
+            this.x13BatchButton.Click += new System.EventHandler(this.x13BatchButton_Click);
+            // 
+            // x11BatchButton
+            // 
+            this.x11BatchButton.Location = new System.Drawing.Point(837, 242);
+            this.x11BatchButton.Name = "x11BatchButton";
+            this.x11BatchButton.Size = new System.Drawing.Size(43, 23);
+            this.x11BatchButton.TabIndex = 76;
+            this.x11BatchButton.Text = "...";
+            this.x11BatchButton.UseVisualStyleBackColor = true;
+            this.x11BatchButton.Click += new System.EventHandler(this.x11BatchButton_Click);
+            // 
+            // nScryptBatchButton
+            // 
+            this.nScryptBatchButton.Location = new System.Drawing.Point(837, 218);
+            this.nScryptBatchButton.Name = "nScryptBatchButton";
+            this.nScryptBatchButton.Size = new System.Drawing.Size(43, 23);
+            this.nScryptBatchButton.TabIndex = 75;
+            this.nScryptBatchButton.Text = "...";
+            this.nScryptBatchButton.UseVisualStyleBackColor = true;
+            this.nScryptBatchButton.Click += new System.EventHandler(this.nScryptBatchButton_Click);
+            // 
+            // scryptBatchButton
+            // 
+            this.scryptBatchButton.Location = new System.Drawing.Point(837, 194);
+            this.scryptBatchButton.Name = "scryptBatchButton";
+            this.scryptBatchButton.Size = new System.Drawing.Size(43, 23);
+            this.scryptBatchButton.TabIndex = 74;
+            this.scryptBatchButton.Text = "...";
+            this.scryptBatchButton.UseVisualStyleBackColor = true;
+            this.scryptBatchButton.Click += new System.EventHandler(this.scryptBatchButton_Click);
+            // 
+            // x15BatchText
+            // 
+            this.x15BatchText.Location = new System.Drawing.Point(495, 292);
+            this.x15BatchText.Name = "x15BatchText";
+            this.x15BatchText.Size = new System.Drawing.Size(336, 20);
+            this.x15BatchText.TabIndex = 73;
+            this.toolTip.SetToolTip(this.x15BatchText, "Location of the batch file used to start up the X15 miner (if not using sgminer v" +
+        "5.0)");
+            // 
+            // x13BatchText
+            // 
+            this.x13BatchText.Location = new System.Drawing.Point(495, 268);
+            this.x13BatchText.Name = "x13BatchText";
+            this.x13BatchText.Size = new System.Drawing.Size(336, 20);
+            this.x13BatchText.TabIndex = 72;
+            this.toolTip.SetToolTip(this.x13BatchText, "Location of the batch file used to start up the X13 miner (if not using sgminer v" +
+        "5.0)");
+            // 
+            // x11BatchText
+            // 
+            this.x11BatchText.Location = new System.Drawing.Point(495, 243);
+            this.x11BatchText.Name = "x11BatchText";
+            this.x11BatchText.Size = new System.Drawing.Size(336, 20);
+            this.x11BatchText.TabIndex = 71;
+            this.toolTip.SetToolTip(this.x11BatchText, "Location of the batch file used to start up the X11 miner (if not using sgminer v" +
+        "5.0)");
+            // 
+            // nScryptBatchText
+            // 
+            this.nScryptBatchText.Location = new System.Drawing.Point(495, 220);
+            this.nScryptBatchText.Name = "nScryptBatchText";
+            this.nScryptBatchText.Size = new System.Drawing.Size(336, 20);
+            this.nScryptBatchText.TabIndex = 70;
+            this.toolTip.SetToolTip(this.nScryptBatchText, "Location of the batch file used to start up the N-Scrypt miner (if not using sgmi" +
+        "ner v5.0)");
+            // 
+            // scryptBatchText
+            // 
+            this.scryptBatchText.Location = new System.Drawing.Point(495, 195);
+            this.scryptBatchText.Name = "scryptBatchText";
+            this.scryptBatchText.Size = new System.Drawing.Size(336, 20);
+            this.scryptBatchText.TabIndex = 69;
+            this.toolTip.SetToolTip(this.scryptBatchText, "Location of the batch file used to start up the Scrypt miner (if not using sgmine" +
+        "r v5.0)");
+            // 
+            // x15BatchLabel
+            // 
+            this.x15BatchLabel.AutoSize = true;
+            this.x15BatchLabel.Location = new System.Drawing.Point(451, 294);
+            this.x15BatchLabel.Name = "x15BatchLabel";
+            this.x15BatchLabel.Size = new System.Drawing.Size(38, 13);
+            this.x15BatchLabel.TabIndex = 68;
+            this.x15BatchLabel.Text = "Batch:";
+            // 
+            // x13BatchLabel
+            // 
+            this.x13BatchLabel.AutoSize = true;
+            this.x13BatchLabel.Location = new System.Drawing.Point(451, 270);
+            this.x13BatchLabel.Name = "x13BatchLabel";
+            this.x13BatchLabel.Size = new System.Drawing.Size(38, 13);
+            this.x13BatchLabel.TabIndex = 67;
+            this.x13BatchLabel.Text = "Batch:";
+            // 
+            // x11BatchLabel
+            // 
+            this.x11BatchLabel.AutoSize = true;
+            this.x11BatchLabel.Location = new System.Drawing.Point(451, 246);
+            this.x11BatchLabel.Name = "x11BatchLabel";
+            this.x11BatchLabel.Size = new System.Drawing.Size(38, 13);
+            this.x11BatchLabel.TabIndex = 66;
+            this.x11BatchLabel.Text = "Batch:";
+            // 
+            // nScryptBatchLabel
+            // 
+            this.nScryptBatchLabel.AutoSize = true;
+            this.nScryptBatchLabel.Location = new System.Drawing.Point(451, 222);
+            this.nScryptBatchLabel.Name = "nScryptBatchLabel";
+            this.nScryptBatchLabel.Size = new System.Drawing.Size(38, 13);
+            this.nScryptBatchLabel.TabIndex = 65;
+            this.nScryptBatchLabel.Text = "Batch:";
+            // 
+            // scryptBatchLabel
+            // 
+            this.scryptBatchLabel.AutoSize = true;
+            this.scryptBatchLabel.Location = new System.Drawing.Point(451, 198);
+            this.scryptBatchLabel.Name = "scryptBatchLabel";
+            this.scryptBatchLabel.Size = new System.Drawing.Size(38, 13);
+            this.scryptBatchLabel.TabIndex = 64;
+            this.scryptBatchLabel.Text = "Batch:";
+            // 
+            // enableX15Check
+            // 
+            this.enableX15Check.AutoSize = true;
+            this.enableX15Check.Location = new System.Drawing.Point(11, 294);
+            this.enableX15Check.Name = "enableX15Check";
+            this.enableX15Check.Size = new System.Drawing.Size(48, 17);
+            this.enableX15Check.TabIndex = 63;
+            this.enableX15Check.Text = "X15:";
+            this.toolTip.SetToolTip(this.enableX15Check, "Whether mining of X15 is enabled or not");
+            this.enableX15Check.UseVisualStyleBackColor = true;
+            // 
+            // enableX13Check
+            // 
+            this.enableX13Check.AutoSize = true;
+            this.enableX13Check.Location = new System.Drawing.Point(11, 270);
+            this.enableX13Check.Name = "enableX13Check";
+            this.enableX13Check.Size = new System.Drawing.Size(48, 17);
+            this.enableX13Check.TabIndex = 62;
+            this.enableX13Check.Text = "X13:";
+            this.toolTip.SetToolTip(this.enableX13Check, "Whether mining of X13 is enabled or not");
+            this.enableX13Check.UseVisualStyleBackColor = true;
+            // 
+            // enableX11Check
+            // 
+            this.enableX11Check.AutoSize = true;
+            this.enableX11Check.Location = new System.Drawing.Point(11, 245);
+            this.enableX11Check.Name = "enableX11Check";
+            this.enableX11Check.Size = new System.Drawing.Size(48, 17);
+            this.enableX11Check.TabIndex = 61;
+            this.enableX11Check.Text = "X11:";
+            this.toolTip.SetToolTip(this.enableX11Check, "Whether mining of X11 is enabled or not");
+            this.enableX11Check.UseVisualStyleBackColor = true;
+            // 
+            // enableNScryptCheck
+            // 
+            this.enableNScryptCheck.AutoSize = true;
+            this.enableNScryptCheck.Location = new System.Drawing.Point(11, 222);
+            this.enableNScryptCheck.Name = "enableNScryptCheck";
+            this.enableNScryptCheck.Size = new System.Drawing.Size(70, 17);
+            this.enableNScryptCheck.TabIndex = 60;
+            this.enableNScryptCheck.Text = "N-Scrypt:";
+            this.toolTip.SetToolTip(this.enableNScryptCheck, "Whether mining of N-Scrypt is enabled or not");
+            this.enableNScryptCheck.UseVisualStyleBackColor = true;
+            // 
+            // enableScryptCheck
+            // 
+            this.enableScryptCheck.AutoSize = true;
+            this.enableScryptCheck.Location = new System.Drawing.Point(11, 197);
+            this.enableScryptCheck.Name = "enableScryptCheck";
+            this.enableScryptCheck.Size = new System.Drawing.Size(59, 17);
+            this.enableScryptCheck.TabIndex = 59;
+            this.enableScryptCheck.Text = "Scrypt:";
+            this.toolTip.SetToolTip(this.enableScryptCheck, "Whether mining of Scrypt is enabled or not");
+            this.enableScryptCheck.UseVisualStyleBackColor = true;
+            // 
+            // x15OffText
+            // 
+            this.x15OffText.Location = new System.Drawing.Point(329, 291);
+            this.x15OffText.Name = "x15OffText";
+            this.x15OffText.Size = new System.Drawing.Size(109, 20);
+            this.x15OffText.TabIndex = 58;
+            this.x15OffText.Text = "0.0";
+            this.toolTip.SetToolTip(this.x15OffText, "Offset applied to X15 profitability (applied after multiplier)");
+            // 
+            // x15MultText
+            // 
+            this.x15MultText.Location = new System.Drawing.Point(149, 291);
+            this.x15MultText.Name = "x15MultText";
+            this.x15MultText.Size = new System.Drawing.Size(109, 20);
+            this.x15MultText.TabIndex = 57;
+            this.x15MultText.Text = "1.0";
+            this.toolTip.SetToolTip(this.x15MultText, "Multiplier applied to X15 profitability (applied before offset)");
+            // 
+            // x15OffLabel
+            // 
+            this.x15OffLabel.AutoSize = true;
+            this.x15OffLabel.Location = new System.Drawing.Point(274, 294);
+            this.x15OffLabel.Name = "x15OffLabel";
+            this.x15OffLabel.Size = new System.Drawing.Size(38, 13);
+            this.x15OffLabel.TabIndex = 56;
+            this.x15OffLabel.Text = "Offset:";
+            // 
+            // x15MultLabel
+            // 
+            this.x15MultLabel.AutoSize = true;
+            this.x15MultLabel.Location = new System.Drawing.Point(83, 294);
+            this.x15MultLabel.Name = "x15MultLabel";
+            this.x15MultLabel.Size = new System.Drawing.Size(51, 13);
+            this.x15MultLabel.TabIndex = 55;
+            this.x15MultLabel.Text = "Multiplier:";
+            // 
             // startupDeadDelayUnits
             // 
             this.startupDeadDelayUnits.AutoSize = true;
-            this.startupDeadDelayUnits.Location = new System.Drawing.Point(502, 93);
+            this.startupDeadDelayUnits.Location = new System.Drawing.Point(344, 15);
             this.startupDeadDelayUnits.Name = "startupDeadDelayUnits";
             this.startupDeadDelayUnits.Size = new System.Drawing.Size(47, 13);
             this.startupDeadDelayUnits.TabIndex = 54;
@@ -1319,7 +1626,7 @@
             // 
             // startupDeadDelayNum
             // 
-            this.startupDeadDelayNum.Location = new System.Drawing.Point(448, 90);
+            this.startupDeadDelayNum.Location = new System.Drawing.Point(289, 13);
             this.startupDeadDelayNum.Maximum = new decimal(new int[] {
             120,
             0,
@@ -1344,7 +1651,7 @@
             // startupDeadDelayLabel
             // 
             this.startupDeadDelayLabel.AutoSize = true;
-            this.startupDeadDelayLabel.Location = new System.Drawing.Point(335, 92);
+            this.startupDeadDelayLabel.Location = new System.Drawing.Point(179, 15);
             this.startupDeadDelayLabel.Name = "startupDeadDelayLabel";
             this.startupDeadDelayLabel.Size = new System.Drawing.Size(103, 13);
             this.startupDeadDelayLabel.TabIndex = 52;
@@ -1352,7 +1659,7 @@
             // 
             // profitLogFileButton
             // 
-            this.profitLogFileButton.Location = new System.Drawing.Point(505, 168);
+            this.profitLogFileButton.Location = new System.Drawing.Point(837, 126);
             this.profitLogFileButton.Name = "profitLogFileButton";
             this.profitLogFileButton.Size = new System.Drawing.Size(43, 23);
             this.profitLogFileButton.TabIndex = 51;
@@ -1362,7 +1669,7 @@
             // 
             // batchFileButton
             // 
-            this.batchFileButton.Location = new System.Drawing.Point(505, 62);
+            this.batchFileButton.Location = new System.Drawing.Point(444, 62);
             this.batchFileButton.Name = "batchFileButton";
             this.batchFileButton.Size = new System.Drawing.Size(43, 23);
             this.batchFileButton.TabIndex = 50;
@@ -1372,7 +1679,7 @@
             // 
             // profitCutoffText
             // 
-            this.profitCutoffText.Location = new System.Drawing.Point(390, 365);
+            this.profitCutoffText.Location = new System.Drawing.Point(531, 171);
             this.profitCutoffText.Name = "profitCutoffText";
             this.profitCutoffText.Size = new System.Drawing.Size(109, 20);
             this.profitCutoffText.TabIndex = 49;
@@ -1383,7 +1690,7 @@
             // profitCutoffLabel
             // 
             this.profitCutoffLabel.AutoSize = true;
-            this.profitCutoffLabel.Location = new System.Drawing.Point(285, 368);
+            this.profitCutoffLabel.Location = new System.Drawing.Point(451, 174);
             this.profitCutoffLabel.Name = "profitCutoffLabel";
             this.profitCutoffLabel.Size = new System.Drawing.Size(65, 13);
             this.profitCutoffLabel.TabIndex = 48;
@@ -1392,7 +1699,7 @@
             // historicalDelayUnits
             // 
             this.historicalDelayUnits.AutoSize = true;
-            this.historicalDelayUnits.Location = new System.Drawing.Point(185, 368);
+            this.historicalDelayUnits.Location = new System.Drawing.Point(344, 174);
             this.historicalDelayUnits.Name = "historicalDelayUnits";
             this.historicalDelayUnits.Size = new System.Drawing.Size(43, 13);
             this.historicalDelayUnits.TabIndex = 47;
@@ -1400,7 +1707,7 @@
             // 
             // historicalDelayNum
             // 
-            this.historicalDelayNum.Location = new System.Drawing.Point(119, 365);
+            this.historicalDelayNum.Location = new System.Drawing.Point(278, 172);
             this.historicalDelayNum.Maximum = new decimal(new int[] {
             30,
             0,
@@ -1424,7 +1731,7 @@
             // historicalDelayLabel
             // 
             this.historicalDelayLabel.AutoSize = true;
-            this.historicalDelayLabel.Location = new System.Drawing.Point(8, 368);
+            this.historicalDelayLabel.Location = new System.Drawing.Point(179, 174);
             this.historicalDelayLabel.Name = "historicalDelayLabel";
             this.historicalDelayLabel.Size = new System.Drawing.Size(83, 13);
             this.historicalDelayLabel.TabIndex = 45;
@@ -1432,9 +1739,9 @@
             // 
             // profitLogFileText
             // 
-            this.profitLogFileText.Location = new System.Drawing.Point(119, 170);
+            this.profitLogFileText.Location = new System.Drawing.Point(531, 128);
             this.profitLogFileText.Name = "profitLogFileText";
-            this.profitLogFileText.Size = new System.Drawing.Size(380, 20);
+            this.profitLogFileText.Size = new System.Drawing.Size(300, 20);
             this.profitLogFileText.TabIndex = 44;
             this.toolTip.SetToolTip(this.profitLogFileText, "Location of the file where profitability information will be logged to (blank mea" +
         "ns no logging)");
@@ -1442,7 +1749,7 @@
             // profitLogFileLabel
             // 
             this.profitLogFileLabel.AutoSize = true;
-            this.profitLogFileLabel.Location = new System.Drawing.Point(8, 174);
+            this.profitLogFileLabel.Location = new System.Drawing.Point(450, 131);
             this.profitLogFileLabel.Name = "profitLogFileLabel";
             this.profitLogFileLabel.Size = new System.Drawing.Size(74, 13);
             this.profitLogFileLabel.TabIndex = 43;
@@ -1450,9 +1757,9 @@
             // 
             // saveSettingsButton
             // 
-            this.saveSettingsButton.Location = new System.Drawing.Point(342, 394);
+            this.saveSettingsButton.Location = new System.Drawing.Point(650, 356);
             this.saveSettingsButton.Name = "saveSettingsButton";
-            this.saveSettingsButton.Size = new System.Drawing.Size(100, 23);
+            this.saveSettingsButton.Size = new System.Drawing.Size(109, 23);
             this.saveSettingsButton.TabIndex = 42;
             this.saveSettingsButton.Text = "Save Settings";
             this.saveSettingsButton.UseVisualStyleBackColor = true;
@@ -1463,7 +1770,7 @@
             this.enablePoolMonitorCheck.AutoSize = true;
             this.enablePoolMonitorCheck.Checked = true;
             this.enablePoolMonitorCheck.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.enablePoolMonitorCheck.Location = new System.Drawing.Point(11, 120);
+            this.enablePoolMonitorCheck.Location = new System.Drawing.Point(11, 105);
             this.enablePoolMonitorCheck.Name = "enablePoolMonitorCheck";
             this.enablePoolMonitorCheck.Size = new System.Drawing.Size(137, 17);
             this.enablePoolMonitorCheck.TabIndex = 41;
@@ -1486,9 +1793,9 @@
             // 
             // applySettingsButton
             // 
-            this.applySettingsButton.Location = new System.Drawing.Point(448, 394);
+            this.applySettingsButton.Location = new System.Drawing.Point(771, 356);
             this.applySettingsButton.Name = "applySettingsButton";
-            this.applySettingsButton.Size = new System.Drawing.Size(100, 23);
+            this.applySettingsButton.Size = new System.Drawing.Size(109, 23);
             this.applySettingsButton.TabIndex = 39;
             this.applySettingsButton.Text = "Apply Settings";
             this.applySettingsButton.UseVisualStyleBackColor = true;
@@ -1496,24 +1803,24 @@
             // 
             // batchFileText
             // 
-            this.batchFileText.Location = new System.Drawing.Point(119, 64);
+            this.batchFileText.Location = new System.Drawing.Point(99, 64);
             this.batchFileText.Name = "batchFileText";
-            this.batchFileText.Size = new System.Drawing.Size(380, 20);
+            this.batchFileText.Size = new System.Drawing.Size(339, 20);
             this.batchFileText.TabIndex = 38;
-            this.toolTip.SetToolTip(this.batchFileText, "Location of the batch file used to start up the miner");
+            this.toolTip.SetToolTip(this.batchFileText, "Location of the batch file used to start up sgminer v5.0");
             // 
             // batchFileLabel
             // 
             this.batchFileLabel.AutoSize = true;
             this.batchFileLabel.Location = new System.Drawing.Point(8, 67);
             this.batchFileLabel.Name = "batchFileLabel";
-            this.batchFileLabel.Size = new System.Drawing.Size(94, 13);
+            this.batchFileLabel.Size = new System.Drawing.Size(83, 13);
             this.batchFileLabel.TabIndex = 37;
-            this.batchFileLabel.Text = "Startup Batch File:";
+            this.batchFileLabel.Text = "Main Batch File:";
             // 
             // thirtyDiffText
             // 
-            this.thirtyDiffText.Location = new System.Drawing.Point(390, 341);
+            this.thirtyDiffText.Location = new System.Drawing.Point(770, 315);
             this.thirtyDiffText.Name = "thirtyDiffText";
             this.thirtyDiffText.Size = new System.Drawing.Size(109, 20);
             this.thirtyDiffText.TabIndex = 36;
@@ -1523,7 +1830,7 @@
             // 
             // tenDiffText
             // 
-            this.tenDiffText.Location = new System.Drawing.Point(390, 317);
+            this.tenDiffText.Location = new System.Drawing.Point(329, 315);
             this.tenDiffText.Name = "tenDiffText";
             this.tenDiffText.Size = new System.Drawing.Size(109, 20);
             this.tenDiffText.TabIndex = 35;
@@ -1533,7 +1840,7 @@
             // 
             // fiveDiffText
             // 
-            this.fiveDiffText.Location = new System.Drawing.Point(119, 341);
+            this.fiveDiffText.Location = new System.Drawing.Point(542, 315);
             this.fiveDiffText.Name = "fiveDiffText";
             this.fiveDiffText.Size = new System.Drawing.Size(109, 20);
             this.fiveDiffText.TabIndex = 34;
@@ -1543,7 +1850,7 @@
             // 
             // instantDiffText
             // 
-            this.instantDiffText.Location = new System.Drawing.Point(119, 317);
+            this.instantDiffText.Location = new System.Drawing.Point(99, 315);
             this.instantDiffText.Name = "instantDiffText";
             this.instantDiffText.Size = new System.Drawing.Size(109, 20);
             this.instantDiffText.TabIndex = 33;
@@ -1554,7 +1861,7 @@
             // thirtyDiffLabel
             // 
             this.thirtyDiffLabel.AutoSize = true;
-            this.thirtyDiffLabel.Location = new System.Drawing.Point(285, 344);
+            this.thirtyDiffLabel.Location = new System.Drawing.Point(665, 318);
             this.thirtyDiffLabel.Name = "thirtyDiffLabel";
             this.thirtyDiffLabel.Size = new System.Drawing.Size(93, 13);
             this.thirtyDiffLabel.TabIndex = 32;
@@ -1563,7 +1870,7 @@
             // tenDiffLabel
             // 
             this.tenDiffLabel.AutoSize = true;
-            this.tenDiffLabel.Location = new System.Drawing.Point(284, 320);
+            this.tenDiffLabel.Location = new System.Drawing.Point(223, 318);
             this.tenDiffLabel.Name = "tenDiffLabel";
             this.tenDiffLabel.Size = new System.Drawing.Size(93, 13);
             this.tenDiffLabel.TabIndex = 31;
@@ -1572,7 +1879,7 @@
             // instantDiffLabel
             // 
             this.instantDiffLabel.AutoSize = true;
-            this.instantDiffLabel.Location = new System.Drawing.Point(8, 320);
+            this.instantDiffLabel.Location = new System.Drawing.Point(8, 318);
             this.instantDiffLabel.Name = "instantDiffLabel";
             this.instantDiffLabel.Size = new System.Drawing.Size(78, 13);
             this.instantDiffLabel.TabIndex = 30;
@@ -1581,7 +1888,7 @@
             // fiveDiffLabel
             // 
             this.fiveDiffLabel.AutoSize = true;
-            this.fiveDiffLabel.Location = new System.Drawing.Point(8, 344);
+            this.fiveDiffLabel.Location = new System.Drawing.Point(451, 318);
             this.fiveDiffLabel.Name = "fiveDiffLabel";
             this.fiveDiffLabel.Size = new System.Drawing.Size(87, 13);
             this.fiveDiffLabel.TabIndex = 29;
@@ -1590,7 +1897,7 @@
             // poolRefreshUnits
             // 
             this.poolRefreshUnits.AutoSize = true;
-            this.poolRefreshUnits.Location = new System.Drawing.Point(502, 123);
+            this.poolRefreshUnits.Location = new System.Drawing.Point(586, 106);
             this.poolRefreshUnits.Name = "poolRefreshUnits";
             this.poolRefreshUnits.Size = new System.Drawing.Size(47, 13);
             this.poolRefreshUnits.TabIndex = 28;
@@ -1599,7 +1906,7 @@
             // minerRefreshUnits
             // 
             this.minerRefreshUnits.AutoSize = true;
-            this.minerRefreshUnits.Location = new System.Drawing.Point(502, 15);
+            this.minerRefreshUnits.Location = new System.Drawing.Point(586, 15);
             this.minerRefreshUnits.Name = "minerRefreshUnits";
             this.minerRefreshUnits.Size = new System.Drawing.Size(47, 13);
             this.minerRefreshUnits.TabIndex = 27;
@@ -1607,7 +1914,7 @@
             // 
             // x13OffText
             // 
-            this.x13OffText.Location = new System.Drawing.Point(390, 269);
+            this.x13OffText.Location = new System.Drawing.Point(329, 267);
             this.x13OffText.Name = "x13OffText";
             this.x13OffText.Size = new System.Drawing.Size(109, 20);
             this.x13OffText.TabIndex = 26;
@@ -1616,7 +1923,7 @@
             // 
             // x13MultText
             // 
-            this.x13MultText.Location = new System.Drawing.Point(119, 269);
+            this.x13MultText.Location = new System.Drawing.Point(149, 267);
             this.x13MultText.Name = "x13MultText";
             this.x13MultText.Size = new System.Drawing.Size(109, 20);
             this.x13MultText.TabIndex = 25;
@@ -1626,24 +1933,24 @@
             // x13OffLabel
             // 
             this.x13OffLabel.AutoSize = true;
-            this.x13OffLabel.Location = new System.Drawing.Point(285, 272);
+            this.x13OffLabel.Location = new System.Drawing.Point(274, 270);
             this.x13OffLabel.Name = "x13OffLabel";
-            this.x13OffLabel.Size = new System.Drawing.Size(60, 13);
+            this.x13OffLabel.Size = new System.Drawing.Size(38, 13);
             this.x13OffLabel.TabIndex = 24;
-            this.x13OffLabel.Text = "X13 Offset:";
+            this.x13OffLabel.Text = "Offset:";
             // 
             // x13MultLabel
             // 
             this.x13MultLabel.AutoSize = true;
-            this.x13MultLabel.Location = new System.Drawing.Point(8, 272);
+            this.x13MultLabel.Location = new System.Drawing.Point(83, 270);
             this.x13MultLabel.Name = "x13MultLabel";
-            this.x13MultLabel.Size = new System.Drawing.Size(73, 13);
+            this.x13MultLabel.Size = new System.Drawing.Size(51, 13);
             this.x13MultLabel.TabIndex = 23;
-            this.x13MultLabel.Text = "X13 Multiplier:";
+            this.x13MultLabel.Text = "Multiplier:";
             // 
             // x11OffText
             // 
-            this.x11OffText.Location = new System.Drawing.Point(390, 245);
+            this.x11OffText.Location = new System.Drawing.Point(329, 243);
             this.x11OffText.Name = "x11OffText";
             this.x11OffText.Size = new System.Drawing.Size(109, 20);
             this.x11OffText.TabIndex = 22;
@@ -1652,7 +1959,7 @@
             // 
             // x11MultText
             // 
-            this.x11MultText.Location = new System.Drawing.Point(119, 245);
+            this.x11MultText.Location = new System.Drawing.Point(149, 243);
             this.x11MultText.Name = "x11MultText";
             this.x11MultText.Size = new System.Drawing.Size(109, 20);
             this.x11MultText.TabIndex = 21;
@@ -1662,24 +1969,24 @@
             // x11OffLabel
             // 
             this.x11OffLabel.AutoSize = true;
-            this.x11OffLabel.Location = new System.Drawing.Point(285, 248);
+            this.x11OffLabel.Location = new System.Drawing.Point(274, 246);
             this.x11OffLabel.Name = "x11OffLabel";
-            this.x11OffLabel.Size = new System.Drawing.Size(60, 13);
+            this.x11OffLabel.Size = new System.Drawing.Size(38, 13);
             this.x11OffLabel.TabIndex = 20;
-            this.x11OffLabel.Text = "X11 Offset:";
+            this.x11OffLabel.Text = "Offset:";
             // 
             // x11MultLabel
             // 
             this.x11MultLabel.AutoSize = true;
-            this.x11MultLabel.Location = new System.Drawing.Point(8, 248);
+            this.x11MultLabel.Location = new System.Drawing.Point(83, 246);
             this.x11MultLabel.Name = "x11MultLabel";
-            this.x11MultLabel.Size = new System.Drawing.Size(73, 13);
+            this.x11MultLabel.Size = new System.Drawing.Size(51, 13);
             this.x11MultLabel.TabIndex = 19;
-            this.x11MultLabel.Text = "X11 Multiplier:";
+            this.x11MultLabel.Text = "Multiplier:";
             // 
             // nScryptOffText
             // 
-            this.nScryptOffText.Location = new System.Drawing.Point(390, 221);
+            this.nScryptOffText.Location = new System.Drawing.Point(329, 219);
             this.nScryptOffText.Name = "nScryptOffText";
             this.nScryptOffText.Size = new System.Drawing.Size(109, 20);
             this.nScryptOffText.TabIndex = 18;
@@ -1688,7 +1995,7 @@
             // 
             // nScryptMultText
             // 
-            this.nScryptMultText.Location = new System.Drawing.Point(119, 221);
+            this.nScryptMultText.Location = new System.Drawing.Point(149, 219);
             this.nScryptMultText.Name = "nScryptMultText";
             this.nScryptMultText.Size = new System.Drawing.Size(109, 20);
             this.nScryptMultText.TabIndex = 17;
@@ -1698,24 +2005,24 @@
             // nScryptOffLabel
             // 
             this.nScryptOffLabel.AutoSize = true;
-            this.nScryptOffLabel.Location = new System.Drawing.Point(285, 224);
+            this.nScryptOffLabel.Location = new System.Drawing.Point(274, 222);
             this.nScryptOffLabel.Name = "nScryptOffLabel";
-            this.nScryptOffLabel.Size = new System.Drawing.Size(82, 13);
+            this.nScryptOffLabel.Size = new System.Drawing.Size(38, 13);
             this.nScryptOffLabel.TabIndex = 16;
-            this.nScryptOffLabel.Text = "N-Scrypt Offset:";
+            this.nScryptOffLabel.Text = "Offset:";
             // 
             // nScryptMultLabel
             // 
             this.nScryptMultLabel.AutoSize = true;
-            this.nScryptMultLabel.Location = new System.Drawing.Point(8, 224);
+            this.nScryptMultLabel.Location = new System.Drawing.Point(83, 222);
             this.nScryptMultLabel.Name = "nScryptMultLabel";
-            this.nScryptMultLabel.Size = new System.Drawing.Size(95, 13);
+            this.nScryptMultLabel.Size = new System.Drawing.Size(51, 13);
             this.nScryptMultLabel.TabIndex = 15;
-            this.nScryptMultLabel.Text = "N-Scrypt Multiplier:";
+            this.nScryptMultLabel.Text = "Multiplier:";
             // 
             // scryptOffText
             // 
-            this.scryptOffText.Location = new System.Drawing.Point(390, 197);
+            this.scryptOffText.Location = new System.Drawing.Point(329, 195);
             this.scryptOffText.Name = "scryptOffText";
             this.scryptOffText.Size = new System.Drawing.Size(109, 20);
             this.scryptOffText.TabIndex = 14;
@@ -1724,7 +2031,7 @@
             // 
             // scryptMultText
             // 
-            this.scryptMultText.Location = new System.Drawing.Point(119, 197);
+            this.scryptMultText.Location = new System.Drawing.Point(149, 195);
             this.scryptMultText.Name = "scryptMultText";
             this.scryptMultText.Size = new System.Drawing.Size(109, 20);
             this.scryptMultText.TabIndex = 13;
@@ -1734,25 +2041,25 @@
             // scryptOffLabel
             // 
             this.scryptOffLabel.AutoSize = true;
-            this.scryptOffLabel.Location = new System.Drawing.Point(285, 200);
+            this.scryptOffLabel.Location = new System.Drawing.Point(274, 198);
             this.scryptOffLabel.Name = "scryptOffLabel";
-            this.scryptOffLabel.Size = new System.Drawing.Size(71, 13);
+            this.scryptOffLabel.Size = new System.Drawing.Size(38, 13);
             this.scryptOffLabel.TabIndex = 12;
-            this.scryptOffLabel.Text = "Scrypt Offset:";
+            this.scryptOffLabel.Text = "Offset:";
             // 
             // scryptMultLabel
             // 
             this.scryptMultLabel.AutoSize = true;
-            this.scryptMultLabel.Location = new System.Drawing.Point(8, 200);
+            this.scryptMultLabel.Location = new System.Drawing.Point(83, 198);
             this.scryptMultLabel.Name = "scryptMultLabel";
-            this.scryptMultLabel.Size = new System.Drawing.Size(84, 13);
+            this.scryptMultLabel.Size = new System.Drawing.Size(51, 13);
             this.scryptMultLabel.TabIndex = 11;
-            this.scryptMultLabel.Text = "Scrypt Multiplier:";
+            this.scryptMultLabel.Text = "Multiplier:";
             // 
             // poolKeyLabel
             // 
             this.poolKeyLabel.AutoSize = true;
-            this.poolKeyLabel.Location = new System.Drawing.Point(8, 149);
+            this.poolKeyLabel.Location = new System.Drawing.Point(8, 131);
             this.poolKeyLabel.Name = "poolKeyLabel";
             this.poolKeyLabel.Size = new System.Drawing.Size(48, 13);
             this.poolKeyLabel.TabIndex = 10;
@@ -1760,15 +2067,15 @@
             // 
             // poolKeyText
             // 
-            this.poolKeyText.Location = new System.Drawing.Point(119, 146);
+            this.poolKeyText.Location = new System.Drawing.Point(99, 128);
             this.poolKeyText.Name = "poolKeyText";
-            this.poolKeyText.Size = new System.Drawing.Size(429, 20);
+            this.poolKeyText.Size = new System.Drawing.Size(339, 20);
             this.poolKeyText.TabIndex = 9;
             this.toolTip.SetToolTip(this.poolKeyText, "Your API key for the pool");
             // 
             // minerPortText
             // 
-            this.minerPortText.Location = new System.Drawing.Point(390, 38);
+            this.minerPortText.Location = new System.Drawing.Point(329, 38);
             this.minerPortText.Name = "minerPortText";
             this.minerPortText.Size = new System.Drawing.Size(109, 20);
             this.minerPortText.TabIndex = 8;
@@ -1789,7 +2096,7 @@
             // minerPortLabel
             // 
             this.minerPortLabel.AutoSize = true;
-            this.minerPortLabel.Location = new System.Drawing.Point(285, 41);
+            this.minerPortLabel.Location = new System.Drawing.Point(237, 41);
             this.minerPortLabel.Name = "minerPortLabel";
             this.minerPortLabel.Size = new System.Drawing.Size(78, 13);
             this.minerPortLabel.TabIndex = 6;
@@ -1806,7 +2113,7 @@
             // 
             // poolRefreshNum
             // 
-            this.poolRefreshNum.Location = new System.Drawing.Point(448, 120);
+            this.poolRefreshNum.Location = new System.Drawing.Point(531, 104);
             this.poolRefreshNum.Maximum = new decimal(new int[] {
             120,
             0,
@@ -1829,7 +2136,7 @@
             // 
             // minerRefreshNum
             // 
-            this.minerRefreshNum.Location = new System.Drawing.Point(448, 12);
+            this.minerRefreshNum.Location = new System.Drawing.Point(531, 13);
             this.minerRefreshNum.Maximum = new decimal(new int[] {
             120,
             0,
@@ -1856,7 +2163,7 @@
             this.enableSwitchingCheck.AutoSize = true;
             this.enableSwitchingCheck.Checked = true;
             this.enableSwitchingCheck.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.enableSwitchingCheck.Location = new System.Drawing.Point(154, 120);
+            this.enableSwitchingCheck.Location = new System.Drawing.Point(11, 173);
             this.enableSwitchingCheck.Name = "enableSwitchingCheck";
             this.enableSwitchingCheck.Size = new System.Drawing.Size(135, 17);
             this.enableSwitchingCheck.TabIndex = 2;
@@ -1868,7 +2175,7 @@
             // poolRefreshLabel
             // 
             this.poolRefreshLabel.AutoSize = true;
-            this.poolRefreshLabel.Location = new System.Drawing.Point(335, 122);
+            this.poolRefreshLabel.Location = new System.Drawing.Point(425, 106);
             this.poolRefreshLabel.Name = "poolRefreshLabel";
             this.poolRefreshLabel.Size = new System.Drawing.Size(99, 13);
             this.poolRefreshLabel.TabIndex = 1;
@@ -1877,7 +2184,7 @@
             // minerRefreshLabel
             // 
             this.minerRefreshLabel.AutoSize = true;
-            this.minerRefreshLabel.Location = new System.Drawing.Point(335, 14);
+            this.minerRefreshLabel.Location = new System.Drawing.Point(422, 15);
             this.minerRefreshLabel.Name = "minerRefreshLabel";
             this.minerRefreshLabel.Size = new System.Drawing.Size(102, 13);
             this.minerRefreshLabel.TabIndex = 0;
@@ -1890,7 +2197,7 @@
             this.refreshButton});
             this.toolStrip.Location = new System.Drawing.Point(0, 0);
             this.toolStrip.Name = "toolStrip";
-            this.toolStrip.Size = new System.Drawing.Size(564, 25);
+            this.toolStrip.Size = new System.Drawing.Size(899, 25);
             this.toolStrip.TabIndex = 2;
             this.toolStrip.Text = "toolStrip1";
             // 
@@ -1916,63 +2223,14 @@
             // 
             this.toolTip.ShowAlways = true;
             // 
-            // x15OffText
-            // 
-            this.x15OffText.Location = new System.Drawing.Point(390, 293);
-            this.x15OffText.Name = "x15OffText";
-            this.x15OffText.Size = new System.Drawing.Size(109, 20);
-            this.x15OffText.TabIndex = 58;
-            this.x15OffText.Text = "0.0";
-            this.toolTip.SetToolTip(this.x15OffText, "Offset applied to X13 profitability (applied after multiplier)");
-            // 
-            // x15MultText
-            // 
-            this.x15MultText.Location = new System.Drawing.Point(119, 293);
-            this.x15MultText.Name = "x15MultText";
-            this.x15MultText.Size = new System.Drawing.Size(109, 20);
-            this.x15MultText.TabIndex = 57;
-            this.x15MultText.Text = "1.0";
-            this.toolTip.SetToolTip(this.x15MultText, "Multiplier applied to X15 profitability (applied before offset)");
-            // 
-            // x15OffLabel
-            // 
-            this.x15OffLabel.AutoSize = true;
-            this.x15OffLabel.Location = new System.Drawing.Point(285, 296);
-            this.x15OffLabel.Name = "x15OffLabel";
-            this.x15OffLabel.Size = new System.Drawing.Size(60, 13);
-            this.x15OffLabel.TabIndex = 56;
-            this.x15OffLabel.Text = "X15 Offset:";
-            // 
-            // x15MultLabel
-            // 
-            this.x15MultLabel.AutoSize = true;
-            this.x15MultLabel.Location = new System.Drawing.Point(8, 296);
-            this.x15MultLabel.Name = "x15MultLabel";
-            this.x15MultLabel.Size = new System.Drawing.Size(73, 13);
-            this.x15MultLabel.TabIndex = 55;
-            this.x15MultLabel.Text = "X15 Multiplier:";
-            // 
-            // graphX15Check
-            // 
-            this.graphX15Check.AutoSize = true;
-            this.graphX15Check.Checked = true;
-            this.graphX15Check.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.graphX15Check.Location = new System.Drawing.Point(242, 5);
-            this.graphX15Check.Name = "graphX15Check";
-            this.graphX15Check.Size = new System.Drawing.Size(45, 17);
-            this.graphX15Check.TabIndex = 8;
-            this.graphX15Check.Text = "X15";
-            this.graphX15Check.UseVisualStyleBackColor = true;
-            this.graphX15Check.CheckedChanged += new System.EventHandler(this.graphX15Check_CheckedChanged);
-            // 
             // Switcher
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(564, 476);
+            this.ClientSize = new System.Drawing.Size(899, 442);
             this.Controls.Add(this.tabControl);
             this.Controls.Add(this.toolStrip);
-            this.MinimumSize = new System.Drawing.Size(580, 514);
+            this.MinimumSize = new System.Drawing.Size(915, 480);
             this.Name = "Switcher";
             this.Text = "TMB Switcher - {0}";
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.Switcher_FormClosing);
@@ -2170,6 +2428,28 @@
         private System.Windows.Forms.Label x15OffLabel;
         private System.Windows.Forms.Label x15MultLabel;
         private System.Windows.Forms.CheckBox graphX15Check;
+        private System.Windows.Forms.CheckBox enableScryptCheck;
+        private System.Windows.Forms.Button x15BatchButton;
+        private System.Windows.Forms.Button x13BatchButton;
+        private System.Windows.Forms.Button x11BatchButton;
+        private System.Windows.Forms.Button nScryptBatchButton;
+        private System.Windows.Forms.Button scryptBatchButton;
+        private System.Windows.Forms.TextBox x15BatchText;
+        private System.Windows.Forms.TextBox x13BatchText;
+        private System.Windows.Forms.TextBox x11BatchText;
+        private System.Windows.Forms.TextBox nScryptBatchText;
+        private System.Windows.Forms.TextBox scryptBatchText;
+        private System.Windows.Forms.Label x15BatchLabel;
+        private System.Windows.Forms.Label x13BatchLabel;
+        private System.Windows.Forms.Label x11BatchLabel;
+        private System.Windows.Forms.Label nScryptBatchLabel;
+        private System.Windows.Forms.Label scryptBatchLabel;
+        private System.Windows.Forms.CheckBox enableX15Check;
+        private System.Windows.Forms.CheckBox enableX13Check;
+        private System.Windows.Forms.CheckBox enableX11Check;
+        private System.Windows.Forms.CheckBox enableNScryptCheck;
+        private System.Windows.Forms.TextBox minerNameText;
+        private System.Windows.Forms.Label minerNameLabel;
     }
 }
 

@@ -62,6 +62,7 @@ namespace TMB_Switcher
             string logFile = Assembly.GetEntryAssembly().Location.Replace(".exe", ".log");
             using (StreamWriter file = new StreamWriter(logFile, true, Encoding.Unicode))
             {
+                file.WriteLine(DateTime.Now + ":");
                 file.WriteLine(message);
             }
         }
