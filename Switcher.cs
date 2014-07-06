@@ -28,6 +28,7 @@ namespace TMB_Switcher
         // Configuration variables
         private static string configFileLocation = "TMBSwitcher.conf";
         private static bool verbose = false;
+        private static bool noAPI = false;
         private static Dictionary<string, object> config = null;
         private static string profitLogFile = null;
         private static string minerName = "sgminer";
@@ -109,6 +110,15 @@ namespace TMB_Switcher
             trayIcon = new NotifyIcon();
             setStatus(Properties.Resources.redIcon, "Starting Up");
             trayIcon.Visible = true;
+
+            if (noAPI)
+            {
+                poolsPage.Hide();
+                devicesPage.Hide();
+                minerHistoryPage.Hide();
+                minerAddressText.Enabled = false;
+                minerPortText.Enabled = false;
+            }
         }
 
         private void Switcher_Load(object sender, EventArgs e)
@@ -180,6 +190,7 @@ namespace TMB_Switcher
                         printUsage();
                         return false;
                     case "-c":
+                    case "--config":
                         if (args.Length <= i + 1 || args[i + 1][0] == '-' || args[i + 1][0] == '/')
                         {
                             Console.Out.WriteLine("Missing argument for -c.\n");
@@ -189,7 +200,12 @@ namespace TMB_Switcher
                         configFileLocation = args[++i].Trim('"');
                         break;
                     case "-v":
+                    case "-verbose":
                         verbose = true;
+                        break;
+                    case "-n":
+                    case "--no-api":
+                        noAPI = true;
                         break;
                     default:
                         Console.Out.WriteLine("Bad argument: " + args[i] + "\n");
@@ -202,11 +218,15 @@ namespace TMB_Switcher
 
         private static void printUsage()
         {
-            string usage = "TMB Switcher Version: " + Assembly.GetEntryAssembly().GetName().Version;
-            usage += "\n\nArguments:\n";
-            usage += "    -h\tThis help message.\n";
-            usage += "    -c\tThe location of the config file. (Default: TMBSwitcher.conf)";
-            MessageBox.Show(usage);
+            StringBuilder usage = new StringBuilder();
+            usage.Append("TMB Switcher Version: ");
+            usage.AppendLine(Assembly.GetEntryAssembly().GetName().Version.ToString());
+            usage.AppendLine("\n\nArguments:");
+            usage.AppendLine("    -h,--help\tThis help message.");
+            usage.AppendLine("    -c,--config\tThe location of the config file. (Default: TMBSwitcher.conf)");
+            usage.AppendLine("    -n,--no-api\tUsed for miners that don't expose an API (i.e. cudaminer/ccminer)");
+            usage.AppendLine("    -v,--verbose\tDisplays verbose usage information (do not use this unattended as it will lock up the switcher)");
+            MessageBox.Show(usage.ToString());
         }
 
         private void Switcher_FormClosing(object sender, FormClosingEventArgs e)
@@ -250,7 +270,7 @@ namespace TMB_Switcher
 
                     DateTime currentTime = DateTime.Now;
 
-                    if (minerAPI != null)
+                    if (minerAPI != null || noAPI)
                     {
                         // Figure out if we want to auto-update the miner stats
                         double minerRefreshRate = config.GetDouble("minerRefreshRate");
@@ -263,15 +283,47 @@ namespace TMB_Switcher
                         // Need to verify miner is active before attempting any switching
                         if (refreshMiner)
                         {
-                            // Gather and store miner info
-                            poolList = minerAPI.pools();
-                            Dictionary<string, double> summary = minerAPI.summary();
-                            DataTable deviceList = minerAPI.devices();
+                            if (noAPI)
+                            {
+                                Miner_API.IsActive = currentState == MiningState.Stopped || minerRunning();
 
-                            // Update table with miner info
-                            updateMinerInfo(deviceList);
+                                // Switch to mining state if starting and process is alive
+                                if (currentState == MiningState.Starting && Miner_API.IsActive)
+                                    currentState = MiningState.Mining;
 
-                            Invoke(new MethodInvoker(delegate { updateMinerUI(summary, deviceList); }));
+                                // Check if miner is running and if necessary restart it
+                                if (!Miner_API.IsActive)
+                                {
+                                    // Give the miner X seconds to get started before trying to restart it (default 30)
+                                    int startupDeadDelay = config.GetInt("startupDeadDelay");
+                                    if (startupDeadDelay < 0)
+                                        startupDeadDelay = 30;
+                                    if (currentState != MiningState.Starting || DateTime.Now > lastStartTime.AddSeconds(startupDeadDelay))
+                                    {
+                                        // Kill existing miner in case it was just having temporary issues
+                                        // so it doesn't get in the way of the newly started miner
+                                        string batchFile = config.GetString(currentAlgo + "Batch");
+                                        if (!string.IsNullOrEmpty(batchFile) && File.Exists(batchFile))
+                                        {
+                                            killMiner();
+                                            startMiner(batchFile);
+                                        }
+                                    }
+                                }
+                            }
+                            else
+                            {
+                                // Gather and store miner info
+                                poolList = minerAPI.pools();
+                                Dictionary<string, double> summary = minerAPI.summary();
+                                DataTable deviceList = minerAPI.devices();
+
+                                // Update table with miner info
+                                Invoke(new MethodInvoker(delegate { updateMinerInfo(deviceList); }));
+
+                                Invoke(new MethodInvoker(delegate { updateMinerUI(summary, deviceList); }));
+                            }
+
                             refreshMiner = false;
                         }
                     }
@@ -299,8 +351,8 @@ namespace TMB_Switcher
                             if (profitInfo != null)
                             {
                                 adjustProfit(profitInfo);
-                                if (config.GetBool("enableProfitSwitching") && minerAPI != null &&
-                                    Miner_API.IsActive && poolList != null && poolList.Rows.Count > 0 &&
+                                if (config.GetBool("enableProfitSwitching") && Miner_API.IsActive &&
+                                     ((minerAPI != null && poolList != null && poolList.Rows.Count > 0) || noAPI) &&
                                     (currentState == MiningState.Mining || currentState == MiningState.Starting))
                                 {
                                     if (currentState == MiningState.Starting)
@@ -528,20 +580,21 @@ namespace TMB_Switcher
             if (poolList == null && summary == null && deviceList == null &&
                 currentState != MiningState.Stopped)
             {
-                // Give the miner 30 seconds to get started before trying to restart it
-                // TODO: Make this configurable
-                if (currentState != MiningState.Starting || DateTime.Now > lastStartTime.AddSeconds(30))
+                // Give the miner X seconds to get started before trying to restart it (default 30)
+                int startupDeadDelay = config.GetInt("startupDeadDelay");
+                if (startupDeadDelay < 0)
+                    startupDeadDelay = 30;
+                if (currentState != MiningState.Starting || DateTime.Now > lastStartTime.AddSeconds(startupDeadDelay))
                 {
                     // Kill existing miner in case it was just having temporary issues
                     // so it doesn't get in the way of the newly started miner
                     string batchFile = config.GetString(currentAlgo + "Batch");
-                    if (string.IsNullOrEmpty(batchFile))
+                    if (string.IsNullOrEmpty(batchFile) && !noAPI)
                         batchFile = config.GetString("batchFile");
                     if (!string.IsNullOrEmpty(batchFile) && File.Exists(batchFile))
                     {
                         killMiner();
                         startMiner(batchFile);
-                        switchAlgorithm(currentAlgo);
                     }
                 }
             }
@@ -879,9 +932,31 @@ namespace TMB_Switcher
             if (!poolRow.Table.Columns.Contains("algorithm"))
                 return defaultAlgo;
 
+            // Use algorithm type if provided as it can discern between Scrypt and N-Scrypt
+            if (poolRow.Table.Columns.Contains("Algorithm Type"))
+            {
+                string algorithmType = poolRow["Algorithm Type"].ToString();
+                switch (algorithmType)
+                {
+                    case "X13":
+                        return "x13";
+                    case "X11":
+                        return "x11";
+                    case "X15":
+                        return "x15";
+                    case "Keccak":
+                        return "keccak";
+                    case "Scrypt":
+                        return "scrypt";
+                    case "NScrypt":
+                        return "nscrypt";
+                    default:
+                        return "none";
+                }
+            }
+
             // Return the algorithm that corresponds to the pool algorithm
             string poolAlgorithm = poolRow["algorithm"].ToString();
-            // int poolNFactor = poolRow["nfactor"].ToString();
             if (poolAlgorithm.StartsWith("darkcoin", StringComparison.InvariantCultureIgnoreCase) ||
                 poolAlgorithm.StartsWith("x11", StringComparison.InvariantCultureIgnoreCase))
                 return "x11";
@@ -894,66 +969,77 @@ namespace TMB_Switcher
             // Future support for Keccak if ever needed
             else if (poolAlgorithm.StartsWith("maxcoin", StringComparison.InvariantCultureIgnoreCase))
                 return "keccak";
-            else //if (nValue == 10)
+            else
                 return "scrypt";
-            //else if (nValue == 11)
-            //    return "nscrypt";
-            //else
-            //    return "none";
         }
 
         private void switchAlgorithm(string bestAlgo)
         {
             // Figure out if we need to restart the miner to switch algorithms
+            // If the miner has no API we always need to restart the miner
             bool restartMiner = false;
-            switch (currentAlgo)
+            if (noAPI)
+                restartMiner = true;
+            else
             {
-                case "none":
-                case "off":
-                    if (previousAlgo != bestAlgo)
-                    {
-                        // If previous algorithm or algorithm we are switching to has a batch file
-                        // then we need to restart the miner
-                        if (!string.IsNullOrEmpty(config.GetString(bestAlgo + "Batch")) ||
-                            !string.IsNullOrEmpty(config.GetString(previousAlgo + "Batch")))
-                            restartMiner = true;
-                    }
-                    break;
-                default:
-                    // If algorithm we are switching from or to has a separate batch file
-                    // then we need to restart the miner
-                    switch (bestAlgo)
-                    {
-                        case "none":
-                        case "off":
-                            // If we are stopping mining don't kill the miner
-                            // Just disable all the pools so if we go back to
-                            // the same algorithm we can just enable them again
-                            break;
-                        default:
-                            // If algorithm we are switching to has a batch file
+                switch (currentAlgo)
+                {
+                    case "none":
+                    case "off":
+                        if (previousAlgo != bestAlgo)
+                        {
+                            // If previous algorithm or algorithm we are switching to has a batch file
                             // then we need to restart the miner
                             if (!string.IsNullOrEmpty(config.GetString(bestAlgo + "Batch")) ||
-                                !string.IsNullOrEmpty(config.GetString(currentAlgo + "Batch")))
+                                !string.IsNullOrEmpty(config.GetString(previousAlgo + "Batch")))
                                 restartMiner = true;
-                            break;
-                    }
-                    break;
+                        }
+                        break;
+                    default:
+                        // If algorithm we are switching from or to has a separate batch file
+                        // then we need to restart the miner
+                        switch (bestAlgo)
+                        {
+                            case "none":
+                            case "off":
+                                // If we are stopping mining don't kill the miner
+                                // Just disable all the pools so if we go back to
+                                // the same algorithm we can just enable them again
+                                break;
+                            default:
+                                // If algorithm we are switching to or from has a batch file
+                                // then we need to restart the miner
+                                if (!string.IsNullOrEmpty(config.GetString(bestAlgo + "Batch")) ||
+                                    !string.IsNullOrEmpty(config.GetString(currentAlgo + "Batch")))
+                                    restartMiner = true;
+                                break;
+                        }
+                        break;
+                }
             }
 
             // If we need to restart the miner then kill the current one and start up the new one
             if (restartMiner)
             {
-                string batchFile = config.GetString(bestAlgo + "Batch");
-                if (string.IsNullOrEmpty(batchFile))
-                    batchFile = config.GetString("batchFile");
-                if (string.IsNullOrEmpty(batchFile) || !File.Exists(batchFile))
+                if (bestAlgo == "none" || bestAlgo == "off")
                 {
-                    Utilities.WriteLog("Could not switch to " + bestAlgo + " because no batch file was specified or batch file does not exist.");
-                    return;
+                    // If the miner has no API we have to kill the miner to disable it
+                    killMiner();
+                    currentState = MiningState.Mining;
                 }
-                killMiner();
-                startMiner(batchFile);
+                else
+                {
+                    string batchFile = config.GetString(bestAlgo + "Batch");
+                    if (string.IsNullOrEmpty(batchFile) && !noAPI)
+                        batchFile = config.GetString("batchFile");
+                    if (string.IsNullOrEmpty(batchFile) || !File.Exists(batchFile))
+                    {
+                        Utilities.WriteLog("Could not switch to " + bestAlgo + " because no batch file was specified or batch file does not exist.");
+                        return;
+                    }
+                    killMiner();
+                    startMiner(batchFile);
+                }
             }
             else if (poolList != null)
             {
@@ -1188,7 +1274,7 @@ namespace TMB_Switcher
             // Can only pause when mining and the miner API is connected
             pauseButton.Enabled = currentState == MiningState.Mining && minerAPI != null;
             // Same conditions for switching algorithm as pausing
-            currentlyMiningCombo.Enabled = pauseButton.Enabled;
+            currentlyMiningCombo.Enabled = currentState == MiningState.Mining && (minerAPI != null || noAPI);
             // Can only start when paused or stopped
             startButton.Enabled = currentState == MiningState.Paused || currentState == MiningState.Stopped;
             // Can not stop when already stopped (any other state is fine)
@@ -1491,7 +1577,7 @@ namespace TMB_Switcher
             else if (currentState == MiningState.Stopped)
             {
                 string batchFile = config.GetString(currentAlgo + "Batch");
-                if (string.IsNullOrEmpty(batchFile))
+                if (string.IsNullOrEmpty(batchFile) && !noAPI)
                     batchFile = config.GetString("batchFile");
                 if (string.IsNullOrEmpty(batchFile) || !File.Exists(batchFile))
                 {
@@ -1499,7 +1585,6 @@ namespace TMB_Switcher
                     return;
                 }
                 startMiner(batchFile);
-                switchAlgorithm(currentAlgo);
             }
             setStatusButtons();
         }
@@ -1513,7 +1598,7 @@ namespace TMB_Switcher
         private void restartButton_Click(object sender, EventArgs e)
         {
             string batchFile = config.GetString(currentAlgo + "Batch");
-            if (string.IsNullOrEmpty(batchFile))
+            if (string.IsNullOrEmpty(batchFile) && !noAPI)
                 batchFile = config.GetString("batchFile");
             if (string.IsNullOrEmpty(batchFile) || !File.Exists(batchFile))
             {
@@ -1522,7 +1607,6 @@ namespace TMB_Switcher
             }
             killMiner();
             startMiner(batchFile);
-            switchAlgorithm(currentAlgo);
             setStatusButtons();
         }
 
@@ -1959,14 +2043,40 @@ namespace TMB_Switcher
 
         #region Miner Start/Stop Methods
 
+        private bool minerRunning()
+        {
+            try
+            {
+                string[] miners = minerName.Split(',');
+                foreach (string miner in miners)
+                {
+                    Process[] procs = Process.GetProcessesByName(miner.Trim());
+                    if (procs.Length > 0)
+                        return true;
+                }
+            }
+            catch (Exception ex)
+            {
+                // Log exception
+                Utilities.WriteLog(ex.Message);
+                Utilities.WriteLog(ex.StackTrace);
+                return false;
+            }
+            return false;
+        }
+
         private void killMiner()
         {
             try
             {
                 currentState = MiningState.Stopped;
-	            Process[] procs = Process.GetProcessesByName(minerName);
-                foreach (Process proc in procs)
-	                proc.Kill();
+                string[] miners = minerName.Split(',');
+                foreach (string miner in miners)
+                {
+                    Process[] procs = Process.GetProcessesByName(miner.Trim());
+                    foreach (Process proc in procs)
+                        proc.Kill();
+                }
             }
             catch (Exception ex)
             {

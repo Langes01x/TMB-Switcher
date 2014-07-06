@@ -48,6 +48,7 @@ namespace TMB_Switcher
         /// </summary>
         public static bool IsActive
         {
+            set { isActive = value; }
             get { return isActive; }
         }
 
