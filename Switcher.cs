@@ -113,11 +113,13 @@ namespace TMB_Switcher
 
             if (noAPI)
             {
-                poolsPage.Hide();
-                devicesPage.Hide();
-                minerHistoryPage.Hide();
+                tabControl.TabPages.Remove(poolsPage);
+                tabControl.TabPages.Remove(devicesPage);
+                tabControl.TabPages.Remove(minerHistoryPage);
                 minerAddressText.Enabled = false;
                 minerPortText.Enabled = false;
+                batchFileButton.Enabled = false;
+                batchFileText.Enabled = false;
             }
         }
 
@@ -300,13 +302,20 @@ namespace TMB_Switcher
                                         startupDeadDelay = 30;
                                     if (currentState != MiningState.Starting || DateTime.Now > lastStartTime.AddSeconds(startupDeadDelay))
                                     {
-                                        // Kill existing miner in case it was just having temporary issues
-                                        // so it doesn't get in the way of the newly started miner
-                                        string batchFile = config.GetString(currentAlgo + "Batch");
-                                        if (!string.IsNullOrEmpty(batchFile) && File.Exists(batchFile))
+                                        // If we don't want to mine anything then don't restart the miner
+                                        // (unless we want to start mining which is handled later)
+                                        if (currentAlgo == "none" || currentAlgo == "off")
+                                            Miner_API.IsActive = true;
+                                        else
                                         {
-                                            killMiner();
-                                            startMiner(batchFile);
+                                            // Kill existing miner in case it was just having temporary issues
+                                            // so it doesn't get in the way of the newly started miner
+                                            string batchFile = config.GetString(currentAlgo + "Batch");
+                                            if (!string.IsNullOrEmpty(batchFile) && File.Exists(batchFile))
+                                            {
+                                                killMiner();
+                                                startMiner(batchFile);
+                                            }
                                         }
                                     }
                                 }
@@ -1331,6 +1340,7 @@ namespace TMB_Switcher
             config["monitorMiner"] = enableMinerMonitorCheck.Checked;
             config["monitorPool"] = enablePoolMonitorCheck.Checked;
             config["enableProfitSwitching"] = enableSwitchingCheck.Checked;
+            config["startMinerMinimized"] = startMinerMinimizedCheck.Checked;
 
             StoreDouble(instantDiffText.Text, "instantDiff", problems);
             StoreDouble(fiveDiffText.Text, "fiveMinDiff", problems);
@@ -1410,6 +1420,7 @@ namespace TMB_Switcher
             enableMinerMonitorCheck.Checked = config.GetBool("monitorMiner");
             enablePoolMonitorCheck.Checked = config.GetBool("monitorPool");
             enableSwitchingCheck.Checked = config.GetBool("enableProfitSwitching");
+            startMinerMinimizedCheck.Checked = config.GetBool("startMinerMinimized");
 
             instantDiffText.Text = RestoreDouble("instantDiff", instantDiffText.Text);
             fiveDiffText.Text = RestoreDouble("fiveMinDiff", fiveDiffText.Text);
@@ -2114,6 +2125,7 @@ namespace TMB_Switcher
             {
                 Process proc = new Process();
                 proc.StartInfo.FileName = batchFile;
+                proc.StartInfo.WindowStyle = config.GetBool("startMinerMinimized") ? ProcessWindowStyle.Minimized : ProcessWindowStyle.Normal;
                 proc.Start();
                 currentState = MiningState.Starting;
                 lastStartTime = DateTime.Now;
