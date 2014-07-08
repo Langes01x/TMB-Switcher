@@ -1044,7 +1044,7 @@ namespace TMB_Switcher
             else if (poolList != null)
             {
                 // Enable the most profitable pools and disable all others using the pool algorithms
-                bool firstPool = false;
+                bool firstPool = true;
                 foreach (DataRow pool in poolList.Rows)
                 {
                     bool isBestAlgo = bestAlgo != "none" && bestAlgo != "off" && bestAlgo == detectAlgo(pool, bestAlgo);
@@ -1273,12 +1273,14 @@ namespace TMB_Switcher
         {
             // Can only pause when mining and the miner API is connected
             pauseButton.Enabled = currentState == MiningState.Mining && minerAPI != null;
-            // Same conditions for switching algorithm as pausing
+            // Same conditions for switching algorithm as pausing but take into account miners without APIs
             currentlyMiningCombo.Enabled = currentState == MiningState.Mining && (minerAPI != null || noAPI);
             // Can only start when paused or stopped
             startButton.Enabled = currentState == MiningState.Paused || currentState == MiningState.Stopped;
             // Can not stop when already stopped (any other state is fine)
             stopButton.Enabled = currentState != MiningState.Stopped;
+            // Same conditions for restarting the miner as changing algorithm
+            restartButton.Enabled = currentlyMiningCombo.Enabled;
         }
 
         #endregion
