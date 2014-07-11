@@ -78,7 +78,7 @@ namespace TMB_Switcher
         /// Retrieves the profitability for the various algorithms
         /// 
         /// Keys:
-        /// scrypt, nscrypt, x11, x13, x15 (and potentially any other algorithm that has been recently added)
+        /// scrypt, nscrypt, x11, x13, x15, nist5 (and potentially any other algorithm that has been recently added)
         /// </summary>
         /// <returns>A dictionary containing the profitability info</returns>
         public Dictionary<string, double> bestAlgo()

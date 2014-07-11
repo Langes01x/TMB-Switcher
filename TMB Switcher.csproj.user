@@ -11,6 +11,6 @@
     <VerifyUploadedFiles>false</VerifyUploadedFiles>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|AnyCPU'">
-    <StartArguments>-c "C:\TMB switcher\Releases\TMBswitcherNoAPI.conf" -n</StartArguments>
+    <StartArguments>-c "C:\TMB switcher\Releases\TMBswitcher.conf"</StartArguments>
   </PropertyGroup>
 </Project>

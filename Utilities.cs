@@ -196,6 +196,8 @@ namespace TMB_Switcher
                     return "X13";
                 case "x15":
                     return "X15";
+                case "nist5":
+                    return "NIST5";
                 case "keccak":
                     return "Keccak";
                 default:
@@ -222,6 +224,8 @@ namespace TMB_Switcher
                     return "x13";
                 case "X15":
                     return "x15";
+                case "NIST5":
+                    return "nist5";
                 case "Keccak":
                     return "keccak";
                 default:

@@ -138,6 +138,7 @@ namespace TMB_Switcher
                 poolProfitInfo.Columns.Add("x11", typeof(double));
                 poolProfitInfo.Columns.Add("x13", typeof(double));
                 poolProfitInfo.Columns.Add("x15", typeof(double));
+                poolProfitInfo.Columns.Add("nist5", typeof(double));
 
                 // Set up miner table
                 minerInfo = new DataTable();
@@ -721,6 +722,9 @@ namespace TMB_Switcher
                     case "x15":
                         series.Enabled = graphX15Check.Checked;
                         break;
+                    case "nist5":
+                        series.Enabled = graphNIST5Check.Checked;
+                        break;
                 }
                 series.BorderWidth = 2;
                 series.MarkerStyle = MarkerStyle.Circle;
@@ -919,6 +923,7 @@ namespace TMB_Switcher
                 if (config.GetBool("x11Enabled")) algorithms.Add("x11");
                 if (config.GetBool("x13Enabled")) algorithms.Add("x13");
                 if (config.GetBool("x15Enabled")) algorithms.Add("x15");
+                if (config.GetBool("nist5Enabled")) algorithms.Add("nist5");
 
                 string mName = config.GetString("minerName");
                 if (!string.IsNullOrEmpty(mName))
@@ -953,6 +958,8 @@ namespace TMB_Switcher
                         return "x11";
                     case "X15":
                         return "x15";
+                    case "NIST5":
+                        return "nist5";
                     case "Keccak":
                         return "keccak";
                     case "Scrypt":
@@ -975,8 +982,12 @@ namespace TMB_Switcher
             else if (poolAlgorithm.StartsWith("bitblock", StringComparison.InvariantCultureIgnoreCase) ||
                 poolAlgorithm.StartsWith("x15", StringComparison.InvariantCultureIgnoreCase))
                 return "x15";
+            else if (poolAlgorithm.StartsWith("talkcoin", StringComparison.InvariantCultureIgnoreCase) ||
+                poolAlgorithm.StartsWith("nist5", StringComparison.InvariantCultureIgnoreCase))
+                return "nist5";
             // Future support for Keccak if ever needed
-            else if (poolAlgorithm.StartsWith("maxcoin", StringComparison.InvariantCultureIgnoreCase))
+            else if (poolAlgorithm.StartsWith("maxcoin", StringComparison.InvariantCultureIgnoreCase) ||
+                poolAlgorithm.StartsWith("keccak", StringComparison.InvariantCultureIgnoreCase))
                 return "keccak";
             else
                 return "scrypt";
@@ -1352,24 +1363,28 @@ namespace TMB_Switcher
             StoreDouble(x11MultText.Text, "x11Mult", problems);
             StoreDouble(x13MultText.Text, "x13Mult", problems);
             StoreDouble(x15MultText.Text, "x15Mult", problems);
+            StoreDouble(nist5MultText.Text, "nist5Mult", problems);
 
             StoreDouble(scryptOffText.Text, "scryptOff", problems);
             StoreDouble(nScryptOffText.Text, "nscryptOff", problems);
             StoreDouble(x11OffText.Text, "x11Off", problems);
             StoreDouble(x13OffText.Text, "x13Off", problems);
             StoreDouble(x15OffText.Text, "x15Off", problems);
+            StoreDouble(nist5OffText.Text, "nist5Off", problems);
 
             config["scryptBatch"] = scryptBatchText.Text;
             config["nscryptBatch"] = nScryptBatchText.Text;
             config["x11Batch"] = x11BatchText.Text;
             config["x13Batch"] = x13BatchText.Text;
             config["x15Batch"] = x15BatchText.Text;
+            config["nist5Batch"] = nist5BatchText.Text;
 
             config["scryptEnabled"] = enableScryptCheck.Checked;
             config["nScryptEnabled"] = enableNScryptCheck.Checked;
             config["x11Enabled"] = enableX11Check.Checked;
             config["x13Enabled"] = enableX13Check.Checked;
             config["x15Enabled"] = enableX15Check.Checked;
+            config["nist5Enabled"] = enableNIST5Check.Checked;
 
             if (problems.Count > 0)
             {
@@ -1432,24 +1447,28 @@ namespace TMB_Switcher
             x11MultText.Text = RestoreDouble("x11Mult", x11MultText.Text);
             x13MultText.Text = RestoreDouble("x13Mult", x13MultText.Text);
             x15MultText.Text = RestoreDouble("x15Mult", x15MultText.Text);
+            nist5MultText.Text = RestoreDouble("nist5Mult", nist5MultText.Text);
 
             scryptOffText.Text = RestoreDouble("scryptOff", scryptOffText.Text);
             nScryptOffText.Text = RestoreDouble("nscryptOff", nScryptOffText.Text);
             x11OffText.Text = RestoreDouble("x11Off", x11OffText.Text);
             x13OffText.Text = RestoreDouble("x13Off", x13OffText.Text);
             x15OffText.Text = RestoreDouble("x15Off", x15OffText.Text);
+            nist5OffText.Text = RestoreDouble("nist5Off", nist5OffText.Text);
 
             scryptBatchText.Text = RestoreString("scryptBatch", scryptBatchText.Text);
             nScryptBatchText.Text = RestoreString("nscryptBatch", nScryptBatchText.Text);
             x11BatchText.Text = RestoreString("x11Batch", x11BatchText.Text);
             x13BatchText.Text = RestoreString("x13Batch", x13BatchText.Text);
             x15BatchText.Text = RestoreString("x15Batch", x15BatchText.Text);
+            nist5BatchText.Text = RestoreString("nist5Batch", nist5BatchText.Text);
 
-            enableScryptCheck.Checked = config.GetBool("scryptEnabled");
-            enableNScryptCheck.Checked = config.GetBool("nscryptEnabled");
-            enableX11Check.Checked = config.GetBool("x11Enabled");
-            enableX13Check.Checked = config.GetBool("x13Enabled");
-            enableX15Check.Checked = config.GetBool("x15Enabled");
+            graphScryptCheck.Checked = enableScryptCheck.Checked = config.GetBool("scryptEnabled");
+            graphNScryptCheck.Checked = enableNScryptCheck.Checked = config.GetBool("nscryptEnabled");
+            graphX11Check.Checked = enableX11Check.Checked = config.GetBool("x11Enabled");
+            graphX13Check.Checked = enableX13Check.Checked = config.GetBool("x13Enabled");
+            graphX15Check.Checked = enableX15Check.Checked = config.GetBool("x15Enabled");
+            graphNIST5Check.Checked = enableNIST5Check.Checked = config.GetBool("nist5Enabled");
         }
 
         private string RestoreDouble(string keyName, string text)
@@ -1669,6 +1688,13 @@ namespace TMB_Switcher
                 x15BatchText.Text = fileName;
         }
 
+        private void nist5BatchButton_Click(object sender, EventArgs e)
+        {
+            string fileName;
+            if (getBatchFile("NIST5", out fileName) == DialogResult.OK)
+                nist5BatchText.Text = fileName;
+        }
+
         private DialogResult getBatchFile(string type, out string fileName)
         {
             return getFile("Select your " + type + " batch file:", out fileName);
@@ -1721,27 +1747,44 @@ namespace TMB_Switcher
 
         private void graphScryptCheck_CheckedChanged(object sender, EventArgs e)
         {
-            profitChart.Series["filteredScrypt"].Enabled = graphScryptCheck.Checked;
+            Series series = profitChart.Series.FindByName("filteredScrypt");
+            if (series != null)
+                series.Enabled = graphScryptCheck.Checked;
         }
 
         private void graphNScryptCheck_CheckedChanged(object sender, EventArgs e)
         {
-            profitChart.Series["filteredN-Scrypt"].Enabled = graphNScryptCheck.Checked;
+            Series series = profitChart.Series.FindByName("filteredN-Scrypt");
+            if (series != null)
+                series.Enabled = graphScryptCheck.Checked;
         }
 
         private void graphX11Check_CheckedChanged(object sender, EventArgs e)
         {
-            profitChart.Series["filteredX11"].Enabled = graphX11Check.Checked;
+            Series series = profitChart.Series.FindByName("filteredX11");
+            if (series != null)
+                series.Enabled = graphScryptCheck.Checked;
         }
 
         private void graphX13Check_CheckedChanged(object sender, EventArgs e)
         {
-            profitChart.Series["filteredX13"].Enabled = graphX13Check.Checked;
+            Series series = profitChart.Series.FindByName("filteredX13");
+            if (series != null)
+                series.Enabled = graphScryptCheck.Checked;
         }
 
         private void graphX15Check_CheckedChanged(object sender, EventArgs e)
         {
-            profitChart.Series["filteredX15"].Enabled = graphX15Check.Checked;
+            Series series = profitChart.Series.FindByName("filteredX15");
+            if (series != null)
+                series.Enabled = graphScryptCheck.Checked;
+        }
+
+        private void graphNIST5Check_CheckedChanged(object sender, EventArgs e)
+        {
+            Series series = profitChart.Series.FindByName("filteredNIST5");
+            if (series != null)
+                series.Enabled = graphScryptCheck.Checked;
         }
 
         private void profitChart_MouseMove(object sender, MouseEventArgs e)
@@ -1780,6 +1823,9 @@ namespace TMB_Switcher
                                     break;
                                 case "x15":
                                     enabled = graphX15Check.Checked;
+                                    break;
+                                case "nist5":
+                                    enabled = graphNIST5Check.Checked;
                                     break;
                             }
                             if (enabled)
