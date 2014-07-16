@@ -175,66 +175,6 @@ namespace TMB_Switcher
 
         #endregion
 
-        #region Algorithm Formatting
-
-        /// <summary>
-        /// Maps an internal representation of an algorithm to a display representation
-        /// </summary>
-        /// <param name="algorithm">Internal algorithm</param>
-        /// <returns>Display algorithm</returns>
-        public static string MapInternalAlgoToDisplay(string algorithm)
-        {
-            switch(algorithm)
-            {
-                case "scrypt":
-                    return "Scrypt";
-                case "nscrypt":
-                    return "N-Scrypt";
-                case "x11":
-                    return "X11";
-                case "x13":
-                    return "X13";
-                case "x15":
-                    return "X15";
-                case "nist5":
-                    return "NIST5";
-                case "keccak":
-                    return "Keccak";
-                default:
-                    return "None";
-            }
-        }
-
-        /// <summary>
-        /// Maps a display representation of an algorithm to an internal representation
-        /// </summary>
-        /// <param name="algorithm">Display algorithm</param>
-        /// <returns>Internal algorithm</returns>
-        public static string MapDisplayAlgoToInternal(string algorithm)
-        {
-            switch (algorithm)
-            {
-                case "Scrypt":
-                    return "scrypt";
-                case "N-Scrypt":
-                    return "nscrypt";
-                case "X11":
-                    return "x11";
-                case "X13":
-                    return "x13";
-                case "X15":
-                    return "x15";
-                case "NIST5":
-                    return "nist5";
-                case "Keccak":
-                    return "keccak";
-                default:
-                    return "none";
-            }
-        }
-
-        #endregion
-
         #region JSON Parsing / Escaping
 
         /// <summary>

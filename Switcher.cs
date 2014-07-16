@@ -68,9 +68,10 @@ namespace TMB_Switcher
             Starting
         }
 
+        private static DataTable algorithms = null;
+
         // Current miner data
         private static DataTable poolList = null;
-        private static List<string> algorithms = new List<string>();
         private static int numGPU = 0;
 
         // Chart last X mouse position
@@ -127,18 +128,102 @@ namespace TMB_Switcher
         {
             try
             {
-                // Read config file
-                readConfigFile();
+                // Setup basic algorithm information
+                algorithms = new DataTable();
+                DataColumn name = algorithms.Columns.Add("name", typeof(string));
+                algorithms.Columns.Add("displayName", typeof(string));
+                algorithms.Columns.Add("type", typeof(string));
+                algorithms.Columns.Add("kernels", typeof(string));
+                algorithms.PrimaryKey = new DataColumn[] { name };
 
-                // Set up profit table
+                // Populate list of algorithms
+                algorithms.Rows.Add("scrypt", "Scrypt", "Scrypt", "*");
+                algorithms.Rows.Add("nscrypt", "N-Scrypt", "NScrypt", "");
+                algorithms.Rows.Add("x11", "X11", "X11", "darkcoin,x11");
+                algorithms.Rows.Add("x13", "X13", "X13", "marucoin,x13");
+                algorithms.Rows.Add("x15", "X15", "X15", "bitblock,x15");
+                algorithms.Rows.Add("nist5", "NIST5", "NIST", "talkcoin,nist");
+                //algorithms.Rows.Add("keccak", "Keccak", "Keccak", "maxcoin,keccak");
+
+                // Extra algorithm information
+                algorithms.Columns.Add("enabled", typeof(bool));
+                algorithms.Columns.Add("graphCheckbox", typeof(CheckBox));
+                algorithms.Columns.Add("settingCheckbox", typeof(CheckBox));
+                algorithms.Columns.Add("multiplierTextbox", typeof(TextBox));
+                algorithms.Columns.Add("offsetTextbox", typeof(TextBox));
+                algorithms.Columns.Add("batchTextbox", typeof(TextBox));
+                algorithms.Columns.Add("batchButton", typeof(Button));
+
+                // Set up profit table and generate per-algorithm controls
                 poolProfitInfo = new DataTable();
                 poolProfitInfo.Columns.Add("time", typeof(DateTime));
-                poolProfitInfo.Columns.Add("scrypt", typeof(double));
-                poolProfitInfo.Columns.Add("nscrypt", typeof(double));
-                poolProfitInfo.Columns.Add("x11", typeof(double));
-                poolProfitInfo.Columns.Add("x13", typeof(double));
-                poolProfitInfo.Columns.Add("x15", typeof(double));
-                poolProfitInfo.Columns.Add("nist5", typeof(double));
+                poolProfitInfo.Columns.Add("composite", typeof(double));
+                int i = 1;
+                foreach (DataRow algorithm in algorithms.Rows)
+                {
+                    poolProfitInfo.Columns.Add(algorithm["name"].ToString(), typeof(double));
+                    string displayName = algorithm["displayName"].ToString();
+                    currentlyMiningCombo.Items.Add(displayName);
+
+                    // Generate profit graph checkbox
+                    CheckBox checkbox = new CheckBox();
+                    algorithm["graphCheckBox"] = checkbox;
+                    checkbox.Text = displayName;
+                    checkbox.CheckedChanged += graphCheckbox_CheckedChanged;
+                    profitFlowLayoutPanel.Controls.Add(checkbox);
+                    checkbox.Tag = algorithm;
+                    checkbox.AutoSize = true;
+
+                    settingTableLayoutPanel.RowCount++;
+
+                    // Generate setting checkbox
+                    checkbox = new CheckBox();
+                    algorithm["settingCheckbox"] = checkbox;
+                    checkbox.Text = displayName + ":";
+                    tooltip.SetToolTip(checkbox, String.Format("Whether mining of {0} is enabled or not", displayName));
+                    settingTableLayoutPanel.Controls.Add(checkbox, 0, i);
+                    checkbox.Anchor = AnchorStyles.Left | AnchorStyles.Top;
+                    checkbox.AutoSize = true;
+
+                    // Generate multiplier textbox
+                    TextBox textbox = new TextBox();
+                    algorithm["multiplierTextbox"] = textbox;
+                    textbox.Text = "1.0";
+                    tooltip.SetToolTip(textbox, String.Format("Multiplier applied to {0} profitability (applied before offset)", displayName));
+                    settingTableLayoutPanel.Controls.Add(textbox, 1, i);
+                    textbox.Dock = DockStyle.Fill;
+
+                    // Generate offset textbox
+                    textbox = new TextBox();
+                    algorithm["offsetTextbox"] = textbox;
+                    textbox.Text = "0.0";
+                    tooltip.SetToolTip(textbox, String.Format("Offset applied to {0} profitability (applied after multiplier)", displayName));
+                    settingTableLayoutPanel.Controls.Add(textbox, 2, i);
+                    textbox.Dock = DockStyle.Fill;
+
+                    // Generate batch textbox
+                    textbox = new TextBox();
+                    algorithm["batchTextbox"] = textbox;
+                    tooltip.SetToolTip(textbox, String.Format("Location of the batch file used to start up the {0} miner (if not using sgminer v5.0)", displayName));
+                    settingTableLayoutPanel.Controls.Add(textbox, 3, i);
+                    textbox.Dock = DockStyle.Fill;
+
+                    // Generate batch button
+                    Button button = new Button();
+                    algorithm["batchButton"] = button;
+                    button.Text = "...";
+                    button.Click += batchButton_Click;
+                    tooltip.SetToolTip(button, String.Format("Select the batch file used to start up the {0} miner (if not using sgminer v5.0)", displayName));
+                    settingTableLayoutPanel.Controls.Add(button, 4, i);
+                    button.Tag = algorithm;
+                    button.Anchor = AnchorStyles.Left | AnchorStyles.Top;
+                    button.AutoSize = true;
+
+                    i++;
+                }
+
+                // Read config file
+                readConfigFile();
 
                 // Set up miner table
                 minerInfo = new DataTable();
@@ -149,6 +234,7 @@ namespace TMB_Switcher
                 setupCharts();
 
                 bgThread = new Thread(new ThreadStart(backgroundThread));
+                bgThread.IsBackground = true;
                 bgThread.Start();
             }
             catch (Exception ex)
@@ -164,17 +250,22 @@ namespace TMB_Switcher
         private void setupCharts()
         {
             profitChart.DataSource = poolProfitInfo;
-            foreach (DataColumn col in poolProfitInfo.Columns)
+            foreach (DataRow algorithm in algorithms.Rows)
             {
-                if (col.Caption == "time")
-                    continue;
-                Series series = profitChart.Series.Add(col.Caption);
+                string algorithmName = algorithm["name"].ToString();
+                Series series = profitChart.Series.Add(algorithmName);
                 series.XValueMember = "time";
-                series.YValueMembers = col.Caption;
+                series.YValueMembers = algorithmName;
                 series.XValueType = ChartValueType.DateTime;
                 series.YValueType = ChartValueType.Double;
                 series.Enabled = false;
             }
+            Series compositeSeries = profitChart.Series.Add("composite");
+            compositeSeries.XValueMember = "time";
+            compositeSeries.YValueMembers = "composite";
+            compositeSeries.XValueType = ChartValueType.DateTime;
+            compositeSeries.YValueType = ChartValueType.Double;
+            compositeSeries.Enabled = false;
             profitChart.ChartAreas[0].AxisX.LabelStyle.Format = "dd/MM/yyyy\nhh:mm:ss";
 
             minerChart.DataSource = minerInfo;
@@ -240,7 +331,14 @@ namespace TMB_Switcher
                 e.Cancel = true;
                 return;
             }
+
+            // Kill miner on exit if told to do so
+            if (config.GetBool("killMinerOnExit"))
+                killMiner();
+
+            // Kill background thread and wait for it to exit
             bgThread.Abort();
+            bgThread.Join(1000);
             trayIcon.Visible = false;
         }
 
@@ -376,6 +474,12 @@ namespace TMB_Switcher
                                     }
                                 }
 
+                                // Add composite value to profit info
+                                double compositeValue = 0.0;
+                                if (currentAlgo != "none" && currentAlgo != "off")
+                                    compositeValue = profitInfo[currentAlgo];
+                                profitInfo.Add("composite", compositeValue);
+
                                 // Update log with profit info
                                 if (!string.IsNullOrEmpty(profitLogFile))
                                     Utilities.WriteProfitLog(profitInfo, profitLogFile);
@@ -430,8 +534,17 @@ namespace TMB_Switcher
             else if (currentAlgo == "off" || currentAlgo == "none")
                 setStatus(Properties.Resources.redIcon, "Not Mining");
             else
-                setStatus(Properties.Resources.greenIcon, "Mining " + Utilities.MapInternalAlgoToDisplay(currentAlgo));
+                setStatus(Properties.Resources.greenIcon, "Mining " + mapInternalToDisplay(currentAlgo));
             setStatusButtons();
+        }
+
+        private string mapInternalToDisplay(string algorithm)
+        {
+            DataRow row = algorithms.Rows.Find(algorithm);
+            if (row == null)
+                return "None";
+            else
+                return row["displayName"].ToString();
         }
 
         private void updateMinerUI(Dictionary<string, double> summary, DataTable deviceList)
@@ -512,9 +625,8 @@ namespace TMB_Switcher
                 }
 
                 // Update currently mining info
-                string displayAlgo = Utilities.MapInternalAlgoToDisplay(currentAlgo);
                 switchingAlgorithm = true;
-                currentlyMiningCombo.Text = displayAlgo;
+                currentlyMiningCombo.Text = mapInternalToDisplay(currentAlgo);
                 switchingAlgorithm = false;
             }
 
@@ -631,27 +743,21 @@ namespace TMB_Switcher
                 else if (seriesText[0] == 't')
                     seriesText[0] = 'T';
                 seriesText.Insert(seriesText.Length - 4, ' ');
-                series.LegendText = seriesText.ToString();
-                series.XValueType = ChartValueType.DateTime;
-                series.YValueType = ChartValueType.Double;
-                series.ChartType = SeriesChartType.Line;
-                series.ChartArea = "minerArea";
-                series.Legend = "minerLegend";
+                
+                // Allow user to disable total hash, GPU hash or GPU temp
+                bool enabled = false;
+                if (col.Caption == "totalHash")
+                    enabled = graphTotalCheck.Checked;
+                else if (col.Caption.Contains("Hash"))
+                    enabled = graphHashCheck.Checked;
+                else
+                    enabled = graphTempCheck.Checked;
+
+                formatSeries(series, seriesText.ToString(), enabled);
+
                 // Put temperature on the second axis
                 if (seriesText[seriesText.Length - 4] == 'T')
                     series.YAxisType = AxisType.Secondary;
-                series.BorderWidth = 2;
-                series.MarkerStyle = MarkerStyle.Circle;
-                series.MarkerSize = 5;
-                series.MarkerStep = 1;
-
-                // Allow user to disable total hash, GPU hash or GPU temp
-                if (col.Caption == "totalHash")
-                    series.Enabled = graphTotalCheck.Checked;
-                else if (col.Caption.Contains("Hash"))
-                    series.Enabled = graphHashCheck.Checked;
-                else
-                    series.Enabled = graphTempCheck.Checked;
             }
             minerChart.DataBind();
         }
@@ -682,55 +788,24 @@ namespace TMB_Switcher
             }
 
             // Only show a portion of the history instead of all rows in graph
-            string origSeries = "";
-            string newSeries = "";
-            foreach (DataColumn col in profit.Columns)
+            string origSeries = "composite";
+            string newSeries = "filteredcomposite";
+            foreach (DataRow algorithm in algorithms.Rows)
             {
-                if (col.Caption == "time")
-                    continue;
-                string display = Utilities.MapInternalAlgoToDisplay(col.Caption);
-                origSeries += col.Caption + ",";
-                newSeries += "filtered" + display + ",";
+                string algorithmName = algorithm["name"].ToString();
+                origSeries += "," + algorithmName;
+                newSeries += "," + "filtered" + algorithmName;
             }
-            profitChart.DataManipulator.Filter(CompareMethod.LessThan, DateTime.Now.AddHours(-profitHistoryBar.Value).ToOADate(), origSeries.TrimEnd(','), newSeries.TrimEnd(','), "X");
-            foreach (DataColumn col in profit.Columns)
+            profitChart.DataManipulator.Filter(CompareMethod.LessThan, DateTime.Now.AddHours(-profitHistoryBar.Value).ToOADate(), origSeries, newSeries, "X");
+            foreach (DataRow algorithm in algorithms.Rows)
             {
-                if (col.Caption == "time")
-                    continue;
-                string display = Utilities.MapInternalAlgoToDisplay(col.Caption);
-                Series series = profitChart.Series["filtered" + display];
-                series.LegendText = Utilities.MapInternalAlgoToDisplay(col.Caption);
-                series.XValueType = ChartValueType.DateTime;
-                series.YValueType = ChartValueType.Double;
-                series.ChartType = SeriesChartType.Line;
-                series.ChartArea = "profitArea";
-                series.Legend = "profitLegend";
-                switch (col.Caption)
-                {
-                    case "scrypt":
-                        series.Enabled = graphScryptCheck.Checked;
-                        break;
-                    case "nscrypt":
-                        series.Enabled = graphNScryptCheck.Checked;
-                        break;
-                    case "x11":
-                        series.Enabled = graphX11Check.Checked;
-                        break;
-                    case "x13":
-                        series.Enabled = graphX13Check.Checked;
-                        break;
-                    case "x15":
-                        series.Enabled = graphX15Check.Checked;
-                        break;
-                    case "nist5":
-                        series.Enabled = graphNIST5Check.Checked;
-                        break;
-                }
-                series.BorderWidth = 2;
-                series.MarkerStyle = MarkerStyle.Circle;
-                series.MarkerSize = 5;
-                series.MarkerStep = 1;
+                Series series = profitChart.Series["filtered" + algorithm["name"].ToString()];
+                formatSeries(series, algorithm["displayName"].ToString(), ((CheckBox)algorithm["graphCheckbox"]).Checked);
             }
+            Series compositeSeries = profitChart.Series["filteredcomposite"];
+            formatSeries(compositeSeries, "Your Profit", graphCompositeCheck.Checked);
+            compositeSeries.MarkerSize = 6;
+            compositeSeries.BorderWidth = 3;
             profitChart.DataBind();
 
             // Pool hash and pool-side user hash rate
@@ -769,6 +844,8 @@ namespace TMB_Switcher
                             {
                                 string coinName = key.Substring(0, key.Length - 10);
                                 double unconfirmed = balanceInfo[coinName + "-Unconfirmed"];
+                                if (filterBalancesCheck.Checked && value == 0.0 && unconfirmed == 0.0)
+                                    continue;
                                 DataRow row = coinList.NewRow();
                                 row[0] = coinName;
                                 row[1] = value;
@@ -806,8 +883,21 @@ namespace TMB_Switcher
 
             // Update currently mining info here as we could have switched
             switchingAlgorithm = true;
-            currentlyMiningCombo.Text = Utilities.MapInternalAlgoToDisplay(currentAlgo);
+            currentlyMiningCombo.Text = mapInternalToDisplay(currentAlgo);
             switchingAlgorithm = false;
+        }
+
+        private void formatSeries(Series series, string displayName, bool enabled)
+        {
+            series.LegendText = displayName;
+            series.XValueType = ChartValueType.DateTime;
+            series.YValueType = ChartValueType.Double;
+            series.ChartType = SeriesChartType.Line;
+            series.Enabled = enabled;
+            series.BorderWidth = 2;
+            series.MarkerStyle = MarkerStyle.Circle;
+            series.MarkerSize = 4;
+            series.MarkerStep = 1;
         }
 
         private void clearMinerStats()
@@ -916,14 +1006,9 @@ namespace TMB_Switcher
                 else if (minerAPI != null)
                     minerAPI = null;
 
-                // Get list of algorithms based on what is enabled
-                algorithms.Clear();
-                if (config.GetBool("scryptEnabled")) algorithms.Add("scrypt");
-                if (config.GetBool("nScryptEnabled")) algorithms.Add("nscrypt");
-                if (config.GetBool("x11Enabled")) algorithms.Add("x11");
-                if (config.GetBool("x13Enabled")) algorithms.Add("x13");
-                if (config.GetBool("x15Enabled")) algorithms.Add("x15");
-                if (config.GetBool("nist5Enabled")) algorithms.Add("nist5");
+                // Update algorithm list with enabled flags
+                foreach (DataRow algorithm in algorithms.Rows)
+                    algorithm["enabled"] = config.GetBool(algorithm["name"].ToString() + "Enabled");
 
                 string mName = config.GetString("minerName");
                 if (!string.IsNullOrEmpty(mName))
@@ -950,47 +1035,31 @@ namespace TMB_Switcher
             if (poolRow.Table.Columns.Contains("Algorithm Type"))
             {
                 string algorithmType = poolRow["Algorithm Type"].ToString();
-                switch (algorithmType)
+                foreach (DataRow algorithm in algorithms.Rows)
                 {
-                    case "X13":
-                        return "x13";
-                    case "X11":
-                        return "x11";
-                    case "X15":
-                        return "x15";
-                    case "NIST5":
-                        return "nist5";
-                    case "Keccak":
-                        return "keccak";
-                    case "Scrypt":
-                        return "scrypt";
-                    case "NScrypt":
-                        return "nscrypt";
-                    default:
-                        return "none";
+                    if (algorithm["type"].ToString() == algorithmType)
+                        return algorithm["name"].ToString();
                 }
+                return "none";
             }
-
+            
             // Return the algorithm that corresponds to the pool algorithm
             string poolAlgorithm = poolRow["algorithm"].ToString();
-            if (poolAlgorithm.StartsWith("darkcoin", StringComparison.InvariantCultureIgnoreCase) ||
-                poolAlgorithm.StartsWith("x11", StringComparison.InvariantCultureIgnoreCase))
-                return "x11";
-            else if (poolAlgorithm.StartsWith("marucoin", StringComparison.InvariantCultureIgnoreCase) ||
-                poolAlgorithm.StartsWith("x13", StringComparison.InvariantCultureIgnoreCase))
-                return "x13";
-            else if (poolAlgorithm.StartsWith("bitblock", StringComparison.InvariantCultureIgnoreCase) ||
-                poolAlgorithm.StartsWith("x15", StringComparison.InvariantCultureIgnoreCase))
-                return "x15";
-            else if (poolAlgorithm.StartsWith("talkcoin", StringComparison.InvariantCultureIgnoreCase) ||
-                poolAlgorithm.StartsWith("nist5", StringComparison.InvariantCultureIgnoreCase))
-                return "nist5";
-            // Future support for Keccak if ever needed
-            else if (poolAlgorithm.StartsWith("maxcoin", StringComparison.InvariantCultureIgnoreCase) ||
-                poolAlgorithm.StartsWith("keccak", StringComparison.InvariantCultureIgnoreCase))
-                return "keccak";
-            else
-                return "scrypt";
+
+            defaultAlgo = "none";
+            foreach (DataRow algorithm in algorithms.Rows)
+            {
+                string[] kernels = algorithm["kernels"].ToString().Split(',');
+                string algorithmName = algorithm["name"].ToString();
+                foreach (string kernel in kernels)
+                {
+                    if (kernel == "*")
+                        defaultAlgo = algorithmName;
+                    else if (poolAlgorithm.StartsWith(kernel, StringComparison.InvariantCultureIgnoreCase))
+                        return algorithmName;
+                }
+            }
+            return defaultAlgo;
         }
 
         private void switchAlgorithm(string bestAlgo)
@@ -1098,9 +1167,10 @@ namespace TMB_Switcher
             string bestAlgo = "none";
             foreach (string key in profitInfo.Keys)
             {
+                DataRow algorithm = algorithms.Rows.Find(key);
                 // Only switch between algorithms the user has enabled
                 if (profitInfo[key] > bestScore &&
-                    algorithms.Contains(key))
+                    algorithm != null && (bool)algorithm["enabled"])
                 {
                     bestScore = profitInfo[key];
                     bestAlgo = key;
@@ -1352,39 +1422,21 @@ namespace TMB_Switcher
             config["monitorPool"] = enablePoolMonitorCheck.Checked;
             config["enableProfitSwitching"] = enableSwitchingCheck.Checked;
             config["startMinerMinimized"] = startMinerMinimizedCheck.Checked;
+            config["killMinerOnExit"] = killMinerOnExitCheck.Checked;
 
             StoreDouble(instantDiffText.Text, "instantDiff", problems);
             StoreDouble(fiveDiffText.Text, "fiveMinDiff", problems);
             StoreDouble(tenDiffText.Text, "tenMinDiff", problems);
             StoreDouble(thirtyDiffText.Text, "thirtyMinDiff", problems);
 
-            StoreDouble(scryptMultText.Text, "scryptMult", problems);
-            StoreDouble(nScryptMultText.Text, "nscryptMult", problems);
-            StoreDouble(x11MultText.Text, "x11Mult", problems);
-            StoreDouble(x13MultText.Text, "x13Mult", problems);
-            StoreDouble(x15MultText.Text, "x15Mult", problems);
-            StoreDouble(nist5MultText.Text, "nist5Mult", problems);
-
-            StoreDouble(scryptOffText.Text, "scryptOff", problems);
-            StoreDouble(nScryptOffText.Text, "nscryptOff", problems);
-            StoreDouble(x11OffText.Text, "x11Off", problems);
-            StoreDouble(x13OffText.Text, "x13Off", problems);
-            StoreDouble(x15OffText.Text, "x15Off", problems);
-            StoreDouble(nist5OffText.Text, "nist5Off", problems);
-
-            config["scryptBatch"] = scryptBatchText.Text;
-            config["nscryptBatch"] = nScryptBatchText.Text;
-            config["x11Batch"] = x11BatchText.Text;
-            config["x13Batch"] = x13BatchText.Text;
-            config["x15Batch"] = x15BatchText.Text;
-            config["nist5Batch"] = nist5BatchText.Text;
-
-            config["scryptEnabled"] = enableScryptCheck.Checked;
-            config["nScryptEnabled"] = enableNScryptCheck.Checked;
-            config["x11Enabled"] = enableX11Check.Checked;
-            config["x13Enabled"] = enableX13Check.Checked;
-            config["x15Enabled"] = enableX15Check.Checked;
-            config["nist5Enabled"] = enableNIST5Check.Checked;
+            foreach (DataRow algorithm in algorithms.Rows)
+            {
+                string algorithmName = algorithm["name"].ToString();
+                StoreDouble(((TextBox)algorithm["multiplierTextbox"]).Text, algorithmName + "Mult", problems);
+                StoreDouble(((TextBox)algorithm["offsetTextbox"]).Text, algorithmName + "Off", problems);
+                config[algorithmName + "Batch"] = ((TextBox)algorithm["batchTextbox"]).Text;
+                config[algorithmName + "Enabled"] = ((CheckBox)algorithm["settingCheckbox"]).Checked;
+            }
 
             if (problems.Count > 0)
             {
@@ -1436,39 +1488,26 @@ namespace TMB_Switcher
             enablePoolMonitorCheck.Checked = config.GetBool("monitorPool");
             enableSwitchingCheck.Checked = config.GetBool("enableProfitSwitching");
             startMinerMinimizedCheck.Checked = config.GetBool("startMinerMinimized");
+            killMinerOnExitCheck.Checked = config.GetBool("killMinerOnExit");
 
             instantDiffText.Text = RestoreDouble("instantDiff", instantDiffText.Text);
             fiveDiffText.Text = RestoreDouble("fiveMinDiff", fiveDiffText.Text);
             tenDiffText.Text = RestoreDouble("tenMinDiff", tenDiffText.Text);
             thirtyDiffText.Text = RestoreDouble("thirtyMinDiff", thirtyDiffText.Text);
 
-            scryptMultText.Text = RestoreDouble("scryptMult", scryptMultText.Text);
-            nScryptMultText.Text = RestoreDouble("nscryptMult", nScryptMultText.Text);
-            x11MultText.Text = RestoreDouble("x11Mult", x11MultText.Text);
-            x13MultText.Text = RestoreDouble("x13Mult", x13MultText.Text);
-            x15MultText.Text = RestoreDouble("x15Mult", x15MultText.Text);
-            nist5MultText.Text = RestoreDouble("nist5Mult", nist5MultText.Text);
-
-            scryptOffText.Text = RestoreDouble("scryptOff", scryptOffText.Text);
-            nScryptOffText.Text = RestoreDouble("nscryptOff", nScryptOffText.Text);
-            x11OffText.Text = RestoreDouble("x11Off", x11OffText.Text);
-            x13OffText.Text = RestoreDouble("x13Off", x13OffText.Text);
-            x15OffText.Text = RestoreDouble("x15Off", x15OffText.Text);
-            nist5OffText.Text = RestoreDouble("nist5Off", nist5OffText.Text);
-
-            scryptBatchText.Text = RestoreString("scryptBatch", scryptBatchText.Text);
-            nScryptBatchText.Text = RestoreString("nscryptBatch", nScryptBatchText.Text);
-            x11BatchText.Text = RestoreString("x11Batch", x11BatchText.Text);
-            x13BatchText.Text = RestoreString("x13Batch", x13BatchText.Text);
-            x15BatchText.Text = RestoreString("x15Batch", x15BatchText.Text);
-            nist5BatchText.Text = RestoreString("nist5Batch", nist5BatchText.Text);
-
-            graphScryptCheck.Checked = enableScryptCheck.Checked = config.GetBool("scryptEnabled");
-            graphNScryptCheck.Checked = enableNScryptCheck.Checked = config.GetBool("nscryptEnabled");
-            graphX11Check.Checked = enableX11Check.Checked = config.GetBool("x11Enabled");
-            graphX13Check.Checked = enableX13Check.Checked = config.GetBool("x13Enabled");
-            graphX15Check.Checked = enableX15Check.Checked = config.GetBool("x15Enabled");
-            graphNIST5Check.Checked = enableNIST5Check.Checked = config.GetBool("nist5Enabled");
+            foreach (DataRow algorithm in algorithms.Rows)
+            {
+                string algorithmName = algorithm["name"].ToString();
+                TextBox textbox = (TextBox)algorithm["multiplierTextbox"];
+                textbox.Text = RestoreDouble(algorithmName + "Mult", textbox.Text);
+                textbox = (TextBox)algorithm["offsetTextbox"];
+                textbox.Text = RestoreDouble(algorithmName + "Off", textbox.Text);
+                textbox = (TextBox)algorithm["batchTextbox"];
+                textbox.Text = RestoreString(algorithmName + "Batch", textbox.Text);
+                ((CheckBox)algorithm["graphCheckbox"]).Checked =
+                    ((CheckBox)algorithm["settingCheckbox"]).Checked =
+                        config.GetBool(algorithmName + "Enabled");
+            }
         }
 
         private string RestoreDouble(string keyName, string text)
@@ -1543,7 +1582,7 @@ namespace TMB_Switcher
 
         private void minerHistoryBar_Scroll(object sender, EventArgs e)
         {
-            toolTip.SetToolTip(minerHistoryBar, minerHistoryBar.Value.ToString() + " Hours");
+            tooltip.SetToolTip(minerHistoryBar, minerHistoryBar.Value.ToString() + " Hours");
         }
 
         private void minerChart_MouseMove(object sender, MouseEventArgs e)
@@ -1577,10 +1616,10 @@ namespace TMB_Switcher
                     }
                 }
                 else
-                    toolTip.RemoveAll();
+                    tooltip.SetToolTip(minerChart, null);
 
                 if (!string.IsNullOrEmpty(caption))
-                    toolTip.SetToolTip(minerChart, caption);
+                    tooltip.SetToolTip(minerChart, caption);
             }
             catch { }
         }
@@ -1653,46 +1692,17 @@ namespace TMB_Switcher
                 batchFileText.Text = fileName;
         }
 
-        private void scryptBatchButton_Click(object sender, EventArgs e)
+        private void batchButton_Click(object sender, EventArgs e)
         {
+            Button button = sender as Button;
+            if (button == null)
+                return;
+            DataRow row = button.Tag as DataRow;
+            if (row == null)
+                return;
             string fileName;
-            if (getBatchFile("Scrypt", out fileName) == DialogResult.OK)
-                scryptBatchText.Text = fileName;
-        }
-
-        private void nScryptBatchButton_Click(object sender, EventArgs e)
-        {
-            string fileName;
-            if (getBatchFile("N-Scrypt", out fileName) == DialogResult.OK)
-                nScryptBatchText.Text = fileName;
-        }
-
-        private void x11BatchButton_Click(object sender, EventArgs e)
-        {
-            string fileName;
-            if (getBatchFile("X11", out fileName) == DialogResult.OK)
-                x11BatchText.Text = fileName;
-        }
-
-        private void x13BatchButton_Click(object sender, EventArgs e)
-        {
-            string fileName;
-            if (getBatchFile("X13", out fileName) == DialogResult.OK)
-                x13BatchText.Text = fileName;
-        }
-
-        private void x15BatchButton_Click(object sender, EventArgs e)
-        {
-            string fileName;
-            if (getBatchFile("X15", out fileName) == DialogResult.OK)
-                x15BatchText.Text = fileName;
-        }
-
-        private void nist5BatchButton_Click(object sender, EventArgs e)
-        {
-            string fileName;
-            if (getBatchFile("NIST5", out fileName) == DialogResult.OK)
-                nist5BatchText.Text = fileName;
+            if (getBatchFile(row["displayName"].ToString(), out fileName) == DialogResult.OK)
+                ((TextBox)row["batchTextbox"]).Text = fileName;
         }
 
         private DialogResult getBatchFile(string type, out string fileName)
@@ -1745,46 +1755,24 @@ namespace TMB_Switcher
 
         #region Profit Graph Event Handlers
 
-        private void graphScryptCheck_CheckedChanged(object sender, EventArgs e)
+        private void graphCheckbox_CheckedChanged(object sender, EventArgs e)
         {
-            Series series = profitChart.Series.FindByName("filteredScrypt");
+            CheckBox checkbox = sender as CheckBox;
+            if (checkbox == null)
+                return;
+            DataRow row = checkbox.Tag as DataRow;
+            if (row == null)
+                return;
+            Series series = profitChart.Series.FindByName("filtered" + row["name"].ToString());
             if (series != null)
-                series.Enabled = graphScryptCheck.Checked;
+                series.Enabled = ((CheckBox)row["graphCheckbox"]).Checked;
         }
 
-        private void graphNScryptCheck_CheckedChanged(object sender, EventArgs e)
+        private void graphCompositeCheck_CheckedChanged(object sender, EventArgs e)
         {
-            Series series = profitChart.Series.FindByName("filteredN-Scrypt");
+            Series series = profitChart.Series.FindByName("filteredcomposite");
             if (series != null)
-                series.Enabled = graphScryptCheck.Checked;
-        }
-
-        private void graphX11Check_CheckedChanged(object sender, EventArgs e)
-        {
-            Series series = profitChart.Series.FindByName("filteredX11");
-            if (series != null)
-                series.Enabled = graphScryptCheck.Checked;
-        }
-
-        private void graphX13Check_CheckedChanged(object sender, EventArgs e)
-        {
-            Series series = profitChart.Series.FindByName("filteredX13");
-            if (series != null)
-                series.Enabled = graphScryptCheck.Checked;
-        }
-
-        private void graphX15Check_CheckedChanged(object sender, EventArgs e)
-        {
-            Series series = profitChart.Series.FindByName("filteredX15");
-            if (series != null)
-                series.Enabled = graphScryptCheck.Checked;
-        }
-
-        private void graphNIST5Check_CheckedChanged(object sender, EventArgs e)
-        {
-            Series series = profitChart.Series.FindByName("filteredNIST5");
-            if (series != null)
-                series.Enabled = graphScryptCheck.Checked;
+                series.Enabled = graphCompositeCheck.Checked;
         }
 
         private void profitChart_MouseMove(object sender, MouseEventArgs e)
@@ -1802,53 +1790,36 @@ namespace TMB_Switcher
                             return;
                         previousMousePosition = hitPoint.XValue;
                         caption += string.Format("Time: {0}\n", DateTime.FromOADate(hitPoint.XValue));
-                        foreach (DataColumn col in poolProfitInfo.Columns)
+                        foreach (DataRow algorithm in algorithms.Rows)
                         {
-                            if (col.Caption == "time")
-                                continue;
                             bool enabled = false;
-                            switch (col.Caption)
-                            {
-                                case "scrypt":
-                                    enabled = graphScryptCheck.Checked;
-                                    break;
-                                case "nscrypt":
-                                    enabled = graphNScryptCheck.Checked;
-                                    break;
-                                case "x11":
-                                    enabled = graphX11Check.Checked;
-                                    break;
-                                case "x13":
-                                    enabled = graphX13Check.Checked;
-                                    break;
-                                case "x15":
-                                    enabled = graphX15Check.Checked;
-                                    break;
-                                case "nist5":
-                                    enabled = graphNIST5Check.Checked;
-                                    break;
-                            }
+                            string algorithmName = algorithm["name"].ToString();
+                            enabled = ((CheckBox)algorithm["graphCheckbox"]).Checked;
                             if (enabled)
                             {
-                                string name = Utilities.MapInternalAlgoToDisplay(col.Caption);
-                                DataPoint point = profitChart.Series["filtered" + name].Points[results[0].PointIndex];
-                                caption += string.Format("{0}: {1}\n", name, point.YValues[0]);
+                                DataPoint point = profitChart.Series["filtered" + algorithmName].Points[results[0].PointIndex];
+                                caption += string.Format("{0}: {1}\n", algorithm["displayName"].ToString(), point.YValues[0]);
                             }
+                        }
+                        if (graphCompositeCheck.Checked)
+                        {
+                            DataPoint point = profitChart.Series["filteredcomposite"].Points[results[0].PointIndex];
+                            caption += string.Format("Your Profit: {0}\n", point.YValues[0]);
                         }
                     }
                 }
                 else
-                    toolTip.RemoveAll();
+                    tooltip.SetToolTip(profitChart, null);
 
                 if (!string.IsNullOrEmpty(caption))
-                    toolTip.SetToolTip(profitChart, caption);
+                    tooltip.SetToolTip(profitChart, caption);
             }
             catch { }
         }
 
         private void profitHistoryBar_Scroll(object sender, EventArgs e)
         {
-            toolTip.SetToolTip(profitHistoryBar, profitHistoryBar.Value.ToString() + " Hours");
+            tooltip.SetToolTip(profitHistoryBar, profitHistoryBar.Value.ToString() + " Hours");
         }
 
         #endregion
@@ -2095,7 +2066,16 @@ namespace TMB_Switcher
         {
             if (switchingAlgorithm)
                 return;
-            switchAlgorithm(Utilities.MapDisplayAlgoToInternal(currentlyMiningCombo.Text));
+            string currentAlgo = "none";
+            foreach (DataRow algorithm in algorithms.Rows)
+            {
+                if (algorithm["displayName"].ToString() == currentlyMiningCombo.Text)
+                {
+                    currentAlgo = algorithm["name"].ToString();
+                    break;
+                }
+            }
+            switchAlgorithm(currentAlgo);
         }
 
         #endregion
