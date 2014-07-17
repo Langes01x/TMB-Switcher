@@ -88,14 +88,13 @@ namespace TMB_Switcher
                 string data = performAPICall("bestalgo");
                 if (data == null)
                     return null;
-                string[] parts = data.Split(new char[] {',', '[', ']', '{', '}'}, StringSplitOptions.RemoveEmptyEntries);
-                if (parts.Length % 2 != 0)
-                    return null;
+                string[] algos = data.Split(new string[] { "},{" }, StringSplitOptions.RemoveEmptyEntries);
                 Dictionary<string, double> output = new Dictionary<string, double>();
-                for (int i = 0; i < parts.Length; i+=2)
+                foreach (string algo in algos)
                 {
-                    string[] algoParts = Utilities.SplitJSON(parts[i]);
-                    string[] scoreParts = Utilities.SplitJSON(parts[i+1]);
+                    string[] parts = algo.Split(new char[] { ',', '[', ']', '{', '}' }, StringSplitOptions.RemoveEmptyEntries);
+                    string[] algoParts = Utilities.SplitJSON(parts[0]);
+                    string[] scoreParts = Utilities.SplitJSON(parts[1]);
                     output.Add(algoParts[1], Convert.ToDouble(scoreParts[1]));
                 }
                 return output;
