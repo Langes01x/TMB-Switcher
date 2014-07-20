@@ -39,6 +39,7 @@ namespace TMB_Switcher
         private static bool refreshSettings = true;
         private static DateTime lastPoolRefresh = DateTime.Now;
         private static DateTime lastMinerRefresh = DateTime.Now;
+        private static DateTime lastUpdateCheck = DateTime.Now.AddHours(-1);
 
         // Historical data
         private static DataTable poolProfitInfo = null;
@@ -47,6 +48,7 @@ namespace TMB_Switcher
         private static double averageProfit = 0.0;
         private static double minProfit = double.NaN;
         private static double maxProfit = double.NaN;
+        private static int graphMovingAveragePoints = 30;
 
         // Tray icon
         private static NotifyIcon trayIcon = null;
@@ -68,6 +70,11 @@ namespace TMB_Switcher
             Starting
         }
 
+        // Version information
+        private static string currentVersionFormat = null;
+        private static string latestVersionFormat = null;
+        private static Version lastVersionSeen = null;
+
         private static DataTable algorithms = null;
 
         // Current miner data
@@ -75,7 +82,10 @@ namespace TMB_Switcher
         private static int numGPU = 0;
 
         // Chart last X mouse position
-        private static double? previousMousePosition = null;
+        private static DataPoint lastProfitHitPoint = null;
+        private static string lastProfitSeriesName = null;
+        private static DataPoint lastMinerHitPoint = null;
+        private static string lastMinerSeriesName = null;
 
         #endregion
 
@@ -108,9 +118,16 @@ namespace TMB_Switcher
             currentlyMiningCombo.SelectedIndex = 0;
             switchingAlgorithm = false;
             statusFormat = Text;
+            latestVersionFormat = latestVersionLabel.Text;
+            currentVersionFormat = currentVersionLabel.Text;
             trayIcon = new NotifyIcon();
             setStatus(Properties.Resources.redIcon, "Starting Up");
             trayIcon.Visible = true;
+
+            linkLabel.Links[0].LinkData = null;
+            btcAddress.Links[0].LinkData = null;
+            ltcAddress.Links[0].LinkData = null;
+            drkAddress.Links[0].LinkData = null;
 
             if (noAPI)
             {
@@ -354,6 +371,13 @@ namespace TMB_Switcher
             {
                 try
                 {
+                    DateTime currentTime = DateTime.Now;
+
+                    if (lastUpdateCheck.AddHours(1) < currentTime)
+                    {
+                        Invoke(new MethodInvoker(delegate { checkForUpdate(); }));
+                    }
+
                     // If user has changed any settings and applied them then we need to
                     // update our pool and miner connectivity
                     Invoke(new MethodInvoker(delegate { updateSettings(); }));
@@ -368,8 +392,6 @@ namespace TMB_Switcher
                         Thread.Sleep(1000);
                         continue;
                     }
-
-                    DateTime currentTime = DateTime.Now;
 
                     if (minerAPI != null || noAPI)
                     {
@@ -547,6 +569,28 @@ namespace TMB_Switcher
                 return row["displayName"].ToString();
         }
 
+        private void checkForUpdate()
+        {
+            Version currentVersion = Assembly.GetEntryAssembly().GetName().Version;
+            currentVersionLabel.Text = string.Format(currentVersionFormat, currentVersion);
+            string updateMessage = null;
+            Version latestVersion = Utilities.getLatestVersion(out updateMessage);
+            if (latestVersion != null)
+            {
+                latestVersionLabel.Text = string.Format(latestVersionFormat, latestVersion);
+                versionMessage.Text = updateMessage;
+                if (latestVersion > currentVersion && lastVersionSeen != latestVersion)
+                {
+                    lastVersionSeen = latestVersion;
+                    trayIcon.ShowBalloonTip(2000, "New Version Available", string.Format("Version {0} is now available", latestVersion), ToolTipIcon.Info);
+                }
+            }
+            else
+            {
+                latestVersionLabel.Text = string.Format(latestVersionFormat, "Could not find latest version");
+            }
+        }
+
         private void updateMinerUI(Dictionary<string, double> summary, DataTable deviceList)
         {
             if (poolList != null)
@@ -721,17 +765,25 @@ namespace TMB_Switcher
                 }
             }
 
-            // Only show an hour of history instead of all rows in graph
-            string origSeries = "";
-            string newSeries = "";
+            // Only show the selected period of history instead of all 24 hours
+            StringBuilder origSeries = new StringBuilder();
+            StringBuilder tempSeries = new StringBuilder();
+            StringBuilder newSeries = new StringBuilder();
             foreach (DataColumn col in minerInfo.Columns)
             {
                 if (col.Caption == "time")
                     continue;
-                origSeries += col.Caption + ",";
-                newSeries += "filtered" + col.Caption + ",";
+                origSeries.Append(col.Caption);
+                origSeries.Append(',');
+                newSeries.AppendFormat("filtered{0},", col.Caption);
+                tempSeries.AppendFormat("temp{0},", col.Caption);
             }
-            minerChart.DataManipulator.Filter(CompareMethod.LessThan, DateTime.Now.AddHours(-minerHistoryBar.Value).ToOADate(), origSeries.TrimEnd(','), newSeries.TrimEnd(','), "X");
+            origSeries.Length = origSeries.Length - 1;
+            tempSeries.Length = tempSeries.Length - 1;
+            newSeries.Length = newSeries.Length - 1;
+            string tempSeriesString = tempSeries.ToString();
+            minerChart.DataManipulator.Filter(CompareMethod.LessThan, DateTime.Now.AddHours(minerHistoryBar.LeftValue - 24).ToOADate(), origSeries.ToString(), tempSeriesString, "X");
+            minerChart.DataManipulator.Filter(CompareMethod.MoreThan, DateTime.Now.AddHours(minerHistoryBar.RightValue - 24).ToOADate(), tempSeriesString, newSeries.ToString(), "X");
             foreach (DataColumn col in minerInfo.Columns)
             {
                 if (col.Caption == "time")
@@ -753,11 +805,12 @@ namespace TMB_Switcher
                 else
                     enabled = graphTempCheck.Checked;
 
-                formatSeries(series, seriesText.ToString(), enabled);
+                formatSeries(series, seriesText.ToString(), enabled, 4, 2);
 
                 // Put temperature on the second axis
                 if (seriesText[seriesText.Length - 4] == 'T')
                     series.YAxisType = AxisType.Secondary;
+                minerChart.Series["temp" + col.Caption].Enabled = false;
             }
             minerChart.DataBind();
         }
@@ -768,44 +821,61 @@ namespace TMB_Switcher
             if (profit.Rows.Count > 0 && currentAlgo != "none" && currentAlgo != "off")
             {
                 double currentProfit = Convert.ToDouble(profit.Rows[profit.Rows.Count - 1][currentAlgo]);
-                currentProfitText.Text = currentProfit.ToString("F8");
+                currentProfitText.Text = Utilities.formatProfit(currentProfit);
 
                 if (double.IsNaN(minProfit) || minProfit > currentProfit)
                 {
                     minProfit = currentProfit;
-                    lowProfitText.Text = minProfit.ToString("F8");
+                    lowProfitText.Text = Utilities.formatProfit(minProfit);
                 }
 
                 if (double.IsNaN(maxProfit) || maxProfit < currentProfit)
                 {
                     maxProfit = currentProfit;
-                    highProfitText.Text = maxProfit.ToString("F8");
+                    highProfitText.Text = Utilities.formatProfit(maxProfit);
                 }
 
                 averageProfit = ((averageProfit * profitRowCount) + currentProfit) / (profitRowCount + 1);
                 profitRowCount++;
-                averageProfitText.Text = averageProfit.ToString("F8");
+                averageProfitText.Text = Utilities.formatProfit(averageProfit);
             }
 
-            // Only show a portion of the history instead of all rows in graph
-            string origSeries = "composite";
-            string newSeries = "filteredcomposite";
+            // Only show the selected period of history instead of all 24 hours
+            StringBuilder origSeries = new StringBuilder("composite");
+            StringBuilder tempSeries = new StringBuilder("tempcomposite");
+            StringBuilder newSeries = new StringBuilder("filteredcomposite");
             foreach (DataRow algorithm in algorithms.Rows)
             {
                 string algorithmName = algorithm["name"].ToString();
-                origSeries += "," + algorithmName;
-                newSeries += "," + "filtered" + algorithmName;
+                origSeries.Append(',');
+                origSeries.Append(algorithmName);
+                newSeries.AppendFormat(",filtered{0}", algorithmName);
+                tempSeries.AppendFormat(",temp{0}", algorithmName);
             }
-            profitChart.DataManipulator.Filter(CompareMethod.LessThan, DateTime.Now.AddHours(-profitHistoryBar.Value).ToOADate(), origSeries, newSeries, "X");
+            string tempSeriesString = tempSeries.ToString();
+            profitChart.DataManipulator.Filter(CompareMethod.LessThan, DateTime.Now.AddHours(profitHistoryBar.LeftValue - 24).ToOADate(), origSeries.ToString(), tempSeriesString, "X");
+            profitChart.DataManipulator.Filter(CompareMethod.MoreThan, DateTime.Now.AddHours(profitHistoryBar.RightValue - 24).ToOADate(), tempSeriesString, newSeries.ToString(), "X");
+            Series compositeSeries = profitChart.Series["filteredcomposite"];
+            formatSeries(compositeSeries, "Your Profit", graphCompositeCheck.Checked, 6, 3);
+            profitChart.Series["tempcomposite"].Enabled = false;
+            // Set up the moving average (requires copying some data to force alignment)
+            if (compositeSeries.Points.Count > 0)
+            {
+                int points = Math.Min(graphMovingAveragePoints, compositeSeries.Points.Count);
+                compositeSeries = profitChart.Series.FindByName("MA");
+                if (compositeSeries == null)
+                    compositeSeries = profitChart.Series.Add("MA");
+                for (int i = 0; i < points; i++)
+                    compositeSeries.Points.AddXY(profitChart.Series["filteredcomposite"].Points[i].XValue, profitChart.Series["filteredcomposite"].Points[i].YValues[0]);
+                profitChart.DataManipulator.FinancialFormula(FinancialFormula.ExponentialMovingAverage, points.ToString(), "filteredcomposite", "MA");
+                formatSeries(compositeSeries, "Average Profit", graphAverageCheck.Checked, 6, 3);
+            }
             foreach (DataRow algorithm in algorithms.Rows)
             {
                 Series series = profitChart.Series["filtered" + algorithm["name"].ToString()];
-                formatSeries(series, algorithm["displayName"].ToString(), ((CheckBox)algorithm["graphCheckbox"]).Checked);
+                formatSeries(series, algorithm["displayName"].ToString(), ((CheckBox)algorithm["graphCheckbox"]).Checked, 4, 2);
+                profitChart.Series["temp" + algorithm["name"].ToString()].Enabled = false;
             }
-            Series compositeSeries = profitChart.Series["filteredcomposite"];
-            formatSeries(compositeSeries, "Your Profit", graphCompositeCheck.Checked);
-            compositeSeries.MarkerSize = 6;
-            compositeSeries.BorderWidth = 3;
             profitChart.DataBind();
 
             // Pool hash and pool-side user hash rate
@@ -828,16 +898,16 @@ namespace TMB_Switcher
                     switch (key)
                     {
                         case "est_total":
-                            totalText.Text = value.ToString("F8");
+                            totalText.Text = Utilities.formatProfit(value);
                             break;
                         case "unexchanged":
-                            unexchangedText.Text = value.ToString("F8");
+                            unexchangedText.Text = Utilities.formatProfit(value);
                             break;
                         case "exchanged":
-                            exchangedText.Text = value.ToString("F8");
+                            exchangedText.Text = Utilities.formatProfit(value);
                             break;
                         case "alltime":
-                            allTimeText.Text = value.ToString("F8");
+                            allTimeText.Text = Utilities.formatProfit(value);
                             break;
                         default:
                             if (key.EndsWith("-Confirmed"))
@@ -887,16 +957,16 @@ namespace TMB_Switcher
             switchingAlgorithm = false;
         }
 
-        private void formatSeries(Series series, string displayName, bool enabled)
+        private void formatSeries(Series series, string displayName, bool enabled, int markerSize, int borderWidth)
         {
             series.LegendText = displayName;
             series.XValueType = ChartValueType.DateTime;
             series.YValueType = ChartValueType.Double;
             series.ChartType = SeriesChartType.Line;
             series.Enabled = enabled;
-            series.BorderWidth = 2;
+            series.BorderWidth = borderWidth;
             series.MarkerStyle = MarkerStyle.Circle;
-            series.MarkerSize = 4;
+            series.MarkerSize = markerSize;
             series.MarkerStep = 1;
         }
 
@@ -1154,7 +1224,7 @@ namespace TMB_Switcher
             DateTime currentTime = DateTime.Now;
             string message = string.Format("Switching from {0} to {1} after {2}", currentAlgo, bestAlgo, currentTime - lastSwitch);
             Utilities.WriteLog(message);
-            trayIcon.ShowBalloonTip(2000, "", message, ToolTipIcon.Info);
+            trayIcon.ShowBalloonTip(2000, "Switching Algorithm", message, ToolTipIcon.Info);
             lastSwitch = currentTime;
 
             previousAlgo = currentAlgo;
@@ -1216,7 +1286,7 @@ namespace TMB_Switcher
             if ((bestScore - currentScore) / currentScore >= (instantDiff / 100))
             {
                 if (verbose)
-                    trayIcon.ShowBalloonTip(2000, "", string.Format("Instant switch from {0} {1} to {2} {3}", currentAlgo, currentScore, bestAlgo, bestScore), ToolTipIcon.Info);
+                    trayIcon.ShowBalloonTip(2000, "Switching Algorithm (Debug)", string.Format("Instant switch from {0} {1} to {2} {3}", currentAlgo, currentScore, bestAlgo, bestScore), ToolTipIcon.Info);
                 return bestAlgo;
             }
 
@@ -1328,7 +1398,7 @@ namespace TMB_Switcher
                 if ((bestScore - currentScore) / currentScore >= (diff / 100))
                 {
                     if (verbose)
-                        trayIcon.ShowBalloonTip(2000, "", string.Format("Historical switch from {0} {1} to {2} {3}", currentAlgo, currentScore, bestAlgo, bestScore), ToolTipIcon.Info);
+                        trayIcon.ShowBalloonTip(2000, "Switching Algorithm (Debug)", string.Format("Historical switch from {0} {1} to {2} {3}", currentAlgo, currentScore, bestAlgo, bestScore), ToolTipIcon.Info);
                     return bestAlgo;
                 }
             }
@@ -1392,7 +1462,7 @@ namespace TMB_Switcher
             }
             else
             {
-                trayIcon.ShowBalloonTip(2000, "", "Problem reading configuration file. Using defaults.", ToolTipIcon.Warning);
+                trayIcon.ShowBalloonTip(2000, "Warning", "Problem reading configuration file. Using defaults.", ToolTipIcon.Warning);
             }
             if (config == null)
             {
@@ -1580,11 +1650,6 @@ namespace TMB_Switcher
 
         #region Miner Graph Event Handlers
 
-        private void minerHistoryBar_Scroll(object sender, EventArgs e)
-        {
-            tooltip.SetToolTip(minerHistoryBar, minerHistoryBar.Value.ToString() + " Hours");
-        }
-
         private void minerChart_MouseMove(object sender, MouseEventArgs e)
         {
             try
@@ -1596,10 +1661,15 @@ namespace TMB_Switcher
                     DataPoint hitPoint = results[0].Object as DataPoint;
                     if (hitPoint != null)
                     {
-                        if (previousMousePosition.HasValue && hitPoint.XValue == previousMousePosition.Value)
+                        if (hitPoint == lastMinerHitPoint)
                             return;
-                        previousMousePosition = hitPoint.XValue;
+                        int pointIndex = results[0].PointIndex;
+                        if (lastMinerHitPoint != null)
+                            lastMinerHitPoint.MarkerSize = 4;
+                        lastMinerHitPoint = hitPoint;
+                        lastMinerSeriesName = results[0].Series.Name;
                         caption += string.Format("Time: {0}\n", DateTime.FromOADate(hitPoint.XValue));
+                        hitPoint.MarkerSize = 10;
                         foreach (DataColumn col in minerInfo.Columns)
                         {
                             if (col.Caption == "time")
@@ -1627,6 +1697,23 @@ namespace TMB_Switcher
         private void graphTotalCheck_CheckedChanged(object sender, EventArgs e)
         {
             minerChart.Series["filteredtotalHash"].Enabled = graphTotalCheck.Checked;
+        }
+
+        private void minerHistoryBar_LeftMoving(object sender, int e)
+        {
+            DateTime now = DateTime.Now;
+            minerHistoryBar.setTooltip(tooltip, string.Format("{0} - {1}", now.AddHours(24 - e), now.AddHours(24 - minerHistoryBar.RightValue)));
+        }
+
+        private void minerHistoryBar_RightMoving(object sender, int e)
+        {
+            DateTime now = DateTime.Now;
+            minerHistoryBar.setTooltip(tooltip, string.Format("{0} - {1}", now.AddHours(24 - minerHistoryBar.LeftValue), now.AddHours(24 - e)));
+        }
+
+        private void minerHistoryBar_ValueChanged(object sender, int e)
+        {
+            minerHistoryLabel.Text = string.Format("History ({0} to {1} hours ago):", 24 - minerHistoryBar.LeftValue, 24 - minerHistoryBar.RightValue);
         }
 
         #endregion
@@ -1775,6 +1862,13 @@ namespace TMB_Switcher
                 series.Enabled = graphCompositeCheck.Checked;
         }
 
+        private void graphAverageCheck_CheckedChanged(object sender, EventArgs e)
+        {
+            Series series = profitChart.Series.FindByName("MA");
+            if (series != null)
+                series.Enabled = graphAverageCheck.Checked;
+        }
+
         private void profitChart_MouseMove(object sender, MouseEventArgs e)
         {
             try
@@ -1786,10 +1880,30 @@ namespace TMB_Switcher
                     DataPoint hitPoint = results[0].Object as DataPoint;
                     if (hitPoint != null)
                     {
-                        if (previousMousePosition.HasValue && hitPoint.XValue == previousMousePosition.Value)
+                        if (lastProfitHitPoint == hitPoint)
                             return;
-                        previousMousePosition = hitPoint.XValue;
+                        int pointIndex = results[0].PointIndex;
+                        int movingAverageStart = Math.Min(profitChart.Series["filteredcomposite"].Points.Count - 1, graphMovingAveragePoints - 1);
+                        if(results[0].Series.Name == "MA")
+                            pointIndex += movingAverageStart;
+                        switch (lastProfitSeriesName)
+                        {
+                            case "MA":
+                                lastProfitHitPoint.MarkerSize = 6;
+                                break;
+                            case "filteredcomposite":
+                                lastProfitHitPoint.MarkerSize = 6;
+                                break;
+                            case null:
+                                break;
+                            default:
+                                lastProfitHitPoint.MarkerSize = 4;
+                                break;
+                        }
+                        lastProfitHitPoint = hitPoint;
+                        lastProfitSeriesName = results[0].Series.Name;
                         caption += string.Format("Time: {0}\n", DateTime.FromOADate(hitPoint.XValue));
+                        hitPoint.MarkerSize = 10;
                         foreach (DataRow algorithm in algorithms.Rows)
                         {
                             bool enabled = false;
@@ -1797,14 +1911,26 @@ namespace TMB_Switcher
                             enabled = ((CheckBox)algorithm["graphCheckbox"]).Checked;
                             if (enabled)
                             {
-                                DataPoint point = profitChart.Series["filtered" + algorithmName].Points[results[0].PointIndex];
+                                DataPoint point = profitChart.Series["filtered" + algorithmName].Points[pointIndex];
                                 caption += string.Format("{0}: {1}\n", algorithm["displayName"].ToString(), point.YValues[0]);
                             }
                         }
                         if (graphCompositeCheck.Checked)
                         {
-                            DataPoint point = profitChart.Series["filteredcomposite"].Points[results[0].PointIndex];
+                            DataPoint point = profitChart.Series["filteredcomposite"].Points[pointIndex];
                             caption += string.Format("Your Profit: {0}\n", point.YValues[0]);
+                        }
+                        if (graphAverageCheck.Checked)
+                        {
+                            if (pointIndex >= movingAverageStart)
+                            {
+                                DataPoint point = profitChart.Series["MA"].Points[pointIndex - movingAverageStart];
+                                caption += string.Format("Average Profit: {0}\n", Utilities.formatProfit(point.YValues[0]));
+                            }
+                            else
+                            {
+                                caption += "Average Profit: N/A\n";
+                            }
                         }
                     }
                 }
@@ -1817,9 +1943,21 @@ namespace TMB_Switcher
             catch { }
         }
 
-        private void profitHistoryBar_Scroll(object sender, EventArgs e)
+        private void profitHistoryBar_LeftMoving(object sender, int e)
         {
-            tooltip.SetToolTip(profitHistoryBar, profitHistoryBar.Value.ToString() + " Hours");
+            DateTime now = DateTime.Now;
+            profitHistoryBar.setTooltip(tooltip, string.Format("{0} - {1}", now.AddHours(24 - e), now.AddHours(24 - profitHistoryBar.RightValue)));
+        }
+
+        private void profitHistoryBar_RightMoving(object sender, int e)
+        {
+            DateTime now = DateTime.Now;
+            profitHistoryBar.setTooltip(tooltip, string.Format("{0} - {1}", now.AddHours(24 - profitHistoryBar.LeftValue), now.AddHours(24 - e)));
+        }
+
+        private void profitHistoryBar_ValueChanged(object sender, int e)
+        {
+            profitHistoryLabel.Text = string.Format("History ({0} to {1} hours ago):", 24 - profitHistoryBar.LeftValue, 24 - profitHistoryBar.RightValue);
         }
 
         #endregion
@@ -2058,6 +2196,26 @@ namespace TMB_Switcher
                 refreshMiner = true;
                 poolView.Rows[poolView.SelectedRows[0].Index + direction].Selected = true;
             }
+        }
+
+        #endregion
+
+        #region About Screen Event Handlers
+
+        private void linkLabel_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
+        {
+            Process.Start("https://bitcointalk.org/index.php?topic=661827");
+        }
+
+        private void address_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
+        {
+            try
+            {
+                LinkLabel label = sender as LinkLabel;
+                Clipboard.SetText(label.Text.Substring(label.LinkArea.Start, label.LinkArea.Length - label.LinkArea.Start));
+                trayIcon.ShowBalloonTip(2000, "Thank You", "Donation Address Copied", ToolTipIcon.Info);
+            }
+            catch { }
         }
 
         #endregion

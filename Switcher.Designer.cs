@@ -29,11 +29,11 @@
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
-            System.Windows.Forms.DataVisualization.Charting.ChartArea chartArea3 = new System.Windows.Forms.DataVisualization.Charting.ChartArea();
-            System.Windows.Forms.DataVisualization.Charting.Legend legend3 = new System.Windows.Forms.DataVisualization.Charting.Legend();
-            System.Windows.Forms.DataVisualization.Charting.ChartArea chartArea4 = new System.Windows.Forms.DataVisualization.Charting.ChartArea();
-            System.Windows.Forms.DataVisualization.Charting.Legend legend4 = new System.Windows.Forms.DataVisualization.Charting.Legend();
-            System.Windows.Forms.DataVisualization.Charting.Series series2 = new System.Windows.Forms.DataVisualization.Charting.Series();
+            System.Windows.Forms.DataVisualization.Charting.ChartArea chartArea1 = new System.Windows.Forms.DataVisualization.Charting.ChartArea();
+            System.Windows.Forms.DataVisualization.Charting.Legend legend1 = new System.Windows.Forms.DataVisualization.Charting.Legend();
+            System.Windows.Forms.DataVisualization.Charting.ChartArea chartArea2 = new System.Windows.Forms.DataVisualization.Charting.ChartArea();
+            System.Windows.Forms.DataVisualization.Charting.Legend legend2 = new System.Windows.Forms.DataVisualization.Charting.Legend();
+            System.Windows.Forms.DataVisualization.Charting.Series series1 = new System.Windows.Forms.DataVisualization.Charting.Series();
             this.tabControl = new System.Windows.Forms.TabControl();
             this.statsPage = new System.Windows.Forms.TabPage();
             this.staleLabel = new System.Windows.Forms.Label();
@@ -110,19 +110,24 @@
             this.profitHistoryPage = new System.Windows.Forms.TabPage();
             this.profitChart = new System.Windows.Forms.DataVisualization.Charting.Chart();
             this.profitHistoryPanel = new System.Windows.Forms.Panel();
+            this.profitTableLayoutPanel = new System.Windows.Forms.TableLayoutPanel();
+            this.profitHistoryLabel = new System.Windows.Forms.Label();
+            this.profitHistoryBar = new TMB_Switcher.GraphSelectionBar();
             this.profitFlowLayoutPanel = new System.Windows.Forms.FlowLayoutPanel();
             this.graphCompositeCheck = new System.Windows.Forms.CheckBox();
-            this.profitHistoryLabel = new System.Windows.Forms.Label();
-            this.profitHistoryBar = new System.Windows.Forms.TrackBar();
+            this.graphAverageCheck = new System.Windows.Forms.CheckBox();
             this.minerHistoryPage = new System.Windows.Forms.TabPage();
             this.minerChart = new System.Windows.Forms.DataVisualization.Charting.Chart();
             this.minerHistoryPanel = new System.Windows.Forms.Panel();
-            this.graphHashCheck = new System.Windows.Forms.CheckBox();
-            this.graphTempCheck = new System.Windows.Forms.CheckBox();
-            this.graphTotalCheck = new System.Windows.Forms.CheckBox();
+            this.minerTableLayoutPanel = new System.Windows.Forms.TableLayoutPanel();
+            this.minerHistoryBar = new TMB_Switcher.GraphSelectionBar();
             this.minerHistoryLabel = new System.Windows.Forms.Label();
-            this.minerHistoryBar = new System.Windows.Forms.TrackBar();
+            this.minerFlowLayoutPanel = new System.Windows.Forms.FlowLayoutPanel();
+            this.graphTotalCheck = new System.Windows.Forms.CheckBox();
+            this.graphTempCheck = new System.Windows.Forms.CheckBox();
+            this.graphHashCheck = new System.Windows.Forms.CheckBox();
             this.settingsPage = new System.Windows.Forms.TabPage();
+            this.killMinerOnExitCheck = new System.Windows.Forms.CheckBox();
             this.settingTableLayoutPanel = new System.Windows.Forms.TableLayoutPanel();
             this.batchLabel = new System.Windows.Forms.Label();
             this.offsetLabel = new System.Windows.Forms.Label();
@@ -170,12 +175,21 @@
             this.enableSwitchingCheck = new System.Windows.Forms.CheckBox();
             this.poolRefreshLabel = new System.Windows.Forms.Label();
             this.minerRefreshLabel = new System.Windows.Forms.Label();
+            this.aboutPage = new System.Windows.Forms.TabPage();
+            this.drkAddress = new System.Windows.Forms.LinkLabel();
+            this.ltcAddress = new System.Windows.Forms.LinkLabel();
+            this.btcAddress = new System.Windows.Forms.LinkLabel();
+            this.donationLabel = new System.Windows.Forms.Label();
+            this.linkLabel = new System.Windows.Forms.LinkLabel();
+            this.versionMessage = new System.Windows.Forms.Label();
+            this.latestVersionLabel = new System.Windows.Forms.Label();
+            this.currentVersionLabel = new System.Windows.Forms.Label();
+            this.creatorLabel = new System.Windows.Forms.Label();
+            this.appLabel = new System.Windows.Forms.Label();
             this.toolStrip = new System.Windows.Forms.ToolStrip();
             this.closeButton = new System.Windows.Forms.ToolStripButton();
             this.refreshButton = new System.Windows.Forms.ToolStripButton();
             this.tooltip = new System.Windows.Forms.ToolTip(this.components);
-            this.minerFlowLayoutPanel = new System.Windows.Forms.FlowLayoutPanel();
-            this.killMinerOnExitCheck = new System.Windows.Forms.CheckBox();
             this.tabControl.SuspendLayout();
             this.statsPage.SuspendLayout();
             this.poolsPage.SuspendLayout();
@@ -189,20 +203,21 @@
             this.profitHistoryPage.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.profitChart)).BeginInit();
             this.profitHistoryPanel.SuspendLayout();
+            this.profitTableLayoutPanel.SuspendLayout();
             this.profitFlowLayoutPanel.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.profitHistoryBar)).BeginInit();
             this.minerHistoryPage.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.minerChart)).BeginInit();
             this.minerHistoryPanel.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.minerHistoryBar)).BeginInit();
+            this.minerTableLayoutPanel.SuspendLayout();
+            this.minerFlowLayoutPanel.SuspendLayout();
             this.settingsPage.SuspendLayout();
             this.settingTableLayoutPanel.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.startupDeadDelayNum)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.historicalDelayNum)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.poolRefreshNum)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.minerRefreshNum)).BeginInit();
+            this.aboutPage.SuspendLayout();
             this.toolStrip.SuspendLayout();
-            this.minerFlowLayoutPanel.SuspendLayout();
             this.SuspendLayout();
             // 
             // tabControl
@@ -214,6 +229,7 @@
             this.tabControl.Controls.Add(this.profitHistoryPage);
             this.tabControl.Controls.Add(this.minerHistoryPage);
             this.tabControl.Controls.Add(this.settingsPage);
+            this.tabControl.Controls.Add(this.aboutPage);
             this.tabControl.Dock = System.Windows.Forms.DockStyle.Fill;
             this.tabControl.Location = new System.Drawing.Point(0, 25);
             this.tabControl.Name = "tabControl";
@@ -1016,16 +1032,16 @@
             // 
             // profitChart
             // 
-            chartArea3.AxisX.MaximumAutoSize = 85F;
-            chartArea3.AxisX.Title = "Time";
-            chartArea3.AxisY.Title = "BTC/Day/Mh (Normalized)";
-            chartArea3.Name = "profitArea";
-            this.profitChart.ChartAreas.Add(chartArea3);
+            chartArea1.AxisX.MaximumAutoSize = 85F;
+            chartArea1.AxisX.Title = "Time";
+            chartArea1.AxisY.Title = "BTC/Day/Mh (Normalized)";
+            chartArea1.Name = "profitArea";
+            this.profitChart.ChartAreas.Add(chartArea1);
             this.profitChart.Dock = System.Windows.Forms.DockStyle.Fill;
-            legend3.Alignment = System.Drawing.StringAlignment.Center;
-            legend3.Docking = System.Windows.Forms.DataVisualization.Charting.Docking.Bottom;
-            legend3.Name = "profitLegend";
-            this.profitChart.Legends.Add(legend3);
+            legend1.Alignment = System.Drawing.StringAlignment.Center;
+            legend1.Docking = System.Windows.Forms.DataVisualization.Charting.Docking.Bottom;
+            legend1.Name = "profitLegend";
+            this.profitChart.Legends.Add(legend1);
             this.profitChart.Location = new System.Drawing.Point(0, 0);
             this.profitChart.Name = "profitChart";
             this.profitChart.Size = new System.Drawing.Size(891, 345);
@@ -1034,18 +1050,62 @@
             // 
             // profitHistoryPanel
             // 
+            this.profitHistoryPanel.Controls.Add(this.profitTableLayoutPanel);
             this.profitHistoryPanel.Controls.Add(this.profitFlowLayoutPanel);
-            this.profitHistoryPanel.Controls.Add(this.profitHistoryLabel);
-            this.profitHistoryPanel.Controls.Add(this.profitHistoryBar);
             this.profitHistoryPanel.Dock = System.Windows.Forms.DockStyle.Bottom;
             this.profitHistoryPanel.Location = new System.Drawing.Point(0, 345);
             this.profitHistoryPanel.Name = "profitHistoryPanel";
             this.profitHistoryPanel.Size = new System.Drawing.Size(891, 46);
             this.profitHistoryPanel.TabIndex = 3;
             // 
+            // profitTableLayoutPanel
+            // 
+            this.profitTableLayoutPanel.ColumnCount = 2;
+            this.profitTableLayoutPanel.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle());
+            this.profitTableLayoutPanel.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle());
+            this.profitTableLayoutPanel.Controls.Add(this.profitHistoryLabel, 0, 0);
+            this.profitTableLayoutPanel.Controls.Add(this.profitHistoryBar, 1, 0);
+            this.profitTableLayoutPanel.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.profitTableLayoutPanel.Location = new System.Drawing.Point(0, 24);
+            this.profitTableLayoutPanel.Name = "profitTableLayoutPanel";
+            this.profitTableLayoutPanel.RowCount = 1;
+            this.profitTableLayoutPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
+            this.profitTableLayoutPanel.Size = new System.Drawing.Size(891, 22);
+            this.profitTableLayoutPanel.TabIndex = 4;
+            // 
+            // profitHistoryLabel
+            // 
+            this.profitHistoryLabel.Anchor = System.Windows.Forms.AnchorStyles.Left;
+            this.profitHistoryLabel.AutoSize = true;
+            this.profitHistoryLabel.Location = new System.Drawing.Point(3, 4);
+            this.profitHistoryLabel.Name = "profitHistoryLabel";
+            this.profitHistoryLabel.Size = new System.Drawing.Size(128, 13);
+            this.profitHistoryLabel.TabIndex = 7;
+            this.profitHistoryLabel.Text = "History (1 to 0 hours ago):";
+            // 
+            // profitHistoryBar
+            // 
+            this.profitHistoryBar.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.profitHistoryBar.BackColor = System.Drawing.Color.Transparent;
+            this.profitHistoryBar.LeftValue = 23;
+            this.profitHistoryBar.Location = new System.Drawing.Point(137, 3);
+            this.profitHistoryBar.MaxValue = 24;
+            this.profitHistoryBar.MinimumSize = new System.Drawing.Size(100, 10);
+            this.profitHistoryBar.Name = "profitHistoryBar";
+            this.profitHistoryBar.RightValue = 24;
+            this.profitHistoryBar.Size = new System.Drawing.Size(751, 16);
+            this.profitHistoryBar.SplitterSize = 5;
+            this.profitHistoryBar.TabIndex = 46;
+            this.profitHistoryBar.LeftMoving += new System.EventHandler<int>(this.profitHistoryBar_LeftMoving);
+            this.profitHistoryBar.RightMoving += new System.EventHandler<int>(this.profitHistoryBar_RightMoving);
+            this.profitHistoryBar.LeftValueChanged += new System.EventHandler<int>(this.profitHistoryBar_ValueChanged);
+            this.profitHistoryBar.RightValueChanged += new System.EventHandler<int>(this.profitHistoryBar_ValueChanged);
+            // 
             // profitFlowLayoutPanel
             // 
             this.profitFlowLayoutPanel.Controls.Add(this.graphCompositeCheck);
+            this.profitFlowLayoutPanel.Controls.Add(this.graphAverageCheck);
             this.profitFlowLayoutPanel.Dock = System.Windows.Forms.DockStyle.Top;
             this.profitFlowLayoutPanel.Location = new System.Drawing.Point(0, 0);
             this.profitFlowLayoutPanel.Name = "profitFlowLayoutPanel";
@@ -1065,30 +1125,19 @@
             this.graphCompositeCheck.UseVisualStyleBackColor = true;
             this.graphCompositeCheck.CheckedChanged += new System.EventHandler(this.graphCompositeCheck_CheckedChanged);
             // 
-            // profitHistoryLabel
+            // graphAverageCheck
             // 
-            this.profitHistoryLabel.AutoSize = true;
-            this.profitHistoryLabel.Location = new System.Drawing.Point(8, 27);
-            this.profitHistoryLabel.Name = "profitHistoryLabel";
-            this.profitHistoryLabel.Size = new System.Drawing.Size(42, 13);
-            this.profitHistoryLabel.TabIndex = 7;
-            this.profitHistoryLabel.Text = "History:";
-            // 
-            // profitHistoryBar
-            // 
-            this.profitHistoryBar.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.profitHistoryBar.AutoSize = false;
-            this.profitHistoryBar.LargeChange = 12;
-            this.profitHistoryBar.Location = new System.Drawing.Point(56, 24);
-            this.profitHistoryBar.Maximum = 24;
-            this.profitHistoryBar.Minimum = 1;
-            this.profitHistoryBar.Name = "profitHistoryBar";
-            this.profitHistoryBar.Size = new System.Drawing.Size(832, 20);
-            this.profitHistoryBar.TabIndex = 6;
-            this.profitHistoryBar.TickStyle = System.Windows.Forms.TickStyle.None;
-            this.profitHistoryBar.Value = 1;
-            this.profitHistoryBar.Scroll += new System.EventHandler(this.profitHistoryBar_Scroll);
+            this.graphAverageCheck.AutoSize = true;
+            this.graphAverageCheck.Checked = true;
+            this.graphAverageCheck.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.graphAverageCheck.Location = new System.Drawing.Point(84, 3);
+            this.graphAverageCheck.Name = "graphAverageCheck";
+            this.graphAverageCheck.Size = new System.Drawing.Size(93, 17);
+            this.graphAverageCheck.TabIndex = 1;
+            this.graphAverageCheck.Text = "Average Profit";
+            this.tooltip.SetToolTip(this.graphAverageCheck, "Uses a 30 period weighted moving average.");
+            this.graphAverageCheck.UseVisualStyleBackColor = true;
+            this.graphAverageCheck.CheckedChanged += new System.EventHandler(this.graphAverageCheck_CheckedChanged);
             // 
             // minerHistoryPage
             // 
@@ -1103,66 +1152,95 @@
             // 
             // minerChart
             // 
-            chartArea4.AxisX.Title = "Time";
-            chartArea4.AxisY.Title = "Hashrate (Kh/s)";
-            chartArea4.AxisY2.Title = "Temperature (°C)";
-            chartArea4.Name = "minerArea";
-            this.minerChart.ChartAreas.Add(chartArea4);
+            chartArea2.AxisX.Title = "Time";
+            chartArea2.AxisY.Title = "Hashrate (Kh/s)";
+            chartArea2.AxisY2.Title = "Temperature (°C)";
+            chartArea2.Name = "minerArea";
+            this.minerChart.ChartAreas.Add(chartArea2);
             this.minerChart.Dock = System.Windows.Forms.DockStyle.Fill;
-            legend4.Alignment = System.Drawing.StringAlignment.Center;
-            legend4.Docking = System.Windows.Forms.DataVisualization.Charting.Docking.Bottom;
-            legend4.Name = "minerLegend";
-            this.minerChart.Legends.Add(legend4);
+            legend2.Alignment = System.Drawing.StringAlignment.Center;
+            legend2.Docking = System.Windows.Forms.DataVisualization.Charting.Docking.Bottom;
+            legend2.Name = "minerLegend";
+            this.minerChart.Legends.Add(legend2);
             this.minerChart.Location = new System.Drawing.Point(0, 0);
             this.minerChart.Name = "minerChart";
-            series2.BorderWidth = 2;
-            series2.ChartArea = "minerArea";
-            series2.ChartType = System.Windows.Forms.DataVisualization.Charting.SeriesChartType.FastLine;
-            series2.Enabled = false;
-            series2.Legend = "minerLegend";
-            series2.LegendText = "Total Hashrate";
-            series2.Name = "totalHash";
-            series2.XValueMember = "time";
-            series2.YValueMembers = "totalHash";
-            this.minerChart.Series.Add(series2);
+            series1.BorderWidth = 2;
+            series1.ChartArea = "minerArea";
+            series1.ChartType = System.Windows.Forms.DataVisualization.Charting.SeriesChartType.FastLine;
+            series1.Enabled = false;
+            series1.Legend = "minerLegend";
+            series1.LegendText = "Total Hashrate";
+            series1.Name = "totalHash";
+            series1.XValueMember = "time";
+            series1.YValueMembers = "totalHash";
+            this.minerChart.Series.Add(series1);
             this.minerChart.Size = new System.Drawing.Size(891, 345);
             this.minerChart.TabIndex = 2;
             this.minerChart.MouseMove += new System.Windows.Forms.MouseEventHandler(this.minerChart_MouseMove);
             // 
             // minerHistoryPanel
             // 
+            this.minerHistoryPanel.Controls.Add(this.minerTableLayoutPanel);
             this.minerHistoryPanel.Controls.Add(this.minerFlowLayoutPanel);
-            this.minerHistoryPanel.Controls.Add(this.minerHistoryLabel);
-            this.minerHistoryPanel.Controls.Add(this.minerHistoryBar);
             this.minerHistoryPanel.Dock = System.Windows.Forms.DockStyle.Bottom;
             this.minerHistoryPanel.Location = new System.Drawing.Point(0, 345);
             this.minerHistoryPanel.Name = "minerHistoryPanel";
             this.minerHistoryPanel.Size = new System.Drawing.Size(891, 46);
             this.minerHistoryPanel.TabIndex = 4;
             // 
-            // graphHashCheck
+            // minerTableLayoutPanel
             // 
-            this.graphHashCheck.AutoSize = true;
-            this.graphHashCheck.Checked = true;
-            this.graphHashCheck.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.graphHashCheck.Location = new System.Drawing.Point(146, 3);
-            this.graphHashCheck.Name = "graphHashCheck";
-            this.graphHashCheck.Size = new System.Drawing.Size(51, 17);
-            this.graphHashCheck.TabIndex = 10;
-            this.graphHashCheck.Text = "Hash";
-            this.graphHashCheck.UseVisualStyleBackColor = true;
+            this.minerTableLayoutPanel.ColumnCount = 2;
+            this.minerTableLayoutPanel.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle());
+            this.minerTableLayoutPanel.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle());
+            this.minerTableLayoutPanel.Controls.Add(this.minerHistoryBar, 1, 0);
+            this.minerTableLayoutPanel.Controls.Add(this.minerHistoryLabel, 0, 0);
+            this.minerTableLayoutPanel.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.minerTableLayoutPanel.Location = new System.Drawing.Point(0, 24);
+            this.minerTableLayoutPanel.Name = "minerTableLayoutPanel";
+            this.minerTableLayoutPanel.RowCount = 1;
+            this.minerTableLayoutPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
+            this.minerTableLayoutPanel.Size = new System.Drawing.Size(891, 22);
+            this.minerTableLayoutPanel.TabIndex = 6;
             // 
-            // graphTempCheck
+            // minerHistoryBar
             // 
-            this.graphTempCheck.AutoSize = true;
-            this.graphTempCheck.Checked = true;
-            this.graphTempCheck.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.graphTempCheck.Location = new System.Drawing.Point(87, 3);
-            this.graphTempCheck.Name = "graphTempCheck";
-            this.graphTempCheck.Size = new System.Drawing.Size(53, 17);
-            this.graphTempCheck.TabIndex = 9;
-            this.graphTempCheck.Text = "Temp";
-            this.graphTempCheck.UseVisualStyleBackColor = true;
+            this.minerHistoryBar.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right)));
+            this.minerHistoryBar.BackColor = System.Drawing.Color.Transparent;
+            this.minerHistoryBar.LeftValue = 23;
+            this.minerHistoryBar.Location = new System.Drawing.Point(137, 3);
+            this.minerHistoryBar.MaxValue = 24;
+            this.minerHistoryBar.MinimumSize = new System.Drawing.Size(100, 10);
+            this.minerHistoryBar.Name = "minerHistoryBar";
+            this.minerHistoryBar.RightValue = 24;
+            this.minerHistoryBar.Size = new System.Drawing.Size(751, 16);
+            this.minerHistoryBar.SplitterSize = 5;
+            this.minerHistoryBar.TabIndex = 47;
+            this.minerHistoryBar.LeftMoving += new System.EventHandler<int>(this.minerHistoryBar_LeftMoving);
+            this.minerHistoryBar.RightMoving += new System.EventHandler<int>(this.minerHistoryBar_RightMoving);
+            this.minerHistoryBar.LeftValueChanged += new System.EventHandler<int>(this.minerHistoryBar_ValueChanged);
+            this.minerHistoryBar.RightValueChanged += new System.EventHandler<int>(this.minerHistoryBar_ValueChanged);
+            // 
+            // minerHistoryLabel
+            // 
+            this.minerHistoryLabel.Anchor = System.Windows.Forms.AnchorStyles.Left;
+            this.minerHistoryLabel.AutoSize = true;
+            this.minerHistoryLabel.Location = new System.Drawing.Point(3, 4);
+            this.minerHistoryLabel.Name = "minerHistoryLabel";
+            this.minerHistoryLabel.Size = new System.Drawing.Size(128, 13);
+            this.minerHistoryLabel.TabIndex = 7;
+            this.minerHistoryLabel.Text = "History (1 to 0 hours ago):";
+            // 
+            // minerFlowLayoutPanel
+            // 
+            this.minerFlowLayoutPanel.Controls.Add(this.graphTotalCheck);
+            this.minerFlowLayoutPanel.Controls.Add(this.graphTempCheck);
+            this.minerFlowLayoutPanel.Controls.Add(this.graphHashCheck);
+            this.minerFlowLayoutPanel.Dock = System.Windows.Forms.DockStyle.Top;
+            this.minerFlowLayoutPanel.Location = new System.Drawing.Point(0, 0);
+            this.minerFlowLayoutPanel.Name = "minerFlowLayoutPanel";
+            this.minerFlowLayoutPanel.Size = new System.Drawing.Size(891, 24);
+            this.minerFlowLayoutPanel.TabIndex = 11;
             // 
             // graphTotalCheck
             // 
@@ -1177,30 +1255,29 @@
             this.graphTotalCheck.UseVisualStyleBackColor = true;
             this.graphTotalCheck.CheckedChanged += new System.EventHandler(this.graphTotalCheck_CheckedChanged);
             // 
-            // minerHistoryLabel
+            // graphTempCheck
             // 
-            this.minerHistoryLabel.AutoSize = true;
-            this.minerHistoryLabel.Location = new System.Drawing.Point(8, 27);
-            this.minerHistoryLabel.Name = "minerHistoryLabel";
-            this.minerHistoryLabel.Size = new System.Drawing.Size(42, 13);
-            this.minerHistoryLabel.TabIndex = 7;
-            this.minerHistoryLabel.Text = "History:";
+            this.graphTempCheck.AutoSize = true;
+            this.graphTempCheck.Checked = true;
+            this.graphTempCheck.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.graphTempCheck.Location = new System.Drawing.Point(87, 3);
+            this.graphTempCheck.Name = "graphTempCheck";
+            this.graphTempCheck.Size = new System.Drawing.Size(53, 17);
+            this.graphTempCheck.TabIndex = 9;
+            this.graphTempCheck.Text = "Temp";
+            this.graphTempCheck.UseVisualStyleBackColor = true;
             // 
-            // minerHistoryBar
+            // graphHashCheck
             // 
-            this.minerHistoryBar.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.minerHistoryBar.AutoSize = false;
-            this.minerHistoryBar.LargeChange = 12;
-            this.minerHistoryBar.Location = new System.Drawing.Point(56, 24);
-            this.minerHistoryBar.Maximum = 24;
-            this.minerHistoryBar.Minimum = 1;
-            this.minerHistoryBar.Name = "minerHistoryBar";
-            this.minerHistoryBar.Size = new System.Drawing.Size(832, 20);
-            this.minerHistoryBar.TabIndex = 6;
-            this.minerHistoryBar.TickStyle = System.Windows.Forms.TickStyle.None;
-            this.minerHistoryBar.Value = 1;
-            this.minerHistoryBar.Scroll += new System.EventHandler(this.minerHistoryBar_Scroll);
+            this.graphHashCheck.AutoSize = true;
+            this.graphHashCheck.Checked = true;
+            this.graphHashCheck.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.graphHashCheck.Location = new System.Drawing.Point(146, 3);
+            this.graphHashCheck.Name = "graphHashCheck";
+            this.graphHashCheck.Size = new System.Drawing.Size(51, 17);
+            this.graphHashCheck.TabIndex = 10;
+            this.graphHashCheck.Text = "Hash";
+            this.graphHashCheck.UseVisualStyleBackColor = true;
             // 
             // settingsPage
             // 
@@ -1255,6 +1332,19 @@
             this.settingsPage.Text = "Settings";
             this.settingsPage.UseVisualStyleBackColor = true;
             // 
+            // killMinerOnExitCheck
+            // 
+            this.killMinerOnExitCheck.AutoSize = true;
+            this.killMinerOnExitCheck.Checked = true;
+            this.killMinerOnExitCheck.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.killMinerOnExitCheck.Location = new System.Drawing.Point(389, 92);
+            this.killMinerOnExitCheck.Name = "killMinerOnExitCheck";
+            this.killMinerOnExitCheck.Size = new System.Drawing.Size(105, 17);
+            this.killMinerOnExitCheck.TabIndex = 91;
+            this.killMinerOnExitCheck.Text = "Kill Miner On Exit";
+            this.tooltip.SetToolTip(this.killMinerOnExitCheck, "Whether or not the miner should exit when the switcher does");
+            this.killMinerOnExitCheck.UseVisualStyleBackColor = true;
+            // 
             // settingTableLayoutPanel
             // 
             this.settingTableLayoutPanel.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
@@ -1264,7 +1354,7 @@
             this.settingTableLayoutPanel.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 15F));
             this.settingTableLayoutPanel.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 15F));
             this.settingTableLayoutPanel.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 70F));
-            this.settingTableLayoutPanel.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 50F));
+            this.settingTableLayoutPanel.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 55F));
             this.settingTableLayoutPanel.Controls.Add(this.batchLabel, 3, 0);
             this.settingTableLayoutPanel.Controls.Add(this.offsetLabel, 2, 0);
             this.settingTableLayoutPanel.Controls.Add(this.enableLabel, 0, 0);
@@ -1785,6 +1875,135 @@
             this.minerRefreshLabel.TabIndex = 0;
             this.minerRefreshLabel.Text = "Miner Refresh Rate:";
             // 
+            // aboutPage
+            // 
+            this.aboutPage.Controls.Add(this.drkAddress);
+            this.aboutPage.Controls.Add(this.ltcAddress);
+            this.aboutPage.Controls.Add(this.btcAddress);
+            this.aboutPage.Controls.Add(this.donationLabel);
+            this.aboutPage.Controls.Add(this.linkLabel);
+            this.aboutPage.Controls.Add(this.versionMessage);
+            this.aboutPage.Controls.Add(this.latestVersionLabel);
+            this.aboutPage.Controls.Add(this.currentVersionLabel);
+            this.aboutPage.Controls.Add(this.creatorLabel);
+            this.aboutPage.Controls.Add(this.appLabel);
+            this.aboutPage.Location = new System.Drawing.Point(4, 22);
+            this.aboutPage.Name = "aboutPage";
+            this.aboutPage.Size = new System.Drawing.Size(891, 391);
+            this.aboutPage.TabIndex = 7;
+            this.aboutPage.Text = "About";
+            this.aboutPage.UseVisualStyleBackColor = true;
+            // 
+            // drkAddress
+            // 
+            this.drkAddress.AutoSize = true;
+            this.drkAddress.LinkArea = new System.Windows.Forms.LinkArea(5, 39);
+            this.drkAddress.Location = new System.Drawing.Point(29, 352);
+            this.drkAddress.Name = "drkAddress";
+            this.drkAddress.Size = new System.Drawing.Size(250, 17);
+            this.drkAddress.TabIndex = 9;
+            this.drkAddress.TabStop = true;
+            this.drkAddress.Text = "DRK: Xg8bkndrqfKx15kEkwnZNwVCGi62vf9WrL";
+            this.drkAddress.UseCompatibleTextRendering = true;
+            this.drkAddress.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.address_LinkClicked);
+            // 
+            // ltcAddress
+            // 
+            this.ltcAddress.AutoSize = true;
+            this.ltcAddress.LinkArea = new System.Windows.Forms.LinkArea(5, 39);
+            this.ltcAddress.Location = new System.Drawing.Point(29, 335);
+            this.ltcAddress.Name = "ltcAddress";
+            this.ltcAddress.Size = new System.Drawing.Size(264, 17);
+            this.ltcAddress.TabIndex = 8;
+            this.ltcAddress.TabStop = true;
+            this.ltcAddress.Text = "LTC: LhAuvDEmBqV7nHwZFFPKEmvYk3jZCzhpHj";
+            this.ltcAddress.UseCompatibleTextRendering = true;
+            this.ltcAddress.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.address_LinkClicked);
+            // 
+            // btcAddress
+            // 
+            this.btcAddress.AutoSize = true;
+            this.btcAddress.LinkArea = new System.Windows.Forms.LinkArea(5, 39);
+            this.btcAddress.Location = new System.Drawing.Point(29, 318);
+            this.btcAddress.Name = "btcAddress";
+            this.btcAddress.Size = new System.Drawing.Size(253, 17);
+            this.btcAddress.TabIndex = 7;
+            this.btcAddress.TabStop = true;
+            this.btcAddress.Text = "BTC: 15VkLEdNz5RJ2tbrXgshGqSd7VqGGjpu36";
+            this.btcAddress.UseCompatibleTextRendering = true;
+            this.btcAddress.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.address_LinkClicked);
+            // 
+            // donationLabel
+            // 
+            this.donationLabel.AutoSize = true;
+            this.donationLabel.Location = new System.Drawing.Point(28, 299);
+            this.donationLabel.Name = "donationLabel";
+            this.donationLabel.Size = new System.Drawing.Size(105, 13);
+            this.donationLabel.TabIndex = 6;
+            this.donationLabel.Text = "Donation Addresses:";
+            // 
+            // linkLabel
+            // 
+            this.linkLabel.AutoSize = true;
+            this.linkLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.linkLabel.LinkBehavior = System.Windows.Forms.LinkBehavior.HoverUnderline;
+            this.linkLabel.Location = new System.Drawing.Point(28, 62);
+            this.linkLabel.Name = "linkLabel";
+            this.linkLabel.Size = new System.Drawing.Size(353, 18);
+            this.linkLabel.TabIndex = 5;
+            this.linkLabel.TabStop = true;
+            this.linkLabel.Text = "BitCoinTalk Thread (download links, discussion, etc)";
+            this.linkLabel.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.linkLabel_LinkClicked);
+            // 
+            // versionMessage
+            // 
+            this.versionMessage.AutoSize = true;
+            this.versionMessage.Font = new System.Drawing.Font("Microsoft Sans Serif", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.versionMessage.Location = new System.Drawing.Point(28, 167);
+            this.versionMessage.Name = "versionMessage";
+            this.versionMessage.Size = new System.Drawing.Size(0, 18);
+            this.versionMessage.TabIndex = 4;
+            // 
+            // latestVersionLabel
+            // 
+            this.latestVersionLabel.AutoSize = true;
+            this.latestVersionLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.latestVersionLabel.Location = new System.Drawing.Point(28, 132);
+            this.latestVersionLabel.Name = "latestVersionLabel";
+            this.latestVersionLabel.Size = new System.Drawing.Size(128, 18);
+            this.latestVersionLabel.TabIndex = 3;
+            this.latestVersionLabel.Text = "Latest Version: {0}";
+            // 
+            // currentVersionLabel
+            // 
+            this.currentVersionLabel.AutoSize = true;
+            this.currentVersionLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.currentVersionLabel.Location = new System.Drawing.Point(28, 97);
+            this.currentVersionLabel.Name = "currentVersionLabel";
+            this.currentVersionLabel.Size = new System.Drawing.Size(137, 18);
+            this.currentVersionLabel.TabIndex = 2;
+            this.currentVersionLabel.Text = "Current Version: {0}";
+            // 
+            // creatorLabel
+            // 
+            this.creatorLabel.AutoSize = true;
+            this.creatorLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.creatorLabel.Location = new System.Drawing.Point(28, 270);
+            this.creatorLabel.Name = "creatorLabel";
+            this.creatorLabel.Size = new System.Drawing.Size(158, 18);
+            this.creatorLabel.TabIndex = 1;
+            this.creatorLabel.Text = "Created by: Langes01x\r\n";
+            // 
+            // appLabel
+            // 
+            this.appLabel.AutoSize = true;
+            this.appLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 11.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.appLabel.Location = new System.Drawing.Point(28, 27);
+            this.appLabel.Name = "appLabel";
+            this.appLabel.Size = new System.Drawing.Size(572, 18);
+            this.appLabel.TabIndex = 0;
+            this.appLabel.Text = "TMB Switcher - An open source algorithm switcher for the TradeMyBit pool";
+            // 
             // toolStrip
             // 
             this.toolStrip.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
@@ -1819,30 +2038,6 @@
             this.tooltip.IsBalloon = true;
             this.tooltip.ShowAlways = true;
             // 
-            // minerFlowLayoutPanel
-            // 
-            this.minerFlowLayoutPanel.Controls.Add(this.graphTotalCheck);
-            this.minerFlowLayoutPanel.Controls.Add(this.graphTempCheck);
-            this.minerFlowLayoutPanel.Controls.Add(this.graphHashCheck);
-            this.minerFlowLayoutPanel.Dock = System.Windows.Forms.DockStyle.Top;
-            this.minerFlowLayoutPanel.Location = new System.Drawing.Point(0, 0);
-            this.minerFlowLayoutPanel.Name = "minerFlowLayoutPanel";
-            this.minerFlowLayoutPanel.Size = new System.Drawing.Size(891, 24);
-            this.minerFlowLayoutPanel.TabIndex = 11;
-            // 
-            // killMinerOnExitCheck
-            // 
-            this.killMinerOnExitCheck.AutoSize = true;
-            this.killMinerOnExitCheck.Checked = true;
-            this.killMinerOnExitCheck.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.killMinerOnExitCheck.Location = new System.Drawing.Point(389, 92);
-            this.killMinerOnExitCheck.Name = "killMinerOnExitCheck";
-            this.killMinerOnExitCheck.Size = new System.Drawing.Size(105, 17);
-            this.killMinerOnExitCheck.TabIndex = 91;
-            this.killMinerOnExitCheck.Text = "Kill Miner On Exit";
-            this.tooltip.SetToolTip(this.killMinerOnExitCheck, "Whether or not the miner should exit when the switcher does");
-            this.killMinerOnExitCheck.UseVisualStyleBackColor = true;
-            // 
             // Switcher
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -1872,15 +2067,17 @@
             this.profitHistoryPage.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.profitChart)).EndInit();
             this.profitHistoryPanel.ResumeLayout(false);
-            this.profitHistoryPanel.PerformLayout();
+            this.profitTableLayoutPanel.ResumeLayout(false);
+            this.profitTableLayoutPanel.PerformLayout();
             this.profitFlowLayoutPanel.ResumeLayout(false);
             this.profitFlowLayoutPanel.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.profitHistoryBar)).EndInit();
             this.minerHistoryPage.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.minerChart)).EndInit();
             this.minerHistoryPanel.ResumeLayout(false);
-            this.minerHistoryPanel.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.minerHistoryBar)).EndInit();
+            this.minerTableLayoutPanel.ResumeLayout(false);
+            this.minerTableLayoutPanel.PerformLayout();
+            this.minerFlowLayoutPanel.ResumeLayout(false);
+            this.minerFlowLayoutPanel.PerformLayout();
             this.settingsPage.ResumeLayout(false);
             this.settingsPage.PerformLayout();
             this.settingTableLayoutPanel.ResumeLayout(false);
@@ -1889,10 +2086,10 @@
             ((System.ComponentModel.ISupportInitialize)(this.historicalDelayNum)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.poolRefreshNum)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.minerRefreshNum)).EndInit();
+            this.aboutPage.ResumeLayout(false);
+            this.aboutPage.PerformLayout();
             this.toolStrip.ResumeLayout(false);
             this.toolStrip.PerformLayout();
-            this.minerFlowLayoutPanel.ResumeLayout(false);
-            this.minerFlowLayoutPanel.PerformLayout();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -2008,7 +2205,6 @@
         private System.Windows.Forms.DataVisualization.Charting.Chart minerChart;
         private System.Windows.Forms.Panel profitHistoryPanel;
         private System.Windows.Forms.Label profitHistoryLabel;
-        private System.Windows.Forms.TrackBar profitHistoryBar;
         private System.Windows.Forms.TextBox foundBlocksText;
         private System.Windows.Forms.Label foundBlocksLabel;
         private System.Windows.Forms.Label staleLabel;
@@ -2020,7 +2216,6 @@
         private System.Windows.Forms.TabPage minerHistoryPage;
         private System.Windows.Forms.Panel minerHistoryPanel;
         private System.Windows.Forms.Label minerHistoryLabel;
-        private System.Windows.Forms.TrackBar minerHistoryBar;
         private System.Windows.Forms.CheckBox graphTotalCheck;
         private System.Windows.Forms.Button batchFileButton;
         private System.Windows.Forms.Button profitLogFileButton;
@@ -2042,6 +2237,22 @@
         private System.Windows.Forms.CheckBox graphCompositeCheck;
         private System.Windows.Forms.FlowLayoutPanel minerFlowLayoutPanel;
         private System.Windows.Forms.CheckBox killMinerOnExitCheck;
+        private GraphSelectionBar profitHistoryBar;
+        private GraphSelectionBar minerHistoryBar;
+        private System.Windows.Forms.CheckBox graphAverageCheck;
+        private System.Windows.Forms.TableLayoutPanel profitTableLayoutPanel;
+        private System.Windows.Forms.TableLayoutPanel minerTableLayoutPanel;
+        private System.Windows.Forms.TabPage aboutPage;
+        private System.Windows.Forms.Label versionMessage;
+        private System.Windows.Forms.Label latestVersionLabel;
+        private System.Windows.Forms.Label currentVersionLabel;
+        private System.Windows.Forms.Label creatorLabel;
+        private System.Windows.Forms.Label appLabel;
+        private System.Windows.Forms.LinkLabel linkLabel;
+        private System.Windows.Forms.LinkLabel drkAddress;
+        private System.Windows.Forms.LinkLabel ltcAddress;
+        private System.Windows.Forms.LinkLabel btcAddress;
+        private System.Windows.Forms.Label donationLabel;
     }
 }
 

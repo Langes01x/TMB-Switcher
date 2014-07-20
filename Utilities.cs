@@ -5,12 +5,13 @@ using System.Data;
 using System.Windows.Forms;
 using System.IO;
 using System.Reflection;
+using System.Net;
 
 namespace TMB_Switcher
 {
     public static class Utilities
     {
-        #region Hash Speed Formatting
+        #region Formatting Utilities
 
         /// <summary>
         /// Denotes the units that are used for a hashing speed
@@ -47,6 +48,16 @@ namespace TMB_Switcher
                 units = hashUnits.Gh;
             }
             return string.Format("{0} {1}/s", Math.Round(hashRate, 6), units.ToString());
+        }
+
+        /// <summary>
+        /// Formats the profit values into a proper length
+        /// </summary>
+        /// <param name="profit">Input profit</param>
+        /// <returns>The profit value rounded to a proper length</returns>
+        public static string formatProfit(double profit)
+        {
+            return profit.ToString("F8");
         }
 
         #endregion
@@ -316,6 +327,51 @@ namespace TMB_Switcher
                 catch { }
             }
             return -666;
+        }
+
+        #endregion
+
+        #region Update Checking
+
+        private static readonly string updateURL = "https://dl.dropboxusercontent.com/u/11805555/TMB%20Switcher/latestVersion.txt";
+
+        /// <summary>
+        /// Gets the latest version (and associated message if there is one)
+        /// </summary>
+        /// <param name="message">Message to be displayed if the user needs to update</param>
+        /// <returns>The version number for the latest release</returns>
+        public static Version getLatestVersion(out string message)
+        {
+            HttpWebResponse response = null;
+            StreamReader dataStream = null;
+            message = "";
+            try
+            {
+                HttpWebRequest request = WebRequest.Create(updateURL) as HttpWebRequest;
+                response = request.GetResponse() as HttpWebResponse;
+                if (response.StatusCode != HttpStatusCode.OK)
+                    return null;
+                dataStream = new StreamReader(response.GetResponseStream());
+                // Only need the first line since that would include the version
+                string data = dataStream.ReadLine();
+                if (data.Length > 9 || data.Length < 7)
+                    return null;
+                Version returnValue = new Version(data.Substring(0,7));
+                // All other lines will be the message if there is one
+                message = dataStream.ReadToEnd();
+                return returnValue;
+            }
+            catch
+            {
+                return null;
+            }
+            finally
+            {
+                if (dataStream != null)
+                    dataStream.Close();
+                if (response != null)
+                    response.Close();
+            }
         }
 
         #endregion

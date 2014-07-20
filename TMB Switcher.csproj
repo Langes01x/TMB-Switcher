@@ -29,8 +29,8 @@
     <UpdatePeriodically>false</UpdatePeriodically>
     <UpdateRequired>false</UpdateRequired>
     <MapFileExtensions>true</MapFileExtensions>
-    <ApplicationRevision>1</ApplicationRevision>
-    <ApplicationVersion>1.2.2.%2a</ApplicationVersion>
+    <ApplicationRevision>0</ApplicationRevision>
+    <ApplicationVersion>1.2.3.%2a</ApplicationVersion>
     <UseApplicationTrust>false</UseApplicationTrust>
     <BootstrapperEnabled>true</BootstrapperEnabled>
   </PropertyGroup>
@@ -78,6 +78,12 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="GraphSelectionBar.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="GraphSelectionBar.Designer.cs">
+      <DependentUpon>GraphSelectionBar.cs</DependentUpon>
+    </Compile>
     <Compile Include="Miner API.cs" />
     <Compile Include="PoolAddDialog.cs">
       <SubType>Form</SubType>
@@ -97,6 +103,9 @@
       <DependentUpon>Switcher.cs</DependentUpon>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <EmbeddedResource Include="GraphSelectionBar.resx">
+      <DependentUpon>GraphSelectionBar.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="PoolAddDialog.resx">
       <DependentUpon>PoolAddDialog.cs</DependentUpon>
     </EmbeddedResource>
