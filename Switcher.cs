@@ -376,6 +376,7 @@ namespace TMB_Switcher
                     if (lastUpdateCheck.AddHours(1) < currentTime)
                     {
                         Invoke(new MethodInvoker(delegate { checkForUpdate(); }));
+                        lastUpdateCheck = currentTime;
                     }
 
                     // If user has changed any settings and applied them then we need to
